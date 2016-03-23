@@ -16,6 +16,7 @@ import org.kuali.ole.deliver.batch.OleMailer;
 import org.kuali.ole.deliver.batch.OleNoticeBo;
 import org.kuali.ole.deliver.batch.OleSms;
 import org.kuali.ole.deliver.bo.*;
+import org.kuali.ole.deliver.calendar.service.DateUtil;
 import org.kuali.ole.deliver.calendar.service.OleCalendarService;
 import org.kuali.ole.deliver.calendar.service.impl.OleCalendarServiceImpl;
 import org.kuali.ole.deliver.controller.checkout.CircUtilController;
@@ -28,8 +29,11 @@ import org.kuali.ole.deliver.util.DroolsResponse;
 import org.kuali.ole.deliver.util.LoanDateTimeUtil;
 import org.kuali.ole.deliver.util.NoticeInfo;
 import org.kuali.ole.deliver.util.OlePatronRecordUtil;
+import org.kuali.ole.deliver.service.impl.OLEDeliverNoticeHelperServiceImpl;
+import org.kuali.ole.deliver.util.*;
 import org.kuali.ole.describe.bo.OleInstanceItemType;
 import org.kuali.ole.describe.bo.OleLocation;
+import org.kuali.ole.describe.bo.OleLocationLevel;
 import org.kuali.ole.describe.keyvalue.LocationValuesBuilder;
 import org.kuali.ole.docstore.common.client.DocstoreClientLocator;
 import org.kuali.ole.docstore.common.document.*;
@@ -46,6 +50,7 @@ import org.kuali.ole.ingest.pojo.MatchBo;
 import org.kuali.ole.ncip.bo.OLEPlaceRequest;
 import org.kuali.ole.ncip.converter.OLEPlaceRequestConverter;
 import org.kuali.ole.service.OleCirculationPolicyService;
+import org.kuali.ole.service.OleCirculationPolicyServiceImpl;
 import org.kuali.ole.service.OlePatronHelperService;
 import org.kuali.ole.service.OlePatronHelperServiceImpl;
 import org.kuali.ole.sys.context.SpringContext;
@@ -70,6 +75,7 @@ import org.kuali.rice.kim.api.role.RoleService;
 import org.kuali.rice.kim.api.services.KimApiServiceLocator;
 import org.kuali.rice.kim.impl.identity.type.EntityTypeContactInfoBo;
 import org.kuali.rice.krad.UserSession;
+import org.kuali.rice.krad.dao.impl.PersistenceDaoOjb;
 import org.kuali.rice.krad.maintenance.MaintenanceDocument;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.DocumentService;
@@ -83,7 +89,7 @@ import org.kuali.rice.krms.api.repository.agenda.AgendaDefinition;
 import org.kuali.rice.krms.api.repository.context.ContextDefinition;
 import org.kuali.rice.krms.impl.repository.KrmsRepositoryServiceLocator;
 
-import java.io.OutputStream;
+import java.io.*;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -119,6 +125,7 @@ public class OleDeliverRequestDocumentHelperServiceImpl {
     private OlePatronHelperServiceImpl olePatronHelperService;
     private CircDeskLocationResolver circDeskLocationResolver;
     private OleLoanDocumentsFromSolrBuilder oleLoanDocumentsFromSolrBuilder;
+    private OnHoldCourtesyNoticeUtil onHoldCourtesyNotice;
     private ParameterValueResolver parameterResolverInstance;
     private OleMailer oleMailer;
     public ParameterValueResolver getParameterResolverInstance() {
@@ -126,6 +133,13 @@ public class OleDeliverRequestDocumentHelperServiceImpl {
             parameterResolverInstance = ParameterValueResolver.getInstance();
         }
         return parameterResolverInstance;
+    }
+
+    public OnHoldCourtesyNoticeUtil getonHoldCourtesyNotice(){
+        if(onHoldCourtesyNotice==null){
+            onHoldCourtesyNotice=new OnHoldCourtesyNoticeUtil();
+        }
+        return onHoldCourtesyNotice;
     }
 
     public OleMailer getOleMailer() {
@@ -685,7 +699,12 @@ public class OleDeliverRequestDocumentHelperServiceImpl {
      * @param oleDeliverRequestBo
      */
     public void cancelDocument(OleDeliverRequestBo oleDeliverRequestBo) {
-        String operatorId = GlobalVariables.getUserSession().getLoggedInUserPrincipalName();
+        String operatorId = null;
+        if(oleDeliverRequestBo.getOperatorCreateName()!=null && oleDeliverRequestBo.getOperatorCreateName().equalsIgnoreCase(OLEConstants.VUFIND)){
+            operatorId = oleDeliverRequestBo.getOperatorCreateName();
+        }else {
+            operatorId = GlobalVariables.getUserSession().getLoggedInUserPrincipalName();
+        }
         try {
             List<OleNoticeBo> oleNoticeBos = cancelRequestForItem(oleDeliverRequestBo.getItemUuid(), oleDeliverRequestBo.getBorrowerId());
             ASRHelperServiceImpl asrHelperService = new ASRHelperServiceImpl();
@@ -705,13 +724,41 @@ public class OleDeliverRequestDocumentHelperServiceImpl {
             }
             getBusinessObjectService().save(oleDeliverRequestDocumentsList);
             asrHelperService.deleteASRTypeRequest(oleDeliverRequestBo.getRequestId());
-            sendCancelNotice(oleNoticeBos);
+            sendCancelNotice(oleNoticeBos,oleDeliverRequestBo.getBorrowerQueuePosition().intValue());
+            if(oleDeliverRequestBo.getOperatorCreateName()!=null && oleDeliverRequestBo.getOperatorCreateName().equalsIgnoreCase(OLEConstants.VUFIND)){
+                sendOnHoldNoticeToNextRequestor(oleDeliverRequestBo,oleNoticeBos,itemMap);
+            }
         } catch (Exception e) {
             LOG.error("Cancellation of Request" + e.getMessage());
         }
-
     }
 
+    private void sendOnHoldNoticeToNextRequestor(OleDeliverRequestBo oleDeliverRequestBo,List<OleNoticeBo> oleNoticeBos,Map<String, String> itemMap){
+        if(oleDeliverRequestBo.getBorrowerQueuePosition().intValue()==1){
+            List<OleDeliverRequestBo> oleDeliverRequestBoList = (List<OleDeliverRequestBo>) getBusinessObjectService().findMatching(OleDeliverRequestBo.class, itemMap);
+            for(OleDeliverRequestBo deliverRequestBo : oleDeliverRequestBoList) {
+                if(deliverRequestBo.getBorrowerQueuePosition().intValue()==1 ){
+                    for(OleNoticeBo noticeBo:oleNoticeBos) {
+                        if(noticeBo.getOleItem().getItemStatus().getCodeValue().equalsIgnoreCase(OLEConstants.ITEM_STATUS_ON_HOLD)) {
+                            deliverRequestBo.setItemStatus(noticeBo.getOleItem().getItemStatus().getCodeValue());
+                            deliverRequestBo.setOperatorCreateName(OLEConstants.VUFIND);
+                            deliverRequestBo.setTitle(noticeBo.getTitle());
+                            deliverRequestBo.setAuthor(noticeBo.getAuthor());
+                            deliverRequestBo.setEnumeration(noticeBo.getEnumeration());
+                            deliverRequestBo.setCopyNumber(noticeBo.getCopyNumber());
+                            deliverRequestBo.setCallNumber(noticeBo.getItemCallNumber());
+                            deliverRequestBo.setShelvingLocation(noticeBo.getItemShelvingLocation());
+                            getonHoldCourtesyNotice().sendOnHoldNotice(deliverRequestBo);
+                        }else{
+                            break;
+                        }
+                    }
+                }else{
+                    break;
+                }
+            }
+        }
+    }
     /**
      * Build the cancellation notice template.
      *
@@ -764,8 +811,11 @@ public class OleDeliverRequestDocumentHelperServiceImpl {
      * @param oleNoticeBos
      * @throws Exception
      */
-    public void sendCancelNotice(List<OleNoticeBo> oleNoticeBos) throws Exception {
+    public void sendCancelNotice(List<OleNoticeBo> oleNoticeBos,int queuePosition) throws Exception {
         OleDeliverBatchServiceImpl oleDeliverBatchService = new OleDeliverBatchServiceImpl();
+        String toAddress = getParameterResolverInstance().getParameter(OLEConstants.APPL_ID, OLEConstants
+                .DLVR_NMSPC, OLEConstants.DLVR_CMPNT, OLEParameterConstants
+                . DELIVER_NOTICE_CANCEL_TO_ADDRESS);
         for (OleNoticeBo oleNoticeBo : oleNoticeBos) {
             List list = oleDeliverBatchService.getNoticeForPatron(oleNoticeBos);
             String content = list.toString();
@@ -776,12 +826,18 @@ public class OleDeliverRequestDocumentHelperServiceImpl {
                 String replyToEmail = getCircDeskLocationResolver().getReplyToEmail(oleNoticeBo.getItemShelvingLocation());
                 if (replyToEmail != null) {
                     oleMailer.sendEmail(new EmailFrom(replyToEmail), new EmailTo(oleNoticeBo.getPatronEmailAddress()), new EmailSubject(OLEConstants.CANCELLATION_NOTICE), new EmailBody(content), true);
+                    if(oleNoticeBo.getOleItem().getItemStatus().getCodeValue().equalsIgnoreCase(OLEConstants.ITEM_STATUS_ON_HOLD) && queuePosition==1) {
+                        oleMailer.sendEmail(new EmailFrom(replyToEmail), new EmailTo(toAddress), new EmailSubject(OLEConstants.CANCELLATION_NOTICE), new EmailBody(content), true);
+                    }
                 } else {
                     String fromAddress = getLoanProcessor().getParameter(OLEParameterConstants.NOTICE_FROM_MAIL);
                     if (fromAddress != null && (fromAddress.equals("") || fromAddress.trim().isEmpty())) {
                         fromAddress = OLEConstants.KUALI_MAIL;
                     }
                     oleMailer.sendEmail(new EmailFrom(fromAddress), new EmailTo(oleNoticeBo.getPatronEmailAddress()), new EmailSubject(OLEConstants.CANCELLATION_NOTICE), new EmailBody(content), true);
+                    if(oleNoticeBo.getOleItem().getItemStatus().getCodeValue().equalsIgnoreCase(OLEConstants.ITEM_STATUS_ON_HOLD)&& queuePosition==1) {
+                        oleMailer.sendEmail(new EmailFrom(fromAddress), new EmailTo(toAddress), new EmailSubject(OLEConstants.CANCELLATION_NOTICE), new EmailBody(content), true);
+                    }
                 }
             }
         }
@@ -4517,7 +4573,6 @@ public class OleDeliverRequestDocumentHelperServiceImpl {
         return oleDeliverRequestBo.getMessage();
     }
 
-
     /**
      *
      * @param oleDeliverRequestBo
@@ -4530,44 +4585,48 @@ public class OleDeliverRequestDocumentHelperServiceImpl {
     private OleDeliverRequestBo processRequestAfterRuleEvaluation(OleDeliverRequestBo oleDeliverRequestBo,DroolsResponse droolsResponse,NoticeInfo noticeInfo,boolean backGroundLoan,boolean override){
         OleLoanDocument oleLoanDocument =null;
         if (droolsResponse.isRuleMatched() ) {
-            droolsResponse.setErrorMessage(null);
-            OleDroolsHoldResponseBo oleDroolsHoldResponseBo = generateOleDroolsHoldResponseBo(droolsResponse, null);
-            oleDeliverRequestBo.setOleDroolsHoldResponseBo(oleDroolsHoldResponseBo);
-            if (oleDeliverRequestBo.getRequestExpiryDate() == null) {
-                Timestamp requestExpirationDate = calculateXDatesBasedOnCalendar(getCalendarGroup(oleDeliverRequestBo.getItemLocation()), String.valueOf(oleDroolsHoldResponseBo.getRequestExpirationDay()), null, true);
-                oleDeliverRequestBo.setRequestExpiryDate(new java.sql.Date(requestExpirationDate.getTime()));
-            }
-            String recallDeliveryRequestTypeId=null;
-            String recallHoldRequestTypeId=null;
-            Map<String,String> requestTypeMap = new HashMap<String,String>();
-            requestTypeMap.put("requestTypeCode",OLEConstants.RECALL_DELIVERY_REQUEST);
-            List<OleDeliverRequestType> oleDeliverRequestTypes = (List<OleDeliverRequestType>)getBusinessObjectService().findMatching(OleDeliverRequestType.class,requestTypeMap);
-            if(oleDeliverRequestTypes.size()>0){
-                recallDeliveryRequestTypeId = oleDeliverRequestTypes.get(0).getRequestTypeId();
-            }
-            requestTypeMap.clear();
-            requestTypeMap.put("requestTypeCode",OLEConstants.RECALL_HOLD_REQUEST);
-            oleDeliverRequestTypes = (List<OleDeliverRequestType>)getBusinessObjectService().findMatching(OleDeliverRequestType.class,requestTypeMap);
-            if(oleDeliverRequestTypes.size()>0){
-                recallHoldRequestTypeId = oleDeliverRequestTypes.get(0).getRequestTypeId();
-            }
-
-            if (oleDeliverRequestBo.getRequestTypeId() != null && ((oleDeliverRequestBo.getRequestTypeId().equals(recallDeliveryRequestTypeId) || oleDeliverRequestBo.getRequestTypeId().equals(recallHoldRequestTypeId)) && (!isRecallRequestExist(recallDeliveryRequestTypeId, oleDeliverRequestBo.getItemId()) && !isRecallRequestExist(recallHoldRequestTypeId, oleDeliverRequestBo.getItemId())) || backGroundLoan)) {
-               oleLoanDocument = updateLoanDocument(oleDeliverRequestBo,noticeInfo,oleDroolsHoldResponseBo.getMinimumLoanPeriod(), oleDroolsHoldResponseBo.getRecallLoanPeriod());
-            }
-            if (oleLoanDocument != null) {
-                oleDeliverRequestBo.setLoanTransactionRecordNumber(oleLoanDocument.getLoanId());
-                if(oleLoanDocument.getOleRequestId()==null){
-                    oleLoanDocument.setOleRequestId(oleDeliverRequestBo.getRequestId());
+            if(droolsResponse.getErrorMessage().getErrorMessage()!=null && !override){
+                oleDeliverRequestBo.setMessage(droolsResponse.getErrorMessage().getErrorMessage());
+            }else {
+                droolsResponse.setErrorMessage(null);
+                OleDroolsHoldResponseBo oleDroolsHoldResponseBo = generateOleDroolsHoldResponseBo(droolsResponse, null);
+                oleDeliverRequestBo.setOleDroolsHoldResponseBo(oleDroolsHoldResponseBo);
+                if (oleDeliverRequestBo.getRequestExpiryDate() == null) {
+                    Timestamp requestExpirationDate = calculateXDatesBasedOnCalendar(getCalendarGroup(oleDeliverRequestBo.getItemLocation()), String.valueOf(oleDroolsHoldResponseBo.getRequestExpirationDay()), null, true);
+                    oleDeliverRequestBo.setRequestExpiryDate(new java.sql.Date(requestExpirationDate.getTime()));
                 }
-                getBusinessObjectService().save(oleLoanDocument);
+                String recallDeliveryRequestTypeId = null;
+                String recallHoldRequestTypeId = null;
+                Map<String, String> requestTypeMap = new HashMap<String, String>();
+                requestTypeMap.put("requestTypeCode", OLEConstants.RECALL_DELIVERY_REQUEST);
+                List<OleDeliverRequestType> oleDeliverRequestTypes = (List<OleDeliverRequestType>) getBusinessObjectService().findMatching(OleDeliverRequestType.class, requestTypeMap);
+                if (oleDeliverRequestTypes.size() > 0) {
+                    recallDeliveryRequestTypeId = oleDeliverRequestTypes.get(0).getRequestTypeId();
+                }
+                requestTypeMap.clear();
+                requestTypeMap.put("requestTypeCode", OLEConstants.RECALL_HOLD_REQUEST);
+                oleDeliverRequestTypes = (List<OleDeliverRequestType>) getBusinessObjectService().findMatching(OleDeliverRequestType.class, requestTypeMap);
+                if (oleDeliverRequestTypes.size() > 0) {
+                    recallHoldRequestTypeId = oleDeliverRequestTypes.get(0).getRequestTypeId();
+                }
+
+                if (oleDeliverRequestBo.getRequestTypeId() != null && ((oleDeliverRequestBo.getRequestTypeId().equals(recallDeliveryRequestTypeId) || oleDeliverRequestBo.getRequestTypeId().equals(recallHoldRequestTypeId)) && (!isRecallRequestExist(recallDeliveryRequestTypeId, oleDeliverRequestBo.getItemId()) && !isRecallRequestExist(recallHoldRequestTypeId, oleDeliverRequestBo.getItemId())) || backGroundLoan)) {
+                    oleLoanDocument = updateLoanDocument(oleDeliverRequestBo, noticeInfo, oleDroolsHoldResponseBo.getMinimumLoanPeriod(), oleDroolsHoldResponseBo.getRecallLoanPeriod());
+                }
+                if (oleLoanDocument != null) {
+                    oleDeliverRequestBo.setLoanTransactionRecordNumber(oleLoanDocument.getLoanId());
+                    if (oleLoanDocument.getOleRequestId() == null) {
+                        oleLoanDocument.setOleRequestId(oleDeliverRequestBo.getRequestId());
+                    }
+                    getBusinessObjectService().save(oleLoanDocument);
+                }
+                oleDeliverRequestBo.setRecallNoticeContentConfigName(oleDroolsHoldResponseBo.getRecallNoticeContentConfigName());
+                oleDeliverRequestBo.setRequestExpirationNoticeContentConfigName(oleDroolsHoldResponseBo.getRequestExpirationNoticeContentConfigName());
+                oleDeliverRequestBo.setOnHoldNoticeContentConfigName(oleDroolsHoldResponseBo.getOnHoldNoticeContentConfigName());
+                oleDeliverRequestBo.setOnHoldExpirationNoticeContentConfigName(oleDroolsHoldResponseBo.getOnHoldExpirationNoticeContentConfigName());
+                oleDeliverRequestBo.setOleDroolsHoldResponseBo(null);
+                oleDeliverRequestBo.setMessage(droolsResponse.getErrorMessage().getErrorMessage());
             }
-            oleDeliverRequestBo.setRecallNoticeContentConfigName(oleDroolsHoldResponseBo.getRecallNoticeContentConfigName());
-            oleDeliverRequestBo.setRequestExpirationNoticeContentConfigName(oleDroolsHoldResponseBo.getRequestExpirationNoticeContentConfigName());
-            oleDeliverRequestBo.setOnHoldNoticeContentConfigName(oleDroolsHoldResponseBo.getOnHoldNoticeContentConfigName());
-            oleDeliverRequestBo.setOnHoldExpirationNoticeContentConfigName(oleDroolsHoldResponseBo.getOnHoldExpirationNoticeContentConfigName());
-            oleDeliverRequestBo.setOleDroolsHoldResponseBo(null);
-            oleDeliverRequestBo.setMessage(droolsResponse.getErrorMessage().getErrorMessage());
         }else{
             oleDeliverRequestBo.setMessage(OLEConstants.NO_RULE_FOUND);
         }
@@ -4706,40 +4765,43 @@ public class OleDeliverRequestDocumentHelperServiceImpl {
             OleLoanDocument oleLoanDocument = getLoanDocument(oleDeliverRequestBo.getItemId());
             if (oleLoanDocument != null && (oleDeliverRequestBo.getRequestTypeId().equals("1") || oleDeliverRequestBo.getRequestTypeId().equals("2"))) {
                 if (oleLoanDocument.getCirculationLocationId() != null) {
-                    Map<String, String> circDeskCriteriaMap = new HashMap<String, String>();
-                    circDeskCriteriaMap.put("circulationDeskId", oleLoanDocument.getCirculationLocationId());
-                    List<OleCirculationDesk> oleCirculationDesks = (List<OleCirculationDesk>) getBusinessObjectService().findMatching(OleCirculationDesk.class, circDeskCriteriaMap);
-                    OleCirculationDesk oleCirculationDesk = null;
-                    if (oleCirculationDesks.size() > 0) {
-                        oleCirculationDesk = oleCirculationDesks.get(0);
-                    }
-                    if (oleCirculationDesk != null && oleCirculationDesk.getCalendarGroupId() != null) {
-                        LoanDateTimeUtil loanDateTimeUtil = new LoanDateTimeUtil();
-                        Date minimumLoanPeriodDate = loanDateTimeUtil.calculateDateTimeByPeriod(minimumLoanPeriod, oleCirculationDesk);
-                        Date recallLoanPeriodDate = loanDateTimeUtil.calculateDateTimeByPeriod(recallLoanPeriod, oleCirculationDesk);
-                        dueDate = getDueDate(new Timestamp(minimumLoanPeriodDate.getTime()), new Timestamp(recallLoanPeriodDate.getTime()), oleLoanDocument.getCreateDate(), minimumLoanPeriod, oleCirculationDesk);
-                        oleLoanDocument.setPastDueDate(oleLoanDocument.getLoanDueDate());
-                        oleLoanDocument.setLoanDueDate(dueDate);
-                        if(oleLoanDocument.getPastDueDate()!=null){
-                            oleDeliverRequestBo.setOriginalDueDate(new java.sql.Date(oleLoanDocument.getPastDueDate().getTime()));
+                    Timestamp currentDate = DateUtil.addDays(new Timestamp(new Date().getTime()), 7);
+                    if (currentDate.compareTo(oleLoanDocument.getLoanDueDate()) < 0) {
+                        Map<String, String> circDeskCriteriaMap = new HashMap<String, String>();
+                        circDeskCriteriaMap.put("circulationDeskId", oleLoanDocument.getCirculationLocationId());
+                        List<OleCirculationDesk> oleCirculationDesks = (List<OleCirculationDesk>) getBusinessObjectService().findMatching(OleCirculationDesk.class, circDeskCriteriaMap);
+                        OleCirculationDesk oleCirculationDesk = null;
+                        if (oleCirculationDesks.size() > 0) {
+                            oleCirculationDesk = oleCirculationDesks.get(0);
                         }
-                        oleDeliverRequestBo.setRecallDueDate(new Timestamp(oleLoanDocument.getLoanDueDate().getTime()));
-                        oleDeliverRequestBo.setNewDueDate(new java.sql.Date(oleLoanDocument.getLoanDueDate().getTime()));
-                        oleDeliverRequestBo.setNoticeType(noticeInfo.getNoticeType());
-                        List<OLEDeliverNotice> deliverNotices = getDeliverNotices(oleDeliverRequestBo, oleLoanDocument,noticeInfo);
-
-                        oleLoanDocument.setDeliverNotices(deliverNotices);
-                        persistDeliverNotices(deliverNotices,oleLoanDocument.getLoanId());
-                        Item oleItem = oleDeliverRequestBo.getOleItem();
-                        oleItem.setDueDateTime(getLoanProcessor().convertDateToString(oleLoanDocument.getLoanDueDate(), "MM/dd/yyyy HH:mm:ss"));
-                        try {
-                            updateItem(oleItem);
-                        } catch (Exception e) {
-                            if (LOG.isInfoEnabled()) {
-                                LOG.info("Exception occured while updating the item . " + e.getMessage());
+                        if (oleCirculationDesk != null && oleCirculationDesk.getCalendarGroupId() != null) {
+                            LoanDateTimeUtil loanDateTimeUtil = new LoanDateTimeUtil();
+                            Date minimumLoanPeriodDate = loanDateTimeUtil.calculateDateTimeByPeriod(minimumLoanPeriod, oleCirculationDesk);
+                            Date recallLoanPeriodDate = loanDateTimeUtil.calculateDateTimeByPeriod(recallLoanPeriod, oleCirculationDesk);
+                            dueDate = getDueDate(new Timestamp(minimumLoanPeriodDate.getTime()), new Timestamp(recallLoanPeriodDate.getTime()), oleLoanDocument.getCreateDate(), minimumLoanPeriod, oleCirculationDesk);
+                            oleLoanDocument.setPastDueDate(oleLoanDocument.getLoanDueDate());
+                            oleLoanDocument.setLoanDueDate(dueDate);
+                            if (oleLoanDocument.getPastDueDate() != null) {
+                                oleDeliverRequestBo.setOriginalDueDate(new java.sql.Date(oleLoanDocument.getPastDueDate().getTime()));
                             }
-                        }
+                            oleDeliverRequestBo.setRecallDueDate(new Timestamp(oleLoanDocument.getLoanDueDate().getTime()));
+                            oleDeliverRequestBo.setNewDueDate(new java.sql.Date(oleLoanDocument.getLoanDueDate().getTime()));
+                            oleDeliverRequestBo.setNoticeType(noticeInfo.getNoticeType());
+                            List<OLEDeliverNotice> deliverNotices = getDeliverNotices(oleDeliverRequestBo, oleLoanDocument, noticeInfo);
 
+                            oleLoanDocument.setDeliverNotices(deliverNotices);
+                            persistDeliverNotices(deliverNotices, oleLoanDocument.getLoanId());
+                            Item oleItem = oleDeliverRequestBo.getOleItem();
+                            oleItem.setDueDateTime(getLoanProcessor().convertDateToString(oleLoanDocument.getLoanDueDate(), "MM/dd/yyyy HH:mm:ss"));
+                            try {
+                                updateItem(oleItem);
+                            } catch (Exception e) {
+                                if (LOG.isInfoEnabled()) {
+                                    LOG.info("Exception occured while updating the item . " + e.getMessage());
+                                }
+                            }
+
+                        }
                     }
                 }
 
@@ -4857,6 +4919,102 @@ return oleLoanDocument;
             }
         }
         return oleDeliverRequestBo;
+    }
+
+    public void generatePatronList() {
+        LOG.debug("Inside generatePatronList");
+        List<OlePatronDocument> olePatronDocumentList = new ArrayList<OlePatronDocument>();
+
+        try {
+            olePatronDocumentList = (List<OlePatronDocument>) getBusinessObjectService().findAll(OlePatronDocument.class);
+            System.out.println("List size oleOlePatronDocumentList........"+olePatronDocumentList.size());
+            writeToCSV(olePatronDocumentList);
+
+
+        } catch (Exception e) {
+            LOG.error("Exception while deleting expired requests", e);
+        }
+    }
+
+
+    private static final String CSV_SEPARATOR = ",";
+
+    private static void writeToCSV(List<OlePatronDocument> olePatronDocumentList)
+    {
+        DateFormat dateFormat = new SimpleDateFormat("yyyyMMddhhmm");
+        Date date = new Date();
+        try
+        {
+
+            File file = new File(ConfigContext.getCurrentContextConfig().getProperty(OLEConstants.EDIBatchProfile.BATCH_PATRON_LIST_EXPORT_DIR_PATH));
+            if (!file.exists()) {
+                if (file.mkdir()) {
+                    System.out.println("Directory is created!");
+                } else {
+                    System.out.println("Failed to create directory!");
+                }
+            }
+
+
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(ConfigContext.getCurrentContextConfig().getProperty(OLEConstants.EDIBatchProfile.BATCH_PATRON_LIST_EXPORT_DIR_PATH)+"Patron_"+System.currentTimeMillis()+".csv"), "UTF-8"));
+
+            StringBuffer header = new StringBuffer();
+            header.append("Patron ID");
+            header.append(CSV_SEPARATOR);
+            header.append("Patron Barcode");
+            header.append(CSV_SEPARATOR);
+            header.append(" Exp Date");
+            header.append(CSV_SEPARATOR);
+            header.append("P Type");
+            header.append(CSV_SEPARATOR);
+            header.append("Pcode1");
+            header.append(CSV_SEPARATOR);
+            header.append("Pcode2");
+            header.append(CSV_SEPARATOR);
+            header.append("Pcode3");
+            header.append(CSV_SEPARATOR);
+            header.append("MBLOCK");
+
+
+            bw.write(header.toString());
+            bw.newLine();
+
+
+            for (OlePatronDocument product : olePatronDocumentList)
+            {
+                StringBuffer oneLine = new StringBuffer();
+
+                oneLine.append(product.getOlePatronId());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(product.getBarcode());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(product.getExpirationDate());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(product.getBorrowerType());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(product.getOlePatronEntityViewBo().getPrefix());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(product.getOlePatronEntityViewBo().getSuffix());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(product.getStatisticalCategory());
+                oneLine.append(CSV_SEPARATOR);
+                oneLine.append(product.isGeneralBlock());
+
+                bw.write(oneLine.toString());
+                bw.newLine();
+            }
+            bw.flush();
+            bw.close();
+        }
+        catch (UnsupportedEncodingException e) {
+            LOG.error(e,e);
+        }
+        catch (FileNotFoundException e){
+            LOG.error(e,e);
+        }
+        catch (IOException e){
+            LOG.error(e,e);
+        }
     }
 
 

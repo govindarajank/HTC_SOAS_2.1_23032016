@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 /**
  * Created by chenchulakshmig on 8/27/15.
  */
-
 public class NettyServer implements Runnable {
 
     protected int serverPort = 7052;

@@ -233,9 +233,6 @@ public class OleLineItemReceivingDocumentRule extends LineItemReceivingDocumentR
            /* if (ack & isNotesAck) {
                 return true;
             }*/
-           /* else if (!ack) {
-                return true;
-            }*/
         }
         if(isNotesAck) {
             return true;

@@ -1,0 +1,114 @@
+package org.kuali.ole.deliver.checkout
+
+import org.kuali.ole.OLEConstants
+import org.kuali.ole.deliver.bo.OleLoanDocument
+import org.kuali.ole.deliver.bo.OlePatronDocument
+import org.kuali.ole.deliver.util.OleItemRecordForCirc
+import org.kuali.ole.deliver.drools.DroolsConstants
+import org.kuali.ole.deliver.util.DroolsResponse
+
+
+rule "CDE3CheckOutValidation1"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d : DroolsResponse()
+$i: OleItemRecordForCirc(getItemType() in ("THREE_DAYS"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+$p: OlePatronDocument(getBorrowerTypeCode() in ("TPEXT","UGEXT"),
+(getLoanedItemsCountByItemType($i.getItemType()) < 4),getTotalLoanedItemsCount() < 25)
+
+then
+$l.setCirculationPolicyId("CDE3CheckOutValidation1");
+$l.loanPeriod("3-D",null); // This method takes due date and recall period as arguments.
+ end
+
+
+rule "CDE3CheckOutValidation2"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d : DroolsResponse()
+$i: OleItemRecordForCirc(getItemType() in ("THREE_DAYS"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+$p: OlePatronDocument(getBorrowerTypeCode() in ("TPEXT","UGEXT"),
+(getLoanedItemsCountByItemType($i.getItemType()) >= 4),getTotalLoanedItemsCount() < 25)
+
+then
+$l.setCirculationPolicyId("CDE3CheckOutValidation2");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+$d.addErrorMessage("Patron has more than 4 CD/DVD");
+$l.loanPeriod("3-D",null); // This method takes due date and recall period as arguments.
+ end
+
+rule "CDE3CheckOutValidation3"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d : DroolsResponse()
+$i: OleItemRecordForCirc(getItemType() in ("THREE_DAYS"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+$p: OlePatronDocument(getBorrowerTypeCode() in ("TPEXT","UGEXT"),getTotalLoanedItemsCount() >= 25)
+
+then
+$l.setCirculationPolicyId("CDE3CheckOutValidation3");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+$d.addErrorMessage("Patron has more than 25 items");
+$l.loanPeriod("3-D",null); // This method takes due date and recall period as arguments.
+ end
+
+rule "CDE3CheckOutValidation4"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d : DroolsResponse()
+$i: OleItemRecordForCirc(getItemType() in ("THREE_DAYS"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+$p: OlePatronDocument(getBorrowerTypeCode() in ("PGREXT"),
+(getLoanedItemsCountByItemType($i.getItemType()) < 4),getTotalLoanedItemsCount() < 55)
+
+then
+$l.setCirculationPolicyId("CDE3CheckOutValidation4");
+$l.loanPeriod("3-D",null); // This method takes due date and recall period as arguments.
+ end
+
+
+rule "CDE3CheckOutValidation5"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d : DroolsResponse()
+$i: OleItemRecordForCirc(getItemType() in ("THREE_DAYS"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+$p: OlePatronDocument(getBorrowerTypeCode() in ("PGREXT"),
+(getLoanedItemsCountByItemType($i.getItemType()) >= 4),getTotalLoanedItemsCount() < 55)
+
+then
+$l.setCirculationPolicyId("CDE3CheckOutValidation5");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+$d.addErrorMessage("Patron has more than 4 CD/DVD");
+$l.loanPeriod("3-D",null); // This method takes due date and recall period as arguments.
+ end
+
+rule "CDE3CheckOutValidation6"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d : DroolsResponse()
+$i: OleItemRecordForCirc(getItemType() in ("THREE_DAYS"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+$p: OlePatronDocument(getBorrowerTypeCode() in ("PGREXT"),getTotalLoanedItemsCount() >= 55)
+
+then
+$l.setCirculationPolicyId("CDE3CheckOutValidation6");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+$d.addErrorMessage("Patron has more than 55 items");
+$l.loanPeriod("3-D",null); // This method takes due date and recall period as arguments.
+ end
+

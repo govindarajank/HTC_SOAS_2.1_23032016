@@ -62,7 +62,8 @@ public class CheckoutPatronController extends CheckoutItemController {
             if (null != droolsResponse.retriveErrorCode() && droolsResponse.retriveErrorCode().equals(DroolsConstants.GENERAL_MESSAGE_FLAG)) {
                 showDialog("generalMessageAndResetUIDialog", circForm, request, response);
             } else {
-                showErrorMessageDialog(circForm, request, response);
+               // showErrorMessageDialog(circForm, request, response);
+                showDialog("ptrnValidationErrorMessageDialog", circForm, request, response);
             }
         } else {
             return handleProxyPatronsIfExists(circForm, result, request, response);

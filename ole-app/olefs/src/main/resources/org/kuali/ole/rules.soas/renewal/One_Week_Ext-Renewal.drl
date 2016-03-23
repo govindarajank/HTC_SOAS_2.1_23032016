@@ -1,0 +1,50 @@
+package org.kuali.ole.deliver.checkout
+
+import org.kuali.ole.OLEConstants
+import org.kuali.ole.deliver.bo.OleLoanDocument
+import org.kuali.ole.deliver.bo.OlePatronDocument
+import org.kuali.ole.deliver.util.OleItemRecordForCirc
+import org.kuali.ole.deliver.drools.DroolsConstants
+import org.kuali.ole.deliver.util.DroolsResponse
+import org.kuali.ole.deliver.util.NoticeInfo
+
+rule "OneWeekLoanExtRenewal"
+agenda-group "renewal validation"
+activation-group "renewal validation"
+when
+
+$l: OleLoanDocument(Integer.valueOf(getNumberOfRenewals()) < 10)
+$n: NoticeInfo()
+$d : DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("PGREXT","UGEXT","TPEXT"))
+$i: OleItemRecordForCirc (getItemType() in ("ONE_WEEK"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+
+then
+ $d.setRuleMatched(true);
+ $l.setCirculationPolicyId("OneWeekLoanExtRenewal");
+ $l.loanPeriod("14-D","14-D");
+ $n.setNoticeType(DroolsConstants.REGULAR_LOANS_NOTICE_CONFIG);
+ end
+
+rule "OneWeekLoanExtRenewal1"
+agenda-group "renewal validation"
+activation-group "renewal validation"
+when
+
+$l: OleLoanDocument(Integer.valueOf(getNumberOfRenewals()) >= 10)
+$n: NoticeInfo()
+$d : DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("PGREXT","UGEXT","TPEXT"))
+$i: OleItemRecordForCirc (getItemType() in ("ONE_WEEK"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+
+then
+ $d.setRuleMatched(true);
+ $l.setCirculationPolicyId("OneWeekLoanExtRenewal1");
+ $d.addErrorMessage("Patron has more than allowed limit of renewals");
+ $d.addErrorMessageCode("ErrorMessageFromRule");
+ $d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+ $l.loanPeriod("14-D","14-D");
+ $n.setNoticeType(DroolsConstants.REGULAR_LOANS_NOTICE_CONFIG);
+ end

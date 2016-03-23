@@ -1,0 +1,30 @@
+package org.kuali.ole.deliver.checkout
+
+import org.kuali.ole.OLEConstants
+import org.kuali.ole.deliver.bo.OleLoanDocument
+import org.kuali.ole.deliver.bo.OlePatronDocument
+import org.kuali.ole.deliver.util.OleItemRecordForCirc
+import org.kuali.ole.deliver.drools.DroolsConstants
+import org.kuali.ole.deliver.util.DroolsResponse
+import org.kuali.ole.deliver.util.NoticeInfo
+
+rule "Circ Policy STKS/Q for Renewal with existing request"
+agenda-group "renewal validation"
+activation-group "renewal validation"
+when
+
+ $d : DroolsResponse()
+
+$l: OleLoanDocument()
+
+$n: NoticeInfo()
+
+$p: OlePatronDocument()
+
+$i: OleItemRecordForCirc($dr:getOleDeliverRequestBo(), null!= $dr)
+
+then
+ $d.setRuleMatched(true);
+ $d.addErrorMessage("The item cannot be renewed because it has been requested.");
+ $d.addErrorMessageCode("ErrorMessageFromRule");
+ end

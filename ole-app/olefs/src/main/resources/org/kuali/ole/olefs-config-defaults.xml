@@ -33,8 +33,8 @@
   <param name="app.context.name" override="false">ole-local</param>
   <param name="header.text" override="false">${project.name} ::</param>
   <param name="production.environment.code" override="false">prd</param>
-  <param name="ole.locale" override="false">en_US</param>
-  <param name="ole.locale.properties.folder" override="false">us</param>
+  <param name="ole.locale" override="false">en_GB</param>
+  <param name="ole.locale.properties.folder" override="false">gb</param>
 
   <!--Rice Urls -->
   <param name="rice.server.url">${application.url}</param>
@@ -475,8 +475,8 @@
     <param name="ole.fs.docstore.services.tab.url">${ole.docstore.url.base}?tab=services</param>
 
     <!--Config for SIP2-->
-    <param name="sip2.port">21711</param>
-    <param name="sip2.startOnLoad">false</param>
+    <param name="sip2.port">5550</param>
+    <param name="sip2.startOnLoad">true</param>
     <param name="sip2.url">${application.url}</param>
 
     <!-- This parameter is used to set solr max page size for the batch job 'updateStatusIntoAvailableAfterReShelvingJob' -->
@@ -484,7 +484,7 @@
 
   <!--Drools rule file directory-->
   <param name="rules.directory">${project.home}/rules</param>
-  <param name="rules.source.directory">org/kuali/ole/rules/demo</param>
+  <param name="rules.source.directory">org/kuali/ole/rules/soas</param>
 
 
     <!-- Gokb url-->

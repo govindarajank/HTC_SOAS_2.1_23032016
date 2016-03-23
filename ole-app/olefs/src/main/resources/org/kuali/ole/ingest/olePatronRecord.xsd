@@ -59,7 +59,7 @@
         <xs:sequence>
             <xs:element name="title" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="first" type="xs:string" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="middle" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="middle" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="surname" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="suffix" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>

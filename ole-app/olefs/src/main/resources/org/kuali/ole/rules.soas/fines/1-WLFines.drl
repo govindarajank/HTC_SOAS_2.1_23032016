@@ -1,0 +1,40 @@
+package org.kuali.ole.deliver.fines
+
+import org.kuali.ole.OLEConstants
+import org.kuali.ole.deliver.bo.OleLoanDocument
+import org.kuali.ole.deliver.bo.OlePatronDocument
+import org.kuali.ole.deliver.util.OleItemRecordForCirc
+import org.kuali.ole.deliver.util.ItemFineRate
+import org.kuali.ole.deliver.drools.DroolsConstants
+import org.kuali.ole.deliver.bo.PatronBillPayment
+import org.kuali.ole.deliver.util.DroolsResponse
+
+
+
+rule "overdueFineCalc1"
+agenda-group "fine validation"
+activation-group "fine validation"
+when
+
+$b: ItemFineRate()
+$i: OleItemRecordForCirc (getItemType() in ("ONE_WEEK","CARREL","THREE_DAYS","HEAD","MICRO"))
+then
+$b.setFineRate(0.75);
+$b.setMaxFine(5.00);
+$b.setInterval("D");
+end
+
+rule "overdueFineCalc2"
+agenda-group "fine validation"
+activation-group "fine validation"
+when
+
+$b: ItemFineRate()
+$i: OleItemRecordForCirc (getItemType() in ("LONG"))
+then
+$b.setFineRate(0.25);
+$b.setMaxFine(5.00);
+$b.setInterval("D");
+end
+
+

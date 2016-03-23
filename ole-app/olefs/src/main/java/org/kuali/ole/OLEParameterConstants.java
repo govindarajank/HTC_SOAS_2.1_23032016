@@ -40,6 +40,7 @@ public class OLEParameterConstants {
     public static final String NCIP_ACCEPT_ITEM_NOTICE_INDICATOR="NCIP_ACCEPT_ITEM_NOTICE_INDICATOR";
     public static final String DEFAULT_CIRCULATION_DESK = "DEFAULT_CIRCULATION_DESK";
     public static final String LOAN_WHILE_FASTADD = "LOAN_WHILE_FASTADD";
+    public static final String DELIVER_NOTICE_CANCEL_TO_ADDRESS ="DELIVER_NOTICE_CANCEL_TO_ADDRESS";
 
 
 

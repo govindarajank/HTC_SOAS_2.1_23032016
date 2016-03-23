@@ -3771,6 +3771,65 @@ public class OLEConstants {
     public static final String MAIN_REC_REC_TYP = "Main";
     public static final String MESSAGE_UNSAVED_CHANGES = "message.unsaved.changes";
 
+    public static final String VUFIND = "VUFIND";
+
+    public static final class OleForgotPassword {
+        public static final String PWD_CODE_VALIDATE = "error.pwd.mismatch";
+        public static final String CUR_PWD_CODE_VALIDATE="error.current.pwd.mismatch";
+        public static final String USER_NOT_EXSIT ="error.user.not.exist";
+    }
+
+
+    public static final class OleResetPassword {
+        public static final String PWD_CODE_VALIDATE = "error.pwd.mismatch";
+        public static final String CUR_PWD_CODE_VALIDATE="error.current.pwd.mismatch";
+        public static final String USER_NOT_EXSIT ="error.user.not.exist";
+    }
+
+    public static final class EDIBatchProfile {
+        public static final String DEFAULT_EDI_FORMAT="Default_EDI_Format";
+        public static final String LINE_ITEM = "Line Item";
+        public static final String PURAP_DOCUMENT_IDENTIFIER = "Purap Document Identifier";
+        public static final String UNIQUE_REF_NUMBER = "Unique Ref Number";
+        public static final String DATE_TIME_FORMAT_YYMMDDHHMM = "yyMMdd:HHmm";
+        public static final String INTERCHANGE_DETAILS = "Interchange Details";
+        public static final String DEFAULT_SEGMENT = "Default Segment";
+        public static final String ORDER_DATE = "Order Date";
+        public static final String VENDOR_USERNAME = "Vendor Username";
+        public static final String VENDOR_SAN = "Vendor SAN";
+        public static final String CURRENCY_CODE = "Currency Code";
+        public static final String PURCHASE_LINE_ITEM = "Purchase Line Item";
+        public static final String ITEM_PRICE = "Item Price";
+        public static final String ITEM_PUBLISHER = "Item Publisher";
+        public static final String ITEM_PUBLISHER_DATE = "Item Publisher Date";
+        public static final String ITEM_QUANTITY = "Item Quantity";
+        public static final String REFERENCE_QUALIFIER_1 ="Reference Qualifier 1";
+        public static final String REFERENCE_QUALIFIER_2 = "Reference Qualifier 2";
+        public static final String ITEM_LOCATION = "Item Location";
+        public static final String DELIVERY_ADDRESS = "Delivery Address";
+        public static final String OTHER_ADDRESS = "Other Address";
+        public static final String SECTION_IDENTIFICATION = "Section Identification";
+        public static final String CONTROL_QUALIFIER_1 = "Control Qualifier 1";
+        public static final String CONTROL_QUALIFIER_2 = "Control Qualifier 2";
+        public static final String NUMBER_OF_SEGMENTS = "Number of Segments";
+        public static final String INTERCHANGE_CONTROL_COUNT = "Interchange Control count";
+        public static final String NUM_0001 = "0001";
+        public static final String SYMBOL_ASTERISK = "*";
+        public static final String DOC_LOOKUP_SERVICE = "docLookupService";
+        public static final String INST_SAN_NUM = "INST_SAN_NUM";
+
+        public static final String BATCH_PATRON_LIST_EXPORT_DIR_PATH = "batch.patron.list.export";
+    }
+    public static final Integer DEFAULT_DELIVER_ITEM_SEARCH_RESULTS_LIMIT = 100;
+    public static final String LOST_NOTICE_CONTENT="LOST_NOTICE_CONTENT";
+
+    public static String getParameter(String applId,String namespace,String component,String paramName){
+        ParameterKey parameterKey = ParameterKey.create(applId, namespace, component, paramName);
+        Parameter parameter = CoreServiceApiServiceLocator.getParameterRepositoryService().getParameter(parameterKey);
+        return parameter!=null?parameter.getValue():null;
+    }
+
+
 
     public static final String MAX_NO_OF_THREAD_FOR_ORDER_IMPORT = "MAX_NO_OF_THREAD_FOR_ORDER_IMPORT";
     public static final String CHUNK_SIZE_FOR_ORDER_IMPORT = "CHUNK_SIZE_FOR_ORDER_IMPORT";
@@ -3799,4 +3858,6 @@ public class OLEConstants {
     public static final String PAY_APPL_CRDT = "Applied Credit";
     public static final String RECALL_DELIVERY_REQUEST="Recall/Delivery Request";
     public static final String RECALL_HOLD_REQUEST="Recall/Hold Request";
+
+    public static final String DATE_FORMAT_FOR_TIME_SEC=" HH:mm:ss";
 }

@@ -1,0 +1,28 @@
+package org.kuali.ole.deliver.checkout
+
+import org.kuali.ole.OLEConstants
+import org.kuali.ole.deliver.bo.OleLoanDocument
+import org.kuali.ole.deliver.bo.OlePatronDocument
+import org.kuali.ole.deliver.util.OleItemRecordForCirc
+import java.util.Date
+import java.text.SimpleDateFormat
+import org.kuali.ole.deliver.drools.DroolsConstants
+import org.kuali.ole.deliver.util.DroolsResponse
+import org.kuali.ole.deliver.util.NoticeInfo
+
+rule "Renewal_for_Lost"
+agenda-group "renewal validation"
+activation-group "renewal validation"
+when
+
+$l: OleLoanDocument(getItemStatus() in ("LOST"))
+$n: NoticeInfo()
+$d : DroolsResponse()
+$i: OleItemRecordForCirc ()
+
+then
+ $d.setRuleMatched(true);
+ $d.addErrorMessage("Item is Lost.Hence It cannot be renewed.");
+$d.addErrorMessageCode("ErrorMessageFromRule");
+ end
+

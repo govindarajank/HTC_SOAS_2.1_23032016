@@ -753,6 +753,7 @@ public class OLEInvoiceController extends TransactionalDocumentControllerBase {
      * @return ModelAndView
      */
     @RequestMapping(params = "methodToCall=route")
+
     public ModelAndView route(@ModelAttribute("KualiForm") DocumentFormBase form, BindingResult result,
                               HttpServletRequest request, HttpServletResponse response)  {
         OLEInvoiceForm oleInvoiceForm = (OLEInvoiceForm) form;

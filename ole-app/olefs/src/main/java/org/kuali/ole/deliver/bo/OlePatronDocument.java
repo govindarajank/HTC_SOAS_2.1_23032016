@@ -1624,7 +1624,7 @@ public class OlePatronDocument extends PersistableBusinessObjectBase implements 
     }
 
     public int getRequestedItemRecordsCount() {
-        return requestedItemRecordsCount;
+        return getOleDeliverRequestBos().size();
     }
 
     public void setRequestedItemRecordsCount(int requestedItemRecordsCount) {
@@ -2030,5 +2030,25 @@ public class OlePatronDocument extends PersistableBusinessObjectBase implements 
         List managedLists = super.buildListOfDeletionAwareLists();
         managedLists.add(getNotes());
         return managedLists;
+    }
+    public int getTotalOverdueLoanedItemsCount(){
+        int overdueCount = 0;
+        for(OleLoanDocument oleLoanDocument : oleLoanDocuments){
+            //checking overdue
+            Integer numberOfOverdueNoticesSent = new Integer(oleLoanDocument.getNumberOfOverdueNoticesSent()!=null?oleLoanDocument.getNumberOfOverdueNoticesSent():"0");
+            if(numberOfOverdueNoticesSent>0){
+                overdueCount++;
+            }
+        }
+        return overdueCount;
+    }
+
+    public boolean isRequestedPatron(String barcode){
+        for(OleDeliverRequestBo oleDeliverRequestBo : oleDeliverRequestBos){
+            if(oleDeliverRequestBo.getItemId().equalsIgnoreCase(barcode)){
+                return true;
+            }
+        }
+        return false;
     }
 }

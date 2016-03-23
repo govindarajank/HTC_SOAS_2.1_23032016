@@ -41,6 +41,16 @@ public class CheckinForm extends OLEForm {
     private boolean printOnHoldSlipQueue;
     private String printFormat;
 
+    private boolean checkout = false;
+
+    public boolean isCheckout() {
+        return checkout;
+    }
+
+    public void setCheckout(boolean checkout) {
+        this.checkout = checkout;
+    }
+
     public String getSelectedCirculationDesk() {
         return selectedCirculationDesk;
     }

@@ -50,7 +50,7 @@ public class OleNGRestLoginFilter implements Filter {
         LOG.info("Chaining Rest Login Filter");
         userName = ((HttpServletRequest) servletRequest).getHeader("userName");
         if(StringUtils.isBlank(userName)) {
-            userName = "ole-quickstart";
+            userName = "sip2";
         }
         if (servletRequest instanceof HttpServletRequest) {
             HttpServletRequest hsreq = (HttpServletRequest) servletRequest;

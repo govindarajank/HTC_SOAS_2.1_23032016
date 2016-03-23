@@ -214,10 +214,11 @@ public class OlePatronConverterService {
     public List<OlePatronDocument> createOlePatronDocument(List<OlePatron> createPatronList, List<OlePatron> failedPatronList) {
         LOG.debug(" Inside createOlePatronDocument for patron ingest");
         List<OlePatronDocument> newPatrons = new ArrayList<OlePatronDocument>();
-        OlePatronDocument olePatronDocument = new OlePatronDocument();
+        OlePatronDocument olePatronDocument /*= new OlePatronDocument()*/;
 
         int createPatron = createPatronList.size();
         for (int i = 0; i < createPatronList.size(); i++) {
+            olePatronDocument = new OlePatronDocument();
             OlePatron olePatron = new OlePatron();
             olePatron = createPatronList.get(i);
             try{
@@ -606,96 +607,100 @@ public class OlePatronConverterService {
         EntityPhoneBo entityPhoneBo;
         OlePhoneBo olePhoneBo;
         List<OlePatronTelePhoneNumber> olePatronTelePhoneNumbers = olePatron.getTelephoneNumbers();
-        if(CollectionUtils.isNotEmpty(olePatronTelePhoneNumbers)){
-            for (Iterator<OlePatronTelePhoneNumber> iterator = olePatronTelePhoneNumbers.iterator(); iterator.hasNext(); ) {
-                OlePatronTelePhoneNumber phoneNumbers = iterator.next();
-                oleEntityPhoneBo = new OleEntityPhoneBo();
-                olePhoneBo = new OlePhoneBo();
-                entityPhoneBo = new EntityPhoneBo();
-                entityPhoneBo.setPhoneNumber(phoneNumbers.getTelephoneNumber());
-                Map criteria = new HashMap<String, String>();
-                Map criteriaCountry = new HashMap<String, String>();
-                Map criteriaPhoneSource = new HashMap<String, String>();
-                if (!phoneNumbers.getTelephoneNumberType().equals("")) {
-                    criteria.put(OLEConstants.CODE, phoneNumbers.getTelephoneNumberType());
-                    List<EntityPhoneTypeBo> entityType = (List<EntityPhoneTypeBo>) getBusinessObjectService().findMatching(EntityPhoneTypeBo.class, criteria);
-                    if (entityType.size() > 0) {
-                        entityPhoneBo.setPhoneType(entityType.get(0));
-                        entityPhoneBo.setPhoneTypeCode(entityType.get(0).getCode());
-                        if (phoneNumbers.getExtension() != null && !phoneNumbers.getExtension().equals("")) {
-                            entityPhoneBo.setExtensionNumber(phoneNumbers.getExtension());
-                        }
-                        if (phoneNumbers.getCountry() != null && !phoneNumbers.getCountry().equals("")) {
-                            criteriaCountry.put(OLEConstants.CODE, phoneNumbers.getCountry());
-                            List<CountryBo> countryList = (List<CountryBo>) getBusinessObjectService().findMatching(CountryBo.class, criteriaCountry);
-                            if (countryList.size() > 0) {
-                                entityPhoneBo.setCountryCode(phoneNumbers.getCountry());
+        try{
+            if(CollectionUtils.isNotEmpty(olePatronTelePhoneNumbers)){
+                for (Iterator<OlePatronTelePhoneNumber> iterator = olePatronTelePhoneNumbers.iterator(); iterator.hasNext(); ) {
+                    OlePatronTelePhoneNumber phoneNumbers = iterator.next();
+                    oleEntityPhoneBo = new OleEntityPhoneBo();
+                    olePhoneBo = new OlePhoneBo();
+                    entityPhoneBo = new EntityPhoneBo();
+                    entityPhoneBo.setPhoneNumber(phoneNumbers.getTelephoneNumber());
+                    Map criteria = new HashMap<String, String>();
+                    Map criteriaCountry = new HashMap<String, String>();
+                    Map criteriaPhoneSource = new HashMap<String, String>();
+                    if (!phoneNumbers.getTelephoneNumberType().equals("")) {
+                        criteria.put(OLEConstants.CODE, phoneNumbers.getTelephoneNumberType());
+                        List<EntityPhoneTypeBo> entityType = (List<EntityPhoneTypeBo>) getBusinessObjectService().findMatching(EntityPhoneTypeBo.class, criteria);
+                        if (entityType.size() > 0) {
+                            entityPhoneBo.setPhoneType(entityType.get(0));
+                            entityPhoneBo.setPhoneTypeCode(entityType.get(0).getCode());
+                            if (phoneNumbers.getExtension() != null && !phoneNumbers.getExtension().equals("")) {
+                                entityPhoneBo.setExtensionNumber(phoneNumbers.getExtension());
+                            }
+                            if (phoneNumbers.getCountry() != null && !phoneNumbers.getCountry().equals("")) {
+                                criteriaCountry.put(OLEConstants.CODE, phoneNumbers.getCountry());
+                                List<CountryBo> countryList = (List<CountryBo>) getBusinessObjectService().findMatching(CountryBo.class, criteriaCountry);
+                                if (countryList.size() > 0) {
+                                    entityPhoneBo.setCountryCode(phoneNumbers.getCountry());
+                                } else {
+                                    olePatron.setErrorMessage(OLEPatronConstant.COUNTRY_PHONE_ERROR);
+                                    return false;
+                                }
+                            }
+                            if (StringUtils.isNotBlank(phoneNumbers.getPhoneSource())) {
+                                criteriaPhoneSource.put(OLEConstants.ADDRESS_SOURCE_CD, phoneNumbers.getPhoneSource());
+                                List<OleAddressSourceBo> oleAddressSourceBoList = (List<OleAddressSourceBo>) getBusinessObjectService().findMatching(OleAddressSourceBo.class, criteriaPhoneSource);
+                                if (oleAddressSourceBoList.size() > 0) {
+                                    olePhoneBo.setPhoneSource(oleAddressSourceBoList.get(0).getOleAddressSourceId());
+                                }
+                            }
+                            entityPhoneBo.setActive(phoneNumbers.isActive());
+                            entityPhoneBo.setDefaultValue(phoneNumbers.isDefaults());
+                            if (createOrUpdate.equals(OLEConstants.UPDATE)) {
+                                entityPhoneBo.setEntityId(olePatronDocument.getEntity().getId());
+                                entityPhoneBo.setEntityTypeCode(KimConstants.EntityTypes.PERSON);
+                            }
+                            EntityPhoneBo entity = getBusinessObjectService().save(entityPhoneBo);
+                            olePhoneBo.setOlePhoneId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(OLEConstants.OlePatron.OLE_DLVR_PHONE_S).toString());
+                            olePhoneBo.setId(entity.getId());
+                            if (StringUtils.isNotBlank(phoneNumbers.getPhoneSource())) {
+                                String phoneSource = phoneNumbers.getPhoneSource();
+                                String phoneId;
+                                HashMap<String, String> map = new HashMap<String, String>();
+                                map.put(OLEConstants.OlePatron.OLE_ADD_SRC_CD, phoneSource);
+                                List<OleAddressSourceBo> addressSourceList = (List<OleAddressSourceBo>) getBusinessObjectService().findMatching(OleAddressSourceBo.class, map);
+                                if (addressSourceList.size() > 0) {
+                                    phoneId = addressSourceList.get(0).getOleAddressSourceId();
+                                    olePhoneBo.setPhoneSource(phoneId);
+                                    olePhoneBo.setOlePhoneSourceBo(addressSourceList.get(0));
+                                } else {
+                                    olePatron.setErrorMessage(OLEPatronConstant.PHONE_SOURCE_ERROR);
+                                    return false;
+                                }
+                            }
+                            OlePhoneBo olePhoneBoSave = getBusinessObjectService().save(olePhoneBo);
+                            olePhone.add(olePhoneBo);
+                            olePhoneBo.setEntityPhoneBo(entityPhoneBo);
+                            oleEntityPhoneBo.setEntityPhoneBo(entityPhoneBo);
+                            phones.add(entityPhoneBo);
+                            oleEntityPhoneBo.setOlePhoneBo(olePhoneBo);
+                            phoneBo.add(oleEntityPhoneBo);
+                            boolean defaultValue = checkPhoneMultipleDefault(phones);
+                            if (defaultValue && StringUtils.isNotBlank(olePhoneBo.getPhoneSource())) {
+                                olePatronDocument.setPhones(phones);
+                                olePatronDocument.setOlePhones(olePhone);
+                                olePatronDocument.setOleEntityPhoneBo(phoneBo);
+                                phoneFlag = true;
                             } else {
-                                olePatron.setErrorMessage(OLEPatronConstant.COUNTRY_PHONE_ERROR);
-                                return false;
+                                if(StringUtils.isBlank(olePhoneBo.getPhoneSource())) {
+                                    olePatron.setErrorMessage(OLEPatronConstant.PATRON_PHONE_SOURCE_REQUIRED);
+                                } else {
+                                    olePatron.setErrorMessage(OLEPatronConstant.PHONE_DEFAULT_VALUE_ERROR);
+                                }
+                                phoneFlag = false;
                             }
-                        }
-                        if (StringUtils.isNotBlank(phoneNumbers.getPhoneSource())) {
-                            criteriaPhoneSource.put(OLEConstants.ADDRESS_SOURCE_CD, phoneNumbers.getPhoneSource());
-                            List<OleAddressSourceBo> oleAddressSourceBoList = (List<OleAddressSourceBo>) getBusinessObjectService().findMatching(OleAddressSourceBo.class, criteriaPhoneSource);
-                            if (oleAddressSourceBoList.size() > 0) {
-                                olePhoneBo.setPhoneSource(oleAddressSourceBoList.get(0).getOleAddressSourceId());
-                            }
-                        }
-                        entityPhoneBo.setActive(phoneNumbers.isActive());
-                        entityPhoneBo.setDefaultValue(phoneNumbers.isDefaults());
-                        if (createOrUpdate.equals(OLEConstants.UPDATE)) {
-                            entityPhoneBo.setEntityId(olePatronDocument.getEntity().getId());
-                            entityPhoneBo.setEntityTypeCode(KimConstants.EntityTypes.PERSON);
-                        }
-                        EntityPhoneBo entity = getBusinessObjectService().save(entityPhoneBo);
-                        olePhoneBo.setOlePhoneId(KRADServiceLocator.getSequenceAccessorService().getNextAvailableSequenceNumber(OLEConstants.OlePatron.OLE_DLVR_PHONE_S).toString());
-                        olePhoneBo.setId(entity.getId());
-                        if (StringUtils.isNotBlank(phoneNumbers.getPhoneSource())) {
-                            String phoneSource = phoneNumbers.getPhoneSource();
-                            String phoneId;
-                            HashMap<String, String> map = new HashMap<String, String>();
-                            map.put(OLEConstants.OlePatron.OLE_ADD_SRC_CD, phoneSource);
-                            List<OleAddressSourceBo> addressSourceList = (List<OleAddressSourceBo>) getBusinessObjectService().findMatching(OleAddressSourceBo.class, map);
-                            if (addressSourceList.size() > 0) {
-                                phoneId = addressSourceList.get(0).getOleAddressSourceId();
-                                olePhoneBo.setPhoneSource(phoneId);
-                                olePhoneBo.setOlePhoneSourceBo(addressSourceList.get(0));
-                            } else {
-                                olePatron.setErrorMessage(OLEPatronConstant.PHONE_SOURCE_ERROR);
-                                return false;
-                            }
-                        }
-                        OlePhoneBo olePhoneBoSave = getBusinessObjectService().save(olePhoneBo);
-                        olePhone.add(olePhoneBo);
-                        olePhoneBo.setEntityPhoneBo(entityPhoneBo);
-                        oleEntityPhoneBo.setEntityPhoneBo(entityPhoneBo);
-                        phones.add(entityPhoneBo);
-                        oleEntityPhoneBo.setOlePhoneBo(olePhoneBo);
-                        phoneBo.add(oleEntityPhoneBo);
-                        boolean defaultValue = checkPhoneMultipleDefault(phones);
-                        if (defaultValue && StringUtils.isNotBlank(olePhoneBo.getPhoneSource())) {
-                            olePatronDocument.setPhones(phones);
-                            olePatronDocument.setOlePhones(olePhone);
-                            olePatronDocument.setOleEntityPhoneBo(phoneBo);
-                            phoneFlag = true;
                         } else {
-                            if(StringUtils.isBlank(olePhoneBo.getPhoneSource())) {
-                                olePatron.setErrorMessage(OLEPatronConstant.PATRON_PHONE_SOURCE_REQUIRED);
-                            } else {
-                                olePatron.setErrorMessage(OLEPatronConstant.PHONE_DEFAULT_VALUE_ERROR);
-                            }
-                            phoneFlag = false;
+                            olePatron.setErrorMessage(OLEPatronConstant.PHONETYPE_ERROR);
                         }
                     } else {
-                        olePatron.setErrorMessage(OLEPatronConstant.PHONETYPE_ERROR);
+                        olePatron.setErrorMessage(OLEPatronConstant.PHONETYPE_BLANK_ERROR);
                     }
-                } else {
-                    olePatron.setErrorMessage(OLEPatronConstant.PHONETYPE_BLANK_ERROR);
                 }
+            }else{
+                phoneFlag = true;
             }
-        }else{
-            phoneFlag = true;
+        }catch(Exception e){
+            LOG.error(e,e);
         }
         return phoneFlag;
     }
@@ -810,6 +815,7 @@ public class OlePatronConverterService {
         EntityAddressBo entityAddressBo;
         OleAddressBo oleAddressBo;
         List<OlePatronPostalAddress> olePatronPostalAddresses = olePatron.getPostalAddresses();
+       try{
         if (CollectionUtils.isNotEmpty(olePatronPostalAddresses)){
             for (Iterator<OlePatronPostalAddress> iterator = olePatronPostalAddresses.iterator(); iterator.hasNext(); ) {
                 OlePatronPostalAddress postalAddresses = iterator.next();
@@ -940,6 +946,9 @@ public class OlePatronConverterService {
         }else{
             addressFlag = true;
         }
+       }catch(Exception e){
+           LOG.error(e,e);
+       }
         return addressFlag;
     }
 
@@ -960,7 +969,9 @@ public class OlePatronConverterService {
             names.setNameCode(entityType.get(0).getCode());
             if (StringUtils.isNotBlank(olePatron.getName().getFirst())&& StringUtils.isNotBlank(olePatron.getName().getSurname())) {
                 names.setFirstName(olePatron.getName().getFirst());
-                names.setMiddleName(olePatron.getName().getMiddle());
+                if (StringUtils.isNotBlank(olePatron.getName().getMiddle())) {
+                    names.setMiddleName(olePatron.getName().getMiddle());
+                }
                 names.setLastName(olePatron.getName().getSurname());
                 if (olePatron.getName().getTitle() != null && !olePatron.getName().getTitle().equals("")) {
                     names.setNamePrefix(olePatron.getName().getTitle());

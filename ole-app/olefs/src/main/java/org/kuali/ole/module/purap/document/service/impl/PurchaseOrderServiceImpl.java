@@ -1018,6 +1018,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         String status = routeHeader.getDocRouteStatus();
         if (status.equals(KewApiConstants.ROUTE_HEADER_PROCESSED_CD)) {
             List<PurApItem> items = poa.getItems();
+            fileNameList = new ArrayList();
             for (PurApItem item : items) {
                 initiateTransmission(poa, item);
             }
@@ -2478,26 +2479,27 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                             fileLocationDir.mkdir();
                         }
                         String file = fileLocation.trim() + ediFileName.trim();
-
-                        if (vendorTransmissionFormatDetail.getVendorTransmissionFormat() != null &&
-                                vendorTransmissionFormatDetail.getVendorTransmissionFormat().getVendorTransmissionFormat() != null &&
-                                vendorTransmissionFormatDetail.getVendorTransmissionFormat().getVendorTransmissionFormat().equalsIgnoreCase("EDI")) {
-                            if (LOG.isDebugEnabled()) {
-                                LOG.debug("EDI File======================>" + file);
+                       if(vendorTransmissionFormatDetail.getVendorTransmissionFormat() != null && vendorTransmissionFormatDetail.isActive()) {
+                            if (vendorTransmissionFormatDetail.getVendorTransmissionFormat() != null &&
+                                    vendorTransmissionFormatDetail.getVendorTransmissionFormat().getVendorTransmissionFormat() != null &&
+                                    vendorTransmissionFormatDetail.getVendorTransmissionFormat().getVendorTransmissionFormat().equalsIgnoreCase("EDI")) {
+                                if (LOG.isDebugEnabled()) {
+                                    LOG.debug("EDI File======================>" + file);
+                                }
+                                isSuccess = savePurchaseOrderEdi(po, file, item);
                             }
-                            isSuccess = savePurchaseOrderEdi(po, file, item);
-                        }
-                        if (vendorTransmissionFormatDetail.getVendorTransmissionFormat() != null &&
-                                vendorTransmissionFormatDetail.getVendorTransmissionFormat().getVendorTransmissionFormat() != null &&
-                                vendorTransmissionFormatDetail.getVendorTransmissionFormat().getVendorTransmissionFormat().equalsIgnoreCase(OLEConstants.OLE_VENDOR_PDF_OPTION)) {
-                            if (!(po.getDocumentNumber().equals(documentNumber))) {
-                                savePurchaseOrderPdf(po, pdfFileName, item);
-                                processFTPTransmission(vendorTransmissionFormatDetail, file, pdfFileName.trim());
-                                documentNumber = po.getDocumentNumber();
+                            if (vendorTransmissionFormatDetail.getVendorTransmissionFormat() != null &&
+                                    vendorTransmissionFormatDetail.getVendorTransmissionFormat().getVendorTransmissionFormat() != null &&
+                                    vendorTransmissionFormatDetail.getVendorTransmissionFormat().getVendorTransmissionFormat().equalsIgnoreCase(OLEConstants.OLE_VENDOR_PDF_OPTION)) {
+                                if (!(po.getDocumentNumber().equals(documentNumber))) {
+                                    savePurchaseOrderPdf(po, pdfFileName, item);
+                                    processFTPTransmission(vendorTransmissionFormatDetail, file, pdfFileName.trim());
+                                    documentNumber = po.getDocumentNumber();
+                                }
                             }
-                        }
-                        if (isSuccess && vendorTransmissionFormatDetail.getVendorTransmissionTypes().getVendorTransmissionType() != null) {
-                            processFTPTransmission(vendorTransmissionFormatDetail, file, ediFileName.trim());
+                            if (isSuccess && vendorTransmissionFormatDetail.getVendorTransmissionTypes().getVendorTransmissionType() != null) {
+                                processFTPTransmission(vendorTransmissionFormatDetail, file, ediFileName.trim());
+                            }
                         }
                     }
                 }

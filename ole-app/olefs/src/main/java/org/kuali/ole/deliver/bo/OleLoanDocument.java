@@ -1,5 +1,6 @@
 package org.kuali.ole.deliver.bo;
 
+import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.kuali.ole.OLEConstants;
 import org.kuali.ole.OLEPropertyConstants;
@@ -2041,7 +2042,7 @@ public class OleLoanDocument extends PersistableBusinessObjectBase implements Co
         Timestamp pastLoanDueDate = getLoanDueDate();
         Date newLoanDueDate = getPastDueDate();
         if (pastLoanDueDate != null) {
-            return (new Date(pastLoanDueDate.getTime()).compareTo(newLoanDueDate) == 0 ? true : false);
+            return (DateUtils.isSameDay(newLoanDueDate,new Date(pastLoanDueDate.getTime())));
         } else {
             throw new Exception("No Fixed Due Date found for the renewal policy");
         }

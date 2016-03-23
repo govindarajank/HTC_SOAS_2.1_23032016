@@ -1,0 +1,72 @@
+package org.kuali.ole.deliver.checkin
+
+import org.kuali.ole.deliver.drools.DroolsConstants
+import org.kuali.ole.deliver.bo.OleLoanDocument
+import org.kuali.ole.deliver.bo.OleCirculationDesk
+import org.kuali.ole.deliver.util.OleItemRecordForCirc
+import org.kuali.ole.deliver.util.DroolsResponse
+
+rule "Lost check based on No Rule"
+agenda-group "checkin-validation-for-loan"
+activation-group "checkin-validation-for-loan"
+
+when
+$c: OleCirculationDesk()
+$i: OleItemRecordForCirc($r:getOleDeliverRequestBo(), null== $r,
+$s: getItemStatusRecord(),null != $s, $s.getCode() not in ("LOANED","LOST","ONHOLD"))
+$d : DroolsResponse()
+
+then
+$d.setRuleMatched(true);
+$d.addErrorMessage("Item is not currently Loaned");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+ end
+
+rule "Loaned check based on No Rule"
+agenda-group "checkin-validation-for-no-loan"
+activation-group "checkin-validation-for-no-loan"
+
+when
+$c: OleCirculationDesk()
+$i: OleItemRecordForCirc($r:getOleDeliverRequestBo(), null!= $r,
+$s: getItemStatusRecord(),null != $s, $s.getCode().equals("ONHOLD"))
+$d : DroolsResponse()
+
+then
+$d.setRuleMatched(true);
+$d.addErrorMessage("Item has an existing request and it is in ONHOLD status.");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+ end
+
+
+rule "OnhOld check based on No Rule"
+agenda-group "checkin-validation-for-no-loan"
+activation-group "checkin-validation-for-no-loan"
+
+when
+$c: OleCirculationDesk()
+$i: OleItemRecordForCirc($r:getOleDeliverRequestBo(), null== $r,
+$s: getItemStatusRecord(),null != $s, $s.getCode().equals("ONHOLD"))
+$d : DroolsResponse()
+
+then
+$d.setRuleMatched(true);
+$i.setItemStatusToBeUpdatedTo("RECENTLY-RETURNED");
+ end
+
+rule "Loaned check based on No Rule for No Loan Document"
+agenda-group "checkin-validation-for-no-loan"
+activation-group "checkin-validation-for-no-loan"
+
+when
+$c: OleCirculationDesk()
+$i: OleItemRecordForCirc($r:getOleDeliverRequestBo(), null== $r,
+$s: getItemStatusRecord(),null != $s, $s.getCode() not in ("LOANED"))
+$d : DroolsResponse()
+
+then
+$d.setRuleMatched(true);
+$d.addErrorMessage("Item is not currently Loaned");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+ end
+

@@ -1,0 +1,75 @@
+package org.kuali.ole.deliver.checkout
+
+import org.kuali.ole.deliver.bo.OlePatronDocument
+import org.kuali.ole.deliver.util.OleItemRecordForCirc
+import org.kuali.ole.deliver.util.ErrorMessage
+import org.kuali.ole.OLEConstants
+import org.kuali.ole.deliver.bo.OleLoanDocument
+import org.kuali.ole.deliver.drools.DroolsConstants
+import org.kuali.ole.deliver.util.DroolsResponse
+
+
+rule "1WLExtCheckOut1"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d : DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("TPEXT","UGEXT"),getTotalLoanedItemsCount() < 25)
+$i: OleItemRecordForCirc (getItemType() in ("ONE_WEEK"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+
+then
+$l.setCirculationPolicyId("1WLExtCheckOut1");
+$l.loanPeriod("14-D","7-D");
+ end
+
+rule "1WLExtCheckOut2"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d : DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("TPEXT","UGEXT"),getTotalLoanedItemsCount() >= 25)
+$i: OleItemRecordForCirc (getItemType() in ("ONE_WEEK"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+
+then
+$l.setCirculationPolicyId("1WLExtCheckOut2");
+$d.addErrorMessage("Patron has more than 25 items checked out");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+$l.loanPeriod("14-D","7-D");
+ end
+
+rule "1WLExtCheckOut3"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d : DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("PGREXT"),getTotalLoanedItemsCount() < 55)
+$i: OleItemRecordForCirc (getItemType() in ("ONE_WEEK"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+
+then
+$l.setCirculationPolicyId("1WLExtCheckOut3");
+$l.loanPeriod("14-D","7-D");
+ end
+
+rule "1WLExtCheckOut4"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d : DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("PGREXT"),getTotalLoanedItemsCount() >= 55)
+$i: OleItemRecordForCirc (getItemType() in ("ONE_WEEK"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+
+then
+$l.setCirculationPolicyId("1WLExtCheckOut4");
+$d.addErrorMessage("Patron has more than 55 items checked out");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+$l.loanPeriod("14-D","7-D");
+ end
+

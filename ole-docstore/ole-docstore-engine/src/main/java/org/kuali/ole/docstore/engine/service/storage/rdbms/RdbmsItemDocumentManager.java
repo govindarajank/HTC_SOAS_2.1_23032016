@@ -451,7 +451,7 @@ public class RdbmsItemDocumentManager extends RdbmsHoldingsDocumentManager imple
             Date dueDateTime = null;
             DateFormat df = new SimpleDateFormat("MM/dd/yyyy hh:mm:ssa");
             DateFormat df1 = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
-            DateFormat displayLoanTime = new SimpleDateFormat("MM/dd/yyyy hh:mma");
+            DateFormat displayLoanTime = new SimpleDateFormat(CoreApiServiceLocator.getKualiConfigurationService().getPropertyValueAsString("info.DateFormat")+" hh:mma");
             try {
                 dueDateTime = format2.parse(itemRecord.getDueDateTime().toString());
                 item.setDueDateTime(format1.format(dueDateTime).toString());

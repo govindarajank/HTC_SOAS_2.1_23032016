@@ -113,6 +113,9 @@ public class CheckinItemController extends OLEUifControllerBase {
 
         if (null != droolsResponse && StringUtils.isBlank(droolsResponse.getErrorMessage().getErrorMessage())) {
             postCheckinProcess(checkinForm, result, request, response);
+        } else if(droolsResponse.getErrorMessage().getErrorMessage().equalsIgnoreCase("Item is marked as lost and/or replacement fee has been billed.Item cannot be resolved until this situation is resolved.")&& null!= droolsResponse){
+            checkinForm.setErrorMessage(droolsResponse.getErrorMessage());
+            showDialog("checkinRequestExistDialog", checkinForm, request, response);
         } else if (droolsResponse.retriveErrorCode().equalsIgnoreCase(DroolsConstants.ITEM_DAMAGED)) {
             handleDamagedItemProcess(request, response, checkinForm, droolsResponse);
         } else if (droolsResponse.retriveErrorCode().equalsIgnoreCase(DroolsConstants.ITEM_CLAIMS_RETURNED)) {

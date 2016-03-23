@@ -1,0 +1,102 @@
+package org.kuali.ole.deliver.checkout
+
+import org.kuali.ole.deliver.bo.OlePatronDocument
+import org.kuali.ole.deliver.util.OleItemRecordForCirc
+import org.kuali.ole.deliver.util.DroolsResponse
+import org.kuali.ole.deliver.util.ErrorMessage
+import org.kuali.ole.OLEConstants
+import org.kuali.ole.deliver.bo.OleLoanDocument
+import org.kuali.ole.deliver.drools.DroolsConstants
+
+
+rule "2WLCheckOut1"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d: DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("INTUG"),getTotalLoanedItemsCount() < 7)
+$i: OleItemRecordForCirc (getItemType() in ("LONG"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+
+then
+$l.setCirculationPolicyId("2WLCheckOut1");
+$l.loanPeriod("14-D","7-D");
+ end
+
+rule "2WLCheckOut2"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d: DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("INTUG"),getTotalLoanedItemsCount() >= 7)
+$i: OleItemRecordForCirc (getItemType() in ("LONG"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+
+then
+$l.setCirculationPolicyId("2WLCheckOut2");
+$d.addErrorMessage("Patron has more than 7 items checked out");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+$l.loanPeriod("14-D","7-D");
+ end
+
+rule "2WLCheckOut3"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d: DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("INTTP"),getTotalLoanedItemsCount() < 10)
+$i: OleItemRecordForCirc (getItemType() in ("LONG"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+then
+$l.setCirculationPolicyId("2WLCheckOut3");
+$l.loanPeriod("14-D","7-D");
+ end
+
+rule "2WLCheckOut4"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d: DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("INTTP"),getTotalLoanedItemsCount() >= 10)
+$i: OleItemRecordForCirc (getItemType() in ("LONG"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+then
+$l.setCirculationPolicyId("2WLCheckOut4");
+$d.addErrorMessage("Patron has more than 10 items checked out");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+$l.loanPeriod("14-D","7-D");
+ end
+
+rule "2WLCheckOut5"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d: DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("TP","UG","CERDIP"),getTotalLoanedItemsCount() < 20)
+$i: OleItemRecordForCirc (getItemType() in ("LONG"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+then
+$l.setCirculationPolicyId("2WLCheckOut5");
+$l.loanPeriod("14-D","7-D");
+ end
+
+rule "2WLCheckOut6"
+agenda-group "checkout validation"
+activation-group "checkout validation"
+when
+$l: OleLoanDocument()
+$d: DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("TP","UG","CERDIP"),getTotalLoanedItemsCount() >= 20)
+$i: OleItemRecordForCirc (getItemType() in ("LONG"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"))
+then
+$l.setCirculationPolicyId("2WLCheckOut6");
+$d.addErrorMessage("Patron has more than 20 items checked out");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+$l.loanPeriod("14-D","7-D");
+ end

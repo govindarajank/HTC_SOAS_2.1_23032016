@@ -15,6 +15,7 @@ import org.kuali.ole.docstore.common.search.*;
 import org.kuali.ole.sys.context.SpringContext;
 import org.kuali.rice.core.api.config.property.ConfigContext;
 import org.kuali.rice.core.api.resourceloader.GlobalResourceLoader;
+import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.uif.UifConstants;
 import org.kuali.rice.krad.uif.UifParameters;
@@ -22,6 +23,7 @@ import org.kuali.rice.krad.util.GlobalVariables;
 import org.kuali.rice.krad.util.KRADConstants;
 import org.kuali.rice.krad.web.controller.UifControllerBase;
 import org.kuali.rice.krad.web.form.UifFormBase;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,6 +32,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -76,7 +80,7 @@ public class OLEDeliverItemSearchController extends UifControllerBase {
             String title = oleDeliverItemSearchForm.getTitle();
             String author = oleDeliverItemSearchForm.getAuthor();
             String publisher = oleDeliverItemSearchForm.getPublisher();
-            String itemBarcode = oleDeliverItemSearchForm.getItemBarCode();
+            String itemBarcode = oleDeliverItemSearchForm.getItemBarCode().toUpperCase();
             String callNumber = oleDeliverItemSearchForm.getItemCallNumber();
             String itemUUID = oleDeliverItemSearchForm.getItemUUID();
             String itemType = oleDeliverItemSearchForm.getItemType();
@@ -94,7 +98,7 @@ public class OLEDeliverItemSearchController extends UifControllerBase {
                     searchParams.getSearchConditions().add(searchParams.buildSearchCondition(OLEConstants.AND_SEARCH_SCOPE, searchParams.buildSearchField(DocType.ITEM.getCode(), Bib.PUBLISHER, publisher), OLEConstants.AND_SEARCH_SCOPE));
                 }
                 if (StringUtils.isNotBlank(itemBarcode)) {
-                    searchParams.getSearchConditions().add(searchParams.buildSearchCondition(OLEConstants.AND_SEARCH_SCOPE, searchParams.buildSearchField(DocType.ITEM.getCode(), Item.ITEM_BARCODE, itemBarcode), OLEConstants.AND_SEARCH_SCOPE));
+                    searchParams.getSearchConditions().add(searchParams.buildSearchCondition(OLEConstants.PHRASE, searchParams.buildSearchField(DocType.ITEM.getCode(), Item.ITEM_BARCODE, itemBarcode), OLEConstants.AND_SEARCH_SCOPE));
                 }
                 if (StringUtils.isNotBlank(callNumber)) {
                     searchParams.getSearchConditions().add(searchParams.buildSearchCondition(OLEConstants.AND_SEARCH_SCOPE, searchParams.buildSearchField(DocType.ITEM.getCode(), Item.CALL_NUMBER, callNumber),OLEConstants.OR_SEARCH_SCOPE));
@@ -116,6 +120,8 @@ public class OLEDeliverItemSearchController extends UifControllerBase {
                 buildSortCondition(oleDeliverItemSearchForm);
                 getSearchResultFields(searchParams);
                 SearchResponse searchResponse = getDocstoreClientLocator().getDocstoreClient().search(searchParams);
+                convertDateFormat(searchResponse);
+
                 oleDeliverItemSearchForm.setTotalRecordCount(searchResponse.getTotalRecordCount());
                 getSearchResults(searchResponse, oleDeliverItemSearchForm);
                 if(oleDeliverItemSearchForm.getOleBibSearchResultDisplayRowList()!=null && oleDeliverItemSearchForm.getOleBibSearchResultDisplayRowList().size()>0){
@@ -500,8 +506,33 @@ public class OLEDeliverItemSearchController extends UifControllerBase {
         if (org.apache.commons.lang.StringUtils.isNotBlank(form.getReturnFormKey())) {
             props.put(UifParameters.FORM_KEY, form.getReturnFormKey());
         }
-        return performRedirect(form, form.getReturnLocation(),props);
+        return performRedirect(form, form.getReturnLocation(), props);
     }
 
+    private void convertDateFormat(SearchResponse searchResponse){
+
+        List<SearchResult> searchResults=searchResponse.getSearchResults();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(RiceConstants.SIMPLE_DATE_FORMAT_FOR_DATE+OLEConstants.DATE_FORMAT_FOR_TIME_SEC);
+        SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat(OLEConstants.DAT_FORMAT_EFFECTIVE_NOTICE);
+        for(SearchResult searchResult:searchResults){
+            List<SearchResultField> searchResultFields=searchResult.getSearchResultFields();
+
+            for(SearchResultField searchResultField:searchResultFields) {
+                if (searchResultField.getFieldName().equals("itemStatusEffectiveDate") || (searchResultField.getFieldName().equals("dueDateTime") || (searchResultField.getFieldName().equals("originalDueDate")))) {
+                    if (searchResultField.getFieldValue() != null) {
+                        try {
+                            Date date = simpleDateFormat1.parse(searchResultField.getFieldValue());
+                            String datetime = simpleDateFormat.format(date);
+                            searchResultField.setFieldValue(datetime);
+                        } catch (ParseException e) {
+                            LOG.error(e.getMessage(), e);
+                        }
+                    }
+                }
+            }
+        }
+
+
+    }
 
 }

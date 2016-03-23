@@ -1,0 +1,118 @@
+package org.kuali.ole.deliver.rules.chicago.ncip
+import org.kuali.ole.deliver.bo.OleDeliverRequestBo
+import org.kuali.ole.deliver.bo.OleDroolsHoldResponseBo
+import org.kuali.ole.deliver.bo.OlePatronDocument
+import org.kuali.ole.deliver.bo.OleLoanDocument
+import org.kuali.ole.deliver.util.OleItemRecordForCirc
+import org.kuali.ole.deliver.util.ErrorMessage
+import org.kuali.ole.deliver.util.DroolsResponse
+import org.kuali.ole.OLEConstants
+import org.kuali.ole.deliver.util.NoticeInfo
+import org.kuali.ole.deliver.drools.DroolsConstants
+
+
+rule "2W_1M_6W_3MLoanRecallRequest"
+agenda-group "place-request"
+when
+$n: NoticeInfo()
+$d : DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("TP","UG","CREDIP","INTUG","INTTP","TPEXT","UGEXT","LSE","IOE","UCL","EXT3","EXT6","ILL","FULL","PGR","LCT","INTPGR","ACHOS","PGREXT","RESAST","SPORA","SPORS","SPORET"),getRequestedItemRecordsCount()<3)
+$dr: OleDeliverRequestBo(getItemType() in ("LONG"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"),!isClaimsReturnedFlag(),
+getRequestTypeCode() in ("Recall/Hold Request"))
+
+then
+$d.setRuleMatched(true);
+$n.setNoticeType(OLEConstants.NOTICE_RECALL);
+$d.getDroolsExchange().addToContext("requestExpirationDays",7);
+$d.getDroolsExchange().addToContext("minimumLoanPeriod","0-D");
+$d.getDroolsExchange().addToContext("recallLoanPeriod","7-D");
+ end
+
+rule "2W_1M_6W_3MLoanRecallRequest1"
+agenda-group "place-request"
+when
+$n: NoticeInfo()
+$d : DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("TP","UG","CREDIP","INTUG","INTTP","TPEXT","UGEXT","LSE","IOE","UCL","EXT3","EXT6","ILL","FULL","PGR","LCT","INTPGR","ACHOS","PGREXT","RESAST","SPORA","SPORS","SPORET"),getRequestedItemRecordsCount()<3)
+$i: OleDeliverRequestBo(getItemType() in ("LONG"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"),isClaimsReturnedFlag(),
+getRequestTypeCode() in ("Recall/Hold Request"))
+
+then
+$d.setRuleMatched(true);
+$d.addErrorMessage("Item has been claimed as returned. So item is temporarily unavailable for circulation.");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+
+ end
+
+
+rule "2W_1M_6W_3MLoanRecallRequest2"
+agenda-group "place-request"
+when
+$n: NoticeInfo()
+$d : DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("TP","UG","CREDIP","INTUG","INTTP","TPEXT","UGEXT","LSE","IOE","UCL","EXT3","EXT6","ILL","FULL","PGR","LCT","INTPGR","ACHOS","PGREXT","RESAST","SPORA","SPORS","SPORET"),getRequestedItemRecordsCount()>=3)
+$i: OleDeliverRequestBo(getItemType() in ("LONG"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"),
+getRequestTypeCode() in ("Recall/Hold Request"))
+
+then
+$d.setRuleMatched(true);
+$d.addErrorMessage("The patron has reached the maximum Request limit");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+ end
+
+rule "One_Week_LoanRecalRequest"
+agenda-group "place-request"
+when
+$n: NoticeInfo()
+$d : DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("INTUG","UGEXT","PGREXT","TPEXT","INTTP","INTPGR","TP","UG","CERDIP","PGR","FULL","LCT","ACHOS","RESAST","SPORA","SPORS","SPORET"),getRequestedItemRecordsCount() < 3)
+$dr: OleDeliverRequestBo(getItemType() in ("ONE_WEEK"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"),!isClaimsReturnedFlag(),
+getRequestTypeCode() in ("Recall/Hold Request"))
+
+then
+$d.setRuleMatched(true);
+$n.setNoticeType(OLEConstants.NOTICE_RECALL);
+$d.getDroolsExchange().addToContext("requestExpirationDays",7);
+$d.getDroolsExchange().addToContext("minimumLoanPeriod","0-D");
+$d.getDroolsExchange().addToContext("recallLoanPeriod",null);
+ end
+
+rule "One_Week_LoanRecalRequest1"
+agenda-group "place-request"
+when
+$n: NoticeInfo()
+$d : DroolsResponse()
+$p: OlePatronDocument(getBorrowerTypeCode() in ("INTUG","UGEXT","PGREXT","TPEXT","INTTP","INTPGR","TP","UG","CERDIP","PGR","FULL","LCT","ACHOS","RESAST","SPORA","SPORS","SPORET"),getRequestedItemRecordsCount() < 3)
+$i: OleDeliverRequestBo(getItemType() in ("ONE_WEEK"),
+getItemLocation() in ("MAIN","EGHAM","DAGENHAM"),isClaimsReturnedFlag(),
+getRequestTypeCode() in ("Recall/Hold Request"))
+
+then
+$d.setRuleMatched(true);
+$d.addErrorMessage("Item has been claimed as returned. So item is temporarily unavailable for circulation.");
+$d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+
+ end
+
+ rule "One_Week_LoanRecalRequest2"
+ agenda-group "place-request"
+ when
+ $n: NoticeInfo()
+ $d : DroolsResponse()
+ $p: OlePatronDocument(getBorrowerTypeCode() in ("INTUG","UGEXT","PGREXT","TPEXT","INTTP","INTPGR","TP","UG","CERDIP","PGR","FULL","LCT","ACHOS","RESAST","SPORA","SPORS","SPORET"),getRequestedItemRecordsCount() >= 3)
+ $i: OleDeliverRequestBo(getItemType() in ("ONE_WEEK"),
+ getItemLocation() in ("MAIN","EGHAM","DAGENHAM"),
+ getRequestTypeCode() in ("Recall/Hold Request"))
+
+ then
+ $d.setRuleMatched(true);
+ $d.addErrorMessage("The patron has reached the maximum Request limit");
+ $d.addOverridePermissions(DroolsConstants.GENERAL_BLOCK_PERMISSION);
+
+  end
+
+
