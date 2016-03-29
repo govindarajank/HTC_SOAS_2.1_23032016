@@ -88,7 +88,7 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
-            <property name="odaURL">jdbc:mysql://localhost/ole_16_new</property>
+            <property name="odaURL">jdbc:mysql://localhost/ole</property>
             <property name="odaUser">root</property>
             <encrypted-property name="odaPassword" encryptionID="base64">cm9vdA==</encrypted-property>
         </oda-data-source>
@@ -126,6 +126,7 @@ OPEV.LAST_NM as "Patron Last Name",
 OPEV.FIRST_NM as "Patron First Name",
 ODI.BARCODE as "Item Barcode",
 ODBI.TITLE as "Title",
+ODR.PTRN_Q_POS as "Parton Queue Postion",
 CASE WHEN ODI.CALL_NUMBER IS NOT NULL AND ODI.CALL_NUMBER != ' ' THEN ODI.CALL_NUMBER
 	WHEN ODH.CALL_NUMBER IS NOT NULL AND ODH.CALL_NUMBER != ' ' THEN ODH.CALL_NUMBER
 	ELSE ' '
@@ -321,6 +322,13 @@ OLE_CRCL_DSK_T]]></xml-property>
                     <expression name="expression" type="javascript">dataSetRow["Pickup Location"]</expression>
                     <property name="dataType">string</property>
                 </structure>
+                <structure>
+                    <property name="name">Patron Queue Position</property>
+                    <text-property name="displayName">Patron Queue Postion</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["PTRN_Q_POS"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">false</property>
+                </structure>
             </list-property>
             <list-property name="sort">
                 <structure>
@@ -333,6 +341,7 @@ OLE_CRCL_DSK_T]]></xml-property>
             <column id="42"/>
             <column id="43"/>
             <column id="44"/>
+            <column id="105"/>
             <column id="45"/>
             <column id="46"/>
             <column id="47"/>
@@ -389,6 +398,19 @@ OLE_CRCL_DSK_T]]></xml-property>
                         <property name="borderTopWidth">thin</property>
                         <label id="56">
                             <text-property name="text">Item Barcode</text-property>
+                        </label>
+                    </cell>
+                    <cell id="103">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="106">
+                            <text-property name="text">Patron Queue Postion</text-property>
                         </label>
                     </cell>
                     <cell id="19">
@@ -497,6 +519,19 @@ OLE_CRCL_DSK_T]]></xml-property>
                         <property name="borderTopWidth">thin</property>
                         <data id="57">
                             <property name="resultSetColumn">Item Barcode</property>
+                        </data>
+                    </cell>
+                    <cell id="104">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="107">
+                            <property name="resultSetColumn">Patron Queue Position</property>
                         </data>
                     </cell>
                     <cell id="28">
