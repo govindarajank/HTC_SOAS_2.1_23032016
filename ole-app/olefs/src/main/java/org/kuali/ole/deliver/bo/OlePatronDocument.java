@@ -1979,11 +1979,13 @@ public class OlePatronDocument extends PersistableBusinessObjectBase implements 
     }
 
     private boolean recallRequestExists(OleLoanDocument oleLoanDocument) {
+        Map<String,String> itemMap=new HashMap<>();
+        itemMap.put("itemId",oleLoanDocument.getItemId());
+        List<OleDeliverRequestBo> oleDeliverRequestBos = (List<OleDeliverRequestBo>) KRADServiceLocator.getBusinessObjectService().findMatching(OleDeliverRequestBo.class, itemMap);
 
-        List<OleDeliverRequestBo> oleDeliverRequestBos = getOleDeliverRequestBos();
         for (Iterator<OleDeliverRequestBo> iterator = oleDeliverRequestBos.iterator(); iterator.hasNext(); ) {
             OleDeliverRequestBo oleDeliverRequestBo = iterator.next();
-            if(oleDeliverRequestBo.getOleDeliverRequestType().getRequestTypeCode().equals("Recall") &&
+            if(oleDeliverRequestBo.getOleDeliverRequestType().getRequestTypeCode().equals("Recall/Hold Request") &&
                     oleDeliverRequestBo.getLoanTransactionRecordNumber().equals(oleLoanDocument.getLoanId())){
                 return true;
 
