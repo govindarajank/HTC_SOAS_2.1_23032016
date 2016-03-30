@@ -5293,14 +5293,14 @@ WHERE
                     <property name="name">Activation Date</property>
                     <text-property name="displayName">Activation Date</text-property>
                     <expression name="expression" type="javascript">dataSetRow["ACTIVATION_DATE"]</expression>
-                    <property name="dataType">string</property>
+                    <property name="dataType">date-time</property>
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">Expiration Date</property>
                     <text-property name="displayName">Expiration Date</text-property>
                     <expression name="expression" type="javascript">dataSetRow["EXPIRATION_DATE"]</expression>
-                    <property name="dataType">string</property>
+                    <property name="dataType">date-time</property>
                     <property name="allowExport">true</property>
                 </structure>
             </list-property>
@@ -5473,14 +5473,14 @@ WHERE
                     <property name="name">Loan Date</property>
                     <text-property name="displayName">Loan Date</text-property>
                     <expression name="expression" type="javascript">dataSetRow["CRTE_DT_TIME"]</expression>
-                    <property name="dataType">string</property>
+                    <property name="dataType">date-time</property>
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">Due Date</property>
                     <text-property name="displayName">Due Date</text-property>
                     <expression name="expression" type="javascript">dataSetRow["CURR_DUE_DT_TIME"]</expression>
-                    <property name="dataType">string</property>
+                    <property name="dataType">date-time</property>
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>
@@ -5685,14 +5685,14 @@ WHERE
                     <property name="name">Request Date</property>
                     <text-property name="displayName">Request Date</text-property>
                     <expression name="expression" type="javascript">dataSetRow["CRTE_DT_TIME"]</expression>
-                    <property name="dataType">string</property>
+                    <property name="dataType">date-time</property>
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">Request Exp Date</property>
                     <text-property name="displayName">Request Exp Date</text-property>
                     <expression name="expression" type="javascript">dataSetRow["RQST_EXPIR_DT_TIME"]</expression>
-                    <property name="dataType">string</property>
+                    <property name="dataType">date-time</property>
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>
@@ -5895,14 +5895,14 @@ WHERE
                     <property name="name">Loan Date</property>
                     <text-property name="displayName">Loan Date</text-property>
                     <expression name="expression" type="javascript">dataSetRow["CRTE_DT_TIME"]</expression>
-                    <property name="dataType">string</property>
+                    <property name="dataType">date-time</property>
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">Due Date</property>
                     <text-property name="displayName">Due Date</text-property>
                     <expression name="expression" type="javascript">dataSetRow["DUE_DT_TIME"]</expression>
-                    <property name="dataType">string</property>
+                    <property name="dataType">date-time</property>
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>
@@ -5916,7 +5916,7 @@ WHERE
                     <property name="name">Return Date</property>
                     <text-property name="displayName">Return Date</text-property>
                     <expression name="expression" type="javascript">dataSetRow["CHECK_IN_DT_TIME"]</expression>
-                    <property name="dataType">string</property>
+                    <property name="dataType">date-time</property>
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>

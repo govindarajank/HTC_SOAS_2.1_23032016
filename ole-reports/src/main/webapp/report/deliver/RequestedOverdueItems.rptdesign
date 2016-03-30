@@ -574,61 +574,61 @@ GROUP BY
                     <cell id="64">
                         <property name="style">NewStyle</property>
                         <label id="116">
-                            <text-property name="text">LN PTRN NM</text-property>
+                            <text-property name="text">Patron Name</text-property>
                         </label>
                     </cell>
                     <cell id="65">
                         <property name="style">NewStyle</property>
                         <label id="107">
-                            <text-property name="text">LN PTRN BCDE</text-property>
+                            <text-property name="text">Patron Barcode</text-property>
                         </label>
                     </cell>
                     <cell id="66">
                         <property name="style">NewStyle</property>
                         <label id="108">
-                            <text-property name="text">LN PTRN EMAIL</text-property>
+                            <text-property name="text">Patron Email</text-property>
                         </label>
                     </cell>
                     <cell id="67">
                         <property name="style">NewStyle</property>
                         <label id="109">
-                            <text-property name="text">ITM CALL NM</text-property>
+                            <text-property name="text">Item Call Number</text-property>
                         </label>
                     </cell>
                     <cell id="68">
                         <property name="style">NewStyle</property>
                         <label id="110">
-                            <text-property name="text">TITLE</text-property>
+                            <text-property name="text">Item Title</text-property>
                         </label>
                     </cell>
                     <cell id="69">
                         <property name="style">NewStyle</property>
                         <label id="111">
-                            <text-property name="text">ITM BCDE</text-property>
+                            <text-property name="text">Item Barcode</text-property>
                         </label>
                     </cell>
                     <cell id="70">
                         <property name="style">NewStyle</property>
                         <label id="112">
-                            <text-property name="text">RQST TYP</text-property>
+                            <text-property name="text">Request Type</text-property>
                         </label>
                     </cell>
                     <cell id="71">
                         <property name="style">NewStyle</property>
                         <label id="113">
-                            <text-property name="text">RQST PTRN NM</text-property>
+                            <text-property name="text">Requestor Name</text-property>
                         </label>
                     </cell>
                     <cell id="72">
                         <property name="style">NewStyle</property>
                         <label id="114">
-                            <text-property name="text">RQST PTRN BCDE</text-property>
+                            <text-property name="text">Requestor Barcode</text-property>
                         </label>
                     </cell>
                     <cell id="73">
                         <property name="style">NewStyle</property>
                         <label id="115">
-                            <text-property name="text">RQST PTRN EMAIL</text-property>
+                            <text-property name="text">Requestor Email</text-property>
                         </label>
                     </cell>
                 </row>
