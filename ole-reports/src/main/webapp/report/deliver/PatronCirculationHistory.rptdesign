@@ -5386,244 +5386,6 @@ WHERE
             <property name="textAlign">center</property>
             <text-property name="text"></text-property>
         </label>
-        <label id="50">
-            <property name="fontSize">12pt</property>
-            <property name="fontWeight">bold</property>
-            <property name="textAlign">center</property>
-            <text-property name="text">Patron Circulation Details	</text-property>
-        </label>
-        <table id="52">
-            <property name="borderBottomStyle">none</property>
-            <property name="borderLeftStyle">none</property>
-            <property name="borderRightStyle">none</property>
-            <property name="borderTopStyle">none</property>
-            <property name="dataSet">Patron_Circulation_History</property>
-            <list-property name="boundDataColumns">
-                <structure>
-                    <property name="name">TITLE</property>
-                    <text-property name="displayName">TITLE</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["TITLE"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">ITM_ID</property>
-                    <text-property name="displayName">ITM_ID</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["ITM_ID"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">ITM_TYP_CD</property>
-                    <text-property name="displayName">ITM_TYP_CD</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["ITM_TYP_CD"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">CRTE_DT_TIME</property>
-                    <text-property name="displayName">CRTE_DT_TIME</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["CRTE_DT_TIME"]</expression>
-                    <property name="dataType">date-time</property>
-                </structure>
-                <structure>
-                    <property name="name">DUE_DT_TIME</property>
-                    <text-property name="displayName">DUE_DT_TIME</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["DUE_DT_TIME"]</expression>
-                    <property name="dataType">date-time</property>
-                </structure>
-                <structure>
-                    <property name="name">LOAN_LOCATION</property>
-                    <text-property name="displayName">LOAN_LOCATION</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["LOAN_LOCATION"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">CHECK_IN_DT_TIME</property>
-                    <text-property name="displayName">CHECK_IN_DT_TIME</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["CHECK_IN_DT_TIME"]</expression>
-                    <property name="dataType">date-time</property>
-                </structure>
-                <structure>
-                    <property name="name">RETURN_LOCATION</property>
-                    <text-property name="displayName">RETURN_LOCATION</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["RETURN_LOCATION"]</expression>
-                    <property name="dataType">string</property>
-                </structure>
-                <structure>
-                    <property name="name">Item Title</property>
-                    <text-property name="displayName">Item Title</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["TITLE"]</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">Item Barcode</property>
-                    <text-property name="displayName">Item Barcode</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["ITM_ID"]</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">Item Type</property>
-                    <text-property name="displayName">Item Type</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["ITM_TYP_CD"]</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">Loan Date</property>
-                    <text-property name="displayName">Loan Date</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["CRTE_DT_TIME"]</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">Due Date</property>
-                    <text-property name="displayName">Due Date</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["DUE_DT_TIME"]</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">Loan Location</property>
-                    <text-property name="displayName">Loan Location</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["LOAN_LOCATION"]</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">Return Date</property>
-                    <text-property name="displayName">Return Date</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["CHECK_IN_DT_TIME"]</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
-                <structure>
-                    <property name="name">Return Location</property>
-                    <text-property name="displayName">Return Location</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["RETURN_LOCATION"]</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">true</property>
-                </structure>
-            </list-property>
-            <structure name="toc"/>
-            <column id="80"/>
-            <column id="81"/>
-            <column id="82"/>
-            <column id="83"/>
-            <column id="84"/>
-            <column id="85"/>
-            <column id="86"/>
-            <column id="87"/>
-            <header>
-                <row id="53">
-                    <cell id="54">
-                        <property name="style">NewStyle</property>
-                        <label id="88">
-                            <text-property name="text">Item Title</text-property>
-                        </label>
-                    </cell>
-                    <cell id="55">
-                        <property name="style">NewStyle</property>
-                        <label id="89">
-                            <text-property name="text">Barcode</text-property>
-                        </label>
-                    </cell>
-                    <cell id="56">
-                        <property name="style">NewStyle</property>
-                        <label id="91">
-                            <text-property name="text">Item Type</text-property>
-                        </label>
-                    </cell>
-                    <cell id="57">
-                        <property name="style">NewStyle</property>
-                        <label id="92">
-                            <text-property name="text">Loan Date</text-property>
-                        </label>
-                    </cell>
-                    <cell id="58">
-                        <property name="style">NewStyle</property>
-                        <label id="93">
-                            <text-property name="text">Due Date</text-property>
-                        </label>
-                    </cell>
-                    <cell id="59">
-                        <property name="style">NewStyle</property>
-                        <label id="94">
-                            <text-property name="text">Loan Location</text-property>
-                        </label>
-                    </cell>
-                    <cell id="60">
-                        <property name="style">NewStyle</property>
-                        <label id="95">
-                            <text-property name="text">Return Date</text-property>
-                        </label>
-                    </cell>
-                    <cell id="61">
-                        <property name="style">NewStyle</property>
-                        <label id="96">
-                            <text-property name="text">Return Location</text-property>
-                        </label>
-                    </cell>
-                </row>
-            </header>
-            <detail>
-                <row id="62">
-                    <cell id="63">
-                        <property name="style">NewStyle</property>
-                        <data id="97">
-                            <property name="resultSetColumn">Item Title</property>
-                        </data>
-                    </cell>
-                    <cell id="64">
-                        <property name="style">NewStyle</property>
-                        <data id="98">
-                            <property name="resultSetColumn">Item Barcode</property>
-                        </data>
-                    </cell>
-                    <cell id="65">
-                        <property name="style">NewStyle</property>
-                        <data id="99">
-                            <property name="resultSetColumn">Item Type</property>
-                        </data>
-                    </cell>
-                    <cell id="66">
-                        <property name="style">NewStyle</property>
-                        <data id="100">
-                            <property name="resultSetColumn">Loan Date</property>
-                        </data>
-                    </cell>
-                    <cell id="67">
-                        <property name="style">NewStyle</property>
-                        <data id="101">
-                            <property name="resultSetColumn">Due Date</property>
-                        </data>
-                    </cell>
-                    <cell id="68">
-                        <property name="style">NewStyle</property>
-                        <data id="102">
-                            <property name="resultSetColumn">Loan Location</property>
-                        </data>
-                    </cell>
-                    <cell id="69">
-                        <property name="style">NewStyle</property>
-                        <data id="103">
-                            <property name="resultSetColumn">Return Date</property>
-                        </data>
-                    </cell>
-                    <cell id="70">
-                        <property name="style">NewStyle</property>
-                        <data id="104">
-                            <property name="resultSetColumn">Return Location</property>
-                        </data>
-                    </cell>
-                </row>
-            </detail>
-        </table>
-        <label id="106">
-            <property name="fontSize">12pt</property>
-            <property name="fontWeight">bold</property>
-            <property name="textAlign">center</property>
-            <text-property name="text"></text-property>
-        </label>
         <label id="107">
             <property name="fontSize">12pt</property>
             <property name="fontWeight">bold</property>
@@ -6047,5 +5809,237 @@ WHERE
             <property name="textAlign">center</property>
             <text-property name="text"></text-property>
         </label>
+        <label id="50">
+            <property name="fontSize">12pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="textAlign">center</property>
+            <text-property name="text">Patron Circulation Details	</text-property>
+        </label>
+        <table id="52">
+            <property name="borderBottomStyle">none</property>
+            <property name="borderLeftStyle">none</property>
+            <property name="borderRightStyle">none</property>
+            <property name="borderTopStyle">none</property>
+            <property name="dataSet">Patron_Circulation_History</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">TITLE</property>
+                    <text-property name="displayName">TITLE</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TITLE"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ITM_ID</property>
+                    <text-property name="displayName">ITM_ID</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ITM_ID"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ITM_TYP_CD</property>
+                    <text-property name="displayName">ITM_TYP_CD</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ITM_TYP_CD"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">CRTE_DT_TIME</property>
+                    <text-property name="displayName">CRTE_DT_TIME</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["CRTE_DT_TIME"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">DUE_DT_TIME</property>
+                    <text-property name="displayName">DUE_DT_TIME</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["DUE_DT_TIME"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">LOAN_LOCATION</property>
+                    <text-property name="displayName">LOAN_LOCATION</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["LOAN_LOCATION"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">CHECK_IN_DT_TIME</property>
+                    <text-property name="displayName">CHECK_IN_DT_TIME</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["CHECK_IN_DT_TIME"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">RETURN_LOCATION</property>
+                    <text-property name="displayName">RETURN_LOCATION</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["RETURN_LOCATION"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">Item Title</property>
+                    <text-property name="displayName">Item Title</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TITLE"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Item Barcode</property>
+                    <text-property name="displayName">Item Barcode</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ITM_ID"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Item Type</property>
+                    <text-property name="displayName">Item Type</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ITM_TYP_CD"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Loan Date</property>
+                    <text-property name="displayName">Loan Date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["CRTE_DT_TIME"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Due Date</property>
+                    <text-property name="displayName">Due Date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["DUE_DT_TIME"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Loan Location</property>
+                    <text-property name="displayName">Loan Location</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["LOAN_LOCATION"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Return Date</property>
+                    <text-property name="displayName">Return Date</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["CHECK_IN_DT_TIME"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Return Location</property>
+                    <text-property name="displayName">Return Location</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["RETURN_LOCATION"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+            </list-property>
+            <structure name="toc"/>
+            <column id="80"/>
+            <column id="81"/>
+            <column id="82"/>
+            <column id="83"/>
+            <column id="84"/>
+            <column id="85"/>
+            <column id="86"/>
+            <column id="87"/>
+            <header>
+                <row id="53">
+                    <cell id="54">
+                        <property name="style">NewStyle</property>
+                        <label id="88">
+                            <text-property name="text">Item Title</text-property>
+                        </label>
+                    </cell>
+                    <cell id="55">
+                        <property name="style">NewStyle</property>
+                        <label id="89">
+                            <text-property name="text">Barcode</text-property>
+                        </label>
+                    </cell>
+                    <cell id="56">
+                        <property name="style">NewStyle</property>
+                        <label id="91">
+                            <text-property name="text">Item Type</text-property>
+                        </label>
+                    </cell>
+                    <cell id="57">
+                        <property name="style">NewStyle</property>
+                        <label id="92">
+                            <text-property name="text">Loan Date</text-property>
+                        </label>
+                    </cell>
+                    <cell id="58">
+                        <property name="style">NewStyle</property>
+                        <label id="93">
+                            <text-property name="text">Due Date</text-property>
+                        </label>
+                    </cell>
+                    <cell id="59">
+                        <property name="style">NewStyle</property>
+                        <label id="94">
+                            <text-property name="text">Loan Location</text-property>
+                        </label>
+                    </cell>
+                    <cell id="60">
+                        <property name="style">NewStyle</property>
+                        <label id="95">
+                            <text-property name="text">Return Date</text-property>
+                        </label>
+                    </cell>
+                    <cell id="61">
+                        <property name="style">NewStyle</property>
+                        <label id="96">
+                            <text-property name="text">Return Location</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="62">
+                    <cell id="63">
+                        <property name="style">NewStyle</property>
+                        <data id="97">
+                            <property name="resultSetColumn">Item Title</property>
+                        </data>
+                    </cell>
+                    <cell id="64">
+                        <property name="style">NewStyle</property>
+                        <data id="98">
+                            <property name="resultSetColumn">Item Barcode</property>
+                        </data>
+                    </cell>
+                    <cell id="65">
+                        <property name="style">NewStyle</property>
+                        <data id="99">
+                            <property name="resultSetColumn">Item Type</property>
+                        </data>
+                    </cell>
+                    <cell id="66">
+                        <property name="style">NewStyle</property>
+                        <data id="100">
+                            <property name="resultSetColumn">Loan Date</property>
+                        </data>
+                    </cell>
+                    <cell id="67">
+                        <property name="style">NewStyle</property>
+                        <data id="101">
+                            <property name="resultSetColumn">Due Date</property>
+                        </data>
+                    </cell>
+                    <cell id="68">
+                        <property name="style">NewStyle</property>
+                        <data id="102">
+                            <property name="resultSetColumn">Loan Location</property>
+                        </data>
+                    </cell>
+                    <cell id="69">
+                        <property name="style">NewStyle</property>
+                        <data id="103">
+                            <property name="resultSetColumn">Return Date</property>
+                        </data>
+                    </cell>
+                    <cell id="70">
+                        <property name="style">NewStyle</property>
+                        <data id="104">
+                            <property name="resultSetColumn">Return Location</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+        </table>
     </body>
 </report>
