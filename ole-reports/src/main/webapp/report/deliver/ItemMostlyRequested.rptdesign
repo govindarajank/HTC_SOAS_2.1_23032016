@@ -36,32 +36,32 @@
                 <structure>
                     <property name="columnName">CALL_NUMBER</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Item Call Number</text-property>
-                    <text-property name="heading">Item Call Number</text-property>
+                    <text-property name="displayName">CALL_NUMBER</text-property>
+                    <text-property name="heading">CALL_NUMBER</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">TITLE</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Title</text-property>
-                    <text-property name="heading">Title</text-property>
+                    <text-property name="displayName">TITLE</text-property>
+                    <text-property name="heading">TITLE</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">BARCODE</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Item Barcode</text-property>
-                    <text-property name="heading">Item Barcode</text-property>
+                    <text-property name="displayName">BARCODE</text-property>
+                    <text-property name="heading">BARCODE</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">COPY_NUMBER</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Copy Number</text-property>
-                    <text-property name="heading">Copy Number</text-property>
+                    <text-property name="displayName">COPY_NUMBER</text-property>
+                    <text-property name="heading">COPY_NUMBER</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">LOCATION</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Shelving Location</text-property>
-                    <text-property name="heading">Shelving Location</text-property>
+                    <text-property name="displayName">LOCATION</text-property>
+                    <text-property name="heading">LOCATION</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters"/>
@@ -133,11 +133,11 @@
                 </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[SELECT
-ODI.CALL_NUMBER as "Item Call Number",
-ODBI.TITLE as "Title",
-ODI.BARCODE as "Item Barcode",
-ODI.COPY_NUMBER as "Copy Number",
-ODI.LOCATION as "Shelving Location"
+ODI.CALL_NUMBER,
+ODBI.TITLE,
+ODI.BARCODE,
+ODI.COPY_NUMBER,
+ODI.LOCATION
 from
 OLE_DS_ITEM_T ODI,
 OLE_DLVR_RQST_T ODR,

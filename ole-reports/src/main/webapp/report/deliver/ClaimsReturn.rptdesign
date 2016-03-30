@@ -50,38 +50,38 @@
                 <structure>
                     <property name="columnName">CALL_NUMBER</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Item Call Number</text-property>
-                    <text-property name="heading">Item Call Number</text-property>
+                    <text-property name="displayName">CALL_NUMBER</text-property>
+                    <text-property name="heading">CALL_NUMBER</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">TITLE</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Title</text-property>
-                    <text-property name="heading">Title</text-property>
+                    <text-property name="displayName">TITLE</text-property>
+                    <text-property name="heading">TITLE</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">BARCODE</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Item Barcode</text-property>
-                    <text-property name="heading">Item Barcode</text-property>
+                    <text-property name="displayName">BARCODE</text-property>
+                    <text-property name="heading">BARCODE</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">COPY_NUMBER</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Copy Number</text-property>
-                    <text-property name="heading">Copy Number</text-property>
+                    <text-property name="displayName">COPY_NUMBER</text-property>
+                    <text-property name="heading">COPY_NUMBER</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">LOCATION</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Shelving Location</text-property>
-                    <text-property name="heading">Shelving Location</text-property>
+                    <text-property name="displayName">LOCATION</text-property>
+                    <text-property name="heading">LOCATION</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">CLAIMS_RETURNED_NOTE</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Claims Returned Note</text-property>
-                    <text-property name="heading">Claims Returned Note</text-property>
+                    <text-property name="displayName">CLAIMS_RETURNED_NOTE</text-property>
+                    <text-property name="heading">CLAIMS_RETURNED_NOTE</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters"/>
@@ -119,7 +119,7 @@
                     </structure>
                 </list-property>
             </structure>
-            <method name="beforeOpen"><![CDATA[this.queryText = this.queryText + " AND ODI.BARCODE= '"+ params["Item Barcode"].value+"'";]]></method>
+            <method name="beforeOpen"><![CDATA[this.queryText = this.queryText + " AND ODI.BARCODE LIKE '"+ params["Item Barcode"].value+"%'";]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>
@@ -166,12 +166,12 @@
                 </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[SELECT
-ODI.CALL_NUMBER as "Item Call Number",
-ODBI.TITLE as "Title",
-ODI.BARCODE as "Item Barcode",
-ODI.COPY_NUMBER as "Copy Number",
-ODI.LOCATION as "Shelving Location",
-ODI.CLAIMS_RETURNED_NOTE as "Claims Returned Note"
+ODI.CALL_NUMBER,
+ODBI.TITLE,
+ODI.BARCODE,
+ODI.COPY_NUMBER,
+ODI.LOCATION,
+ODI.CLAIMS_RETURNED_NOTE
 from
 OLE_DS_ITEM_T ODI,
 OLE_DS_BIB_INFO_T ODBI,
@@ -1268,6 +1268,16 @@ ODI.CLAIMS_RETURNED='Y'
             <property name="borderTopStyle">solid</property>
             <property name="borderTopWidth">thin</property>
         </style>
+        <style name="NewStyle1" id="174">
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
     </styles>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
@@ -1288,42 +1298,43 @@ ODI.CLAIMS_RETURNED='Y'
         <label id="104"/>
         <label id="103"/>
         <label id="101"/>
-        <table id="67">
+        <table id="120">
+            <property name="style">NewStyle</property>
             <property name="dataSet">Data Set</property>
             <list-property name="boundDataColumns">
                 <structure>
                     <property name="name">CALL_NUMBER</property>
-                    <text-property name="displayName">Item Call Number</text-property>
+                    <text-property name="displayName">CALL_NUMBER</text-property>
                     <expression name="expression" type="javascript">dataSetRow["CALL_NUMBER"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
                     <property name="name">TITLE</property>
-                    <text-property name="displayName">Title</text-property>
+                    <text-property name="displayName">TITLE</text-property>
                     <expression name="expression" type="javascript">dataSetRow["TITLE"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
                     <property name="name">BARCODE</property>
-                    <text-property name="displayName">Item Barcode</text-property>
+                    <text-property name="displayName">BARCODE</text-property>
                     <expression name="expression" type="javascript">dataSetRow["BARCODE"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
                     <property name="name">COPY_NUMBER</property>
-                    <text-property name="displayName">Copy Number</text-property>
+                    <text-property name="displayName">COPY_NUMBER</text-property>
                     <expression name="expression" type="javascript">dataSetRow["COPY_NUMBER"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
                     <property name="name">LOCATION</property>
-                    <text-property name="displayName">Shelving Location</text-property>
+                    <text-property name="displayName">LOCATION</text-property>
                     <expression name="expression" type="javascript">dataSetRow["LOCATION"]</expression>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
                     <property name="name">CLAIMS_RETURNED_NOTE</property>
-                    <text-property name="displayName">Claims Returned Note</text-property>
+                    <text-property name="displayName">CLAIMS_RETURNED_NOTE</text-property>
                     <expression name="expression" type="javascript">dataSetRow["CLAIMS_RETURNED_NOTE"]</expression>
                     <property name="dataType">string</property>
                 </structure>
@@ -1363,109 +1374,142 @@ ODI.CLAIMS_RETURNED='Y'
                     <property name="allowExport">true</property>
                 </structure>
                 <structure>
-                    <property name="name">Flag Note</property>
+                    <property name="name">Flag NOte</property>
                     <text-property name="displayName">Flag Note</text-property>
                     <expression name="expression" type="javascript">dataSetRow["CLAIMS_RETURNED_NOTE"]</expression>
                     <property name="dataType">string</property>
                     <property name="allowExport">true</property>
                 </structure>
+                <structure>
+                    <property name="name">Item Call Number_1</property>
+                    <text-property name="displayName">Item Call Number</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["CALL_NUMBER"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Title_1</property>
+                    <text-property name="displayName">Title</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["TITLE"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Barcode_1</property>
+                    <text-property name="displayName">Barcode</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["BARCODE"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Copy Number_1</property>
+                    <text-property name="displayName">Copy Number</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["COPY_NUMBER"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Location</property>
+                    <text-property name="displayName">Location</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["LOCATION"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Claim Note</property>
+                    <text-property name="displayName">Claim Note</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["CLAIMS_RETURNED_NOTE"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
             </list-property>
-            <column id="92"/>
-            <column id="93"/>
+            <column id="149"/>
+            <column id="150"/>
+            <column id="151"/>
+            <column id="152"/>
+            <column id="153"/>
+            <column id="154"/>
             <header>
-                <row id="68">
-                    <cell id="69">
-                        <property name="style">NewStyle</property>
-                        <label id="94">
+                <row id="121">
+                    <cell id="122">
+                        <property name="style">NewStyle1</property>
+                        <label id="155">
                             <text-property name="text">Item Call Number</text-property>
                         </label>
                     </cell>
-                    <cell id="70">
-                        <property name="style">NewStyle</property>
-                        <data id="105">
-                            <property name="resultSetColumn">Item Call Number</property>
-                        </data>
-                    </cell>
-                </row>
-            </header>
-            <detail>
-                <row id="71">
-                    <cell id="72">
-                        <property name="style">NewStyle</property>
-                        <label id="98">
+                    <cell id="123">
+                        <property name="style">NewStyle1</property>
+                        <label id="156">
                             <property name="textAlign">center</property>
                             <text-property name="text">Title</text-property>
                         </label>
                     </cell>
-                    <cell id="73">
-                        <property name="style">NewStyle</property>
-                        <data id="106">
-                            <property name="textAlign">center</property>
-                            <property name="resultSetColumn">Title</property>
-                        </data>
-                    </cell>
-                </row>
-                <row id="74">
-                    <cell id="75">
-                        <property name="style">NewStyle</property>
-                        <label id="96">
+                    <cell id="124">
+                        <property name="style">NewStyle1</property>
+                        <label id="157">
                             <property name="textAlign">center</property>
                             <text-property name="text">Barcode</text-property>
                         </label>
                     </cell>
-                    <cell id="76">
-                        <property name="style">NewStyle</property>
-                        <data id="107">
-                            <property name="textAlign">center</property>
-                            <property name="resultSetColumn">Barcode</property>
-                        </data>
-                    </cell>
-                </row>
-                <row id="77">
-                    <cell id="78">
-                        <property name="style">NewStyle</property>
-                        <label id="97">
+                    <cell id="125">
+                        <property name="style">NewStyle1</property>
+                        <label id="158">
                             <property name="textAlign">center</property>
                             <text-property name="text">Copy Number</text-property>
                         </label>
                     </cell>
-                    <cell id="79">
-                        <property name="style">NewStyle</property>
-                        <data id="108">
-                            <property name="textAlign">center</property>
-                            <property name="resultSetColumn">Copy Number</property>
-                        </data>
-                    </cell>
-                </row>
-                <row id="80">
-                    <cell id="81">
-                        <property name="style">NewStyle</property>
-                        <label id="99">
+                    <cell id="126">
+                        <property name="style">NewStyle1</property>
+                        <label id="159">
                             <property name="textAlign">center</property>
                             <text-property name="text">Shelving Location</text-property>
                         </label>
                     </cell>
-                    <cell id="82">
-                        <property name="style">NewStyle</property>
-                        <data id="117">
-                            <property name="textAlign">center</property>
-                            <property name="resultSetColumn">Shelving Location</property>
-                        </data>
-                    </cell>
-                </row>
-                <row id="83">
-                    <cell id="84">
-                        <property name="style">NewStyle</property>
-                        <label id="100">
+                    <cell id="127">
+                        <property name="style">NewStyle1</property>
+                        <label id="160">
                             <property name="textAlign">center</property>
                             <text-property name="text">Flag Note</text-property>
                         </label>
                     </cell>
-                    <cell id="85">
-                        <property name="style">NewStyle</property>
-                        <data id="118">
-                            <property name="textAlign">center</property>
-                            <property name="resultSetColumn">Flag Note</property>
+                </row>
+            </header>
+            <detail>
+                <row id="128">
+                    <cell id="129">
+                        <property name="style">NewStyle1</property>
+                        <data id="167">
+                            <property name="resultSetColumn">Item Call Number_1</property>
+                        </data>
+                    </cell>
+                    <cell id="130">
+                        <property name="style">NewStyle1</property>
+                        <data id="168">
+                            <property name="resultSetColumn">Title_1</property>
+                        </data>
+                    </cell>
+                    <cell id="131">
+                        <property name="style">NewStyle1</property>
+                        <data id="170">
+                            <property name="resultSetColumn">Barcode_1</property>
+                        </data>
+                    </cell>
+                    <cell id="132">
+                        <property name="style">NewStyle1</property>
+                        <data id="171">
+                            <property name="resultSetColumn">Copy Number_1</property>
+                        </data>
+                    </cell>
+                    <cell id="133">
+                        <property name="style">NewStyle1</property>
+                        <data id="172">
+                            <property name="resultSetColumn">Location</property>
+                        </data>
+                    </cell>
+                    <cell id="134">
+                        <property name="style">NewStyle1</property>
+                        <data id="173">
+                            <property name="resultSetColumn">Claim Note</property>
                         </data>
                     </cell>
                 </row>
