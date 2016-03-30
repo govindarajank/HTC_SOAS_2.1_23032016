@@ -119,7 +119,15 @@
                     </structure>
                 </list-property>
             </structure>
-            <method name="beforeOpen"><![CDATA[this.queryText = this.queryText + " AND ODI.BARCODE LIKE '"+ params["Item Barcode"].value+"%'";]]></method>
+            <method name="beforeOpen"><![CDATA[if(params["Item Barcode"].value.equalsIgnoreCase("*")){
+	this.queryText = this.queryText +"";
+}else {
+	if(params["Item Barcode"].value.indexOf("*")>-1) {
+		this.queryText = this.queryText + " AND ODI.BARCODE LIKE '"+ params["Item Barcode"].replace("*","")+"%'";
+	}else {
+		this.queryText = this.queryText + " AND ODI.BARCODE LIKE '"+ params["Item Barcode"].value+"%'";
+	}
+}]]></method>
             <property name="dataSource">Data Source</property>
             <list-property name="resultSet">
                 <structure>

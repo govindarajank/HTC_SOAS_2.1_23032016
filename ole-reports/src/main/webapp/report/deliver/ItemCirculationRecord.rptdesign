@@ -8,7 +8,7 @@
     <property name="imageDPI">96</property>
     <parameters>
         <scalar-parameter name="Item Barcode" id="9">
-            <text-property name="promptText">Enter Barcode</text-property>
+            <text-property name="promptText">Enter Item's Barcode</text-property>
             <property name="valueType">static</property>
             <property name="dataType">string</property>
             <property name="distinct">true</property>
