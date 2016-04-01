@@ -1985,8 +1985,7 @@ public class OlePatronDocument extends PersistableBusinessObjectBase implements 
 
         for (Iterator<OleDeliverRequestBo> iterator = oleDeliverRequestBos.iterator(); iterator.hasNext(); ) {
             OleDeliverRequestBo oleDeliverRequestBo = iterator.next();
-            if(oleDeliverRequestBo.getOleDeliverRequestType().getRequestTypeCode().equals("Recall/Hold Request") &&
-                    oleDeliverRequestBo.getLoanTransactionRecordNumber().equals(oleLoanDocument.getLoanId())){
+            if(oleDeliverRequestBo.getOleDeliverRequestType().getRequestTypeCode().equals("Recall/Hold Request")){
                 return true;
 
             }
@@ -1996,7 +1995,7 @@ public class OlePatronDocument extends PersistableBusinessObjectBase implements 
 
     public String getTimeDiff(Date dateOne, Date dateTwo) {
         String diff = "";
-        long timeDiff = Math.abs(dateOne.getTime() - dateTwo.getTime());
+        long timeDiff = dateTwo.getTime()-dateOne.getTime();
         diff = String.format("%d", TimeUnit.MILLISECONDS.toDays(timeDiff),
                 -TimeUnit.HOURS.toDays(timeDiff));
         return diff;
