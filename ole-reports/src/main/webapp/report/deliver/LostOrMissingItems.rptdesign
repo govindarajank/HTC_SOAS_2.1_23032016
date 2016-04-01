@@ -68,7 +68,7 @@
                 </ex-property>
             </list-property>
             <property name="odaDriverClass">com.mysql.jdbc.Driver</property>
-            <property name="odaURL">jdbc:mysql://localhost/ole_16_new</property>
+            <property name="odaURL">jdbc:mysql://localhost/ole</property>
             <property name="odaUser">root</property>
             <encrypted-property name="odaPassword" encryptionID="base64">cm9vdA==</encrypted-property>
         </oda-data-source>
@@ -339,7 +339,7 @@ ODBI.BIB_ID = ODH.BIB_ID]]></xml-property>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Library" id="75">
             <list-property name="columnHints">
                 <structure>
-                    <property name="columnName">Library</property>
+                    <property name="columnName">LOCN_CD</property>
                     <property name="analysis">dimension</property>
                     <text-property name="displayName">Library</text-property>
                     <text-property name="heading">Library</text-property>
@@ -350,7 +350,7 @@ ODBI.BIB_ID = ODH.BIB_ID]]></xml-property>
                 <list-property name="resultSet">
                     <structure>
                         <property name="position">1</property>
-                        <property name="name">Library</property>
+                        <property name="name">LOCN_CD</property>
                         <property name="dataType">string</property>
                     </structure>
                 </list-property>
@@ -359,8 +359,8 @@ ODBI.BIB_ID = ODH.BIB_ID]]></xml-property>
             <list-property name="resultSet">
                 <structure>
                     <property name="position">1</property>
-                    <property name="name">Library</property>
-                    <property name="nativeName">Library</property>
+                    <property name="name">LOCN_CD</property>
+                    <property name="nativeName">LOCN_CD</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
@@ -370,7 +370,7 @@ from
 OLE_LOCN_LEVEL_T OLL,
 OLE_LOCN_T OL
 where
-OLL.LEVEL_CD = 'LIBRARY'
+OLL.LEVEL_CD = 'SHELVING'
 and
 OL.LEVEL_ID = OLL.LEVEL_ID]]></xml-property>
         </oda-data-set>
