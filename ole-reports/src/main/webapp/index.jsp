@@ -107,7 +107,7 @@
                     <li><a href="<%= request.getContextPath() + "/frameset?__report=deliver/VufindLogs.rptdesign"%>" target="_blank">Vufind Logs</a></li>
                     <li><a href="<%= request.getContextPath() + "/frameset?__report=deliver/ItemCirculationRecord.rptdesign"%>" target="_blank">Item Circulation History</a></li>
                     <li><a href="<%= request.getContextPath() + "/frameset?__report=deliver/PatronCirculationHistory.rptdesign"%>" target="_blank">Patron Circulation History</a></li>
-                    <li><a href="<%= request.getContextPath() + "/frameset?__report=deliver/ClaimsReturn.rptdesign"%>" target="_blank">Claims Return</a></li>
+                    <li><a href="<%= request.getContextPath() + "/frameset?__report=deliver/ClaimsReturn.rptdesign"%>" target="_blank">Claims Returned</a></li>
                     <li><a href="<%= request.getContextPath() + "/frameset?__report=deliver/ItemMostlyRequested.rptdesign"%>" target="_blank">Item Requested Most</a></li>
                     <li><a href="<%= request.getContextPath() + "/frameset?__report=deliver/RequestedOverdueItems.rptdesign"%>" target="_blank">Requested Item Overdue</a></li>
             </ul>

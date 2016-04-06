@@ -7,22 +7,6 @@
     <property name="bidiLayoutOrientation">ltr</property>
     <property name="imageDPI">96</property>
     <parameters>
-        <scalar-parameter name="Library" id="77">
-            <property name="valueType">dynamic</property>
-            <property name="isRequired">true</property>
-            <property name="dataSetName">Library</property>
-            <expression name="valueExpr" type="javascript">dataSetRow["Library"]</expression>
-            <property name="dataType">string</property>
-            <property name="distinct">true</property>
-            <list-property name="selectionList"/>
-            <property name="paramType">simple</property>
-            <property name="controlType">list-box</property>
-            <property name="mustMatch">true</property>
-            <property name="fixedOrder">true</property>
-            <structure name="format">
-                <property name="category">Unformatted</property>
-            </structure>
-        </scalar-parameter>
         <scalar-parameter name="From" id="78">
             <text-property name="promptText">Date Missing/Lost Status From Date</text-property>
             <property name="valueType">static</property>
@@ -44,6 +28,28 @@
             <list-property name="selectionList"/>
             <property name="paramType">simple</property>
             <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="LIbrary" id="80">
+            <property name="valueType">dynamic</property>
+            <property name="dataSetName">Library</property>
+            <expression name="valueExpr" type="javascript">dataSetRow["LOCN_CD"]</expression>
+            <expression name="labelExpr" type="javascript">dataSetRow["LOCN_CD"]</expression>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <simple-property-list name="defaultValue">
+                <value type="constant">SCRR</value>
+                <value type="constant">MAIN</value>
+                <value type="constant">EGHAM</value>
+                <value type="constant">DAGENHAM</value>
+            </simple-property-list>
+            <list-property name="selectionList"/>
+            <property name="paramType">multi-value</property>
+            <property name="controlType">list-box</property>
+            <property name="mustMatch">true</property>
+            <property name="fixedOrder">true</property>
             <structure name="format">
                 <property name="category">Unformatted</property>
             </structure>
@@ -341,8 +347,8 @@ ODBI.BIB_ID = ODH.BIB_ID]]></xml-property>
                 <structure>
                     <property name="columnName">LOCN_CD</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Library</text-property>
-                    <text-property name="heading">Library</text-property>
+                    <text-property name="displayName">LOCN_CD</text-property>
+                    <text-property name="heading">LOCN_CD</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters"/>
@@ -365,7 +371,7 @@ ODBI.BIB_ID = ODH.BIB_ID]]></xml-property>
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
-            <xml-property name="queryText"><![CDATA[select OL.LOCN_CD as "Library"
+            <xml-property name="queryText"><![CDATA[select OL.LOCN_CD
 from
 OLE_LOCN_LEVEL_T OLL,
 OLE_LOCN_T OL
