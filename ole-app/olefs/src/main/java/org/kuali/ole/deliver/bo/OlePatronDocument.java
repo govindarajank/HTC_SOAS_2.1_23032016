@@ -27,6 +27,7 @@ import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -1970,7 +1971,11 @@ public class OlePatronDocument extends PersistableBusinessObjectBase implements 
             OleLoanDocument oleLoanDocument = iterator.next();
             if (oleLoanDocument.getLoanDueDate() != null) {
                 Integer timeDiff = new Integer(getTimeDiff(oleLoanDocument.getLoanDueDate(), new Date()));
-                if (timeDiff > days && recallRequestExists(oleLoanDocument)) {
+                boolean recallExists = recallRequestExists(oleLoanDocument);
+                if (days!=0 && timeDiff > days && recallExists) {
+                    return true;
+                }
+                if(oleLoanDocument.getLoanDueDate().before(new Date()) && recallExists){
                     return true;
                 }
             }
