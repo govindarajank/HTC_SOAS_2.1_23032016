@@ -488,6 +488,7 @@ public class OleLicenseRequestServiceImpl implements OleLicenseRequestService {
                         }
                         if(add){
                             OleLicenseRequestBo oleLicenseRequestBo=getOleLicenseRequestBoWithDocNumb(licenseRequestBo);
+                            if(oleLicenseRequestBo!=null){
                             List<OleLicenseRequestItemTitle> itemTitleList = oleLicenseRequestBo.getOleLicenseRequestItemTitles();
                             List<OleLicenseRequestItemTitle> newItemTitleList = new ArrayList<OleLicenseRequestItemTitle>();
                             if(itemTitleList!=null && itemTitleList.size()>0 ){
@@ -533,7 +534,7 @@ public class OleLicenseRequestServiceImpl implements OleLicenseRequestService {
                                 licenseRequestList.add(licenseRequestBo);
                             }
 
-                        }
+                        }}
                     }  }
             }
         }catch  (ParseException e) {

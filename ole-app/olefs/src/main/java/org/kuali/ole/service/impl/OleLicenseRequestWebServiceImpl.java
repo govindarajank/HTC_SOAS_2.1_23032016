@@ -87,7 +87,7 @@ public class OleLicenseRequestWebServiceImpl implements OleLicenseRequestWebServ
     @Override
     public OleLicenseRequestBo createLicenseRequest(String documentnumber, String itemUUIDs) {
         try{
-            String user = ConfigContext.getCurrentContextConfig().getProperty(OLEConstants.OleLicenseRequest.LICENSE_DOCUMENT_INITIATOR);
+            String user = GlobalVariables.getUserSession().getLoggedInUserPrincipalName();
             GlobalVariables.setUserSession(new UserSession(user));
             DocumentService documentService= GlobalResourceLoader.getService(OLEConstants.DOCUMENT_HEADER_SERVICE);
 
