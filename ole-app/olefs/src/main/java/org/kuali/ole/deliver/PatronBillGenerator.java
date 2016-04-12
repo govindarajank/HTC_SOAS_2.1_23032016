@@ -100,11 +100,11 @@ public class PatronBillGenerator {
         contentForSendMail.append(oleDeliverBatchService.generateMailContentFromPatronBill(oleLoanDocument, oleLoanDocument.getOlePatron(), feeTypeName, String.valueOf(fineAmount), patronBillPayment));
         OleMailer oleMail = GlobalResourceLoader.getService("oleMailer");
         String replyToEmail = getCircDeskLocationResolver().getReplyToEmail(oleLoanDocument.getItemLocation());
-        if (replyToEmail != null) {
+        /*if (replyToEmail != null) {
             oleMail.sendEmail(new EmailFrom(replyToEmail), new EmailTo(patronMail), new EmailSubject(feeTypeName), new EmailBody(contentForSendMail.toString()), true);
         } else {
             oleMail.sendEmail(new EmailFrom(getParameter(OLEParameterConstants.NOTICE_FROM_MAIL)), new EmailTo(patronMail), new EmailSubject(feeTypeName), new EmailBody(contentForSendMail.toString()), true);
-        }
+        }*/
         if (LOG.isInfoEnabled()){
             LOG.info("Mail send successfully to " + patronMail);
         }

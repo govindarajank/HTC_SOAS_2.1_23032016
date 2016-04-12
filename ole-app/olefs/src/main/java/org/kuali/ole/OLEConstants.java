@@ -2151,9 +2151,9 @@ public class OLEConstants {
     public static final String COPY_NUM = "copyNumber";
     public static final String BIBUUID = "bibUuid";
     public static final String EFF_DATE_FORMAT = "MMM dd, yyyy HH:MM:SS a";
-    public static final String COURTESY_NOTICE = "Courtesy Notice";
+    public static final String COURTESY_NOTICE = "CourtesyNotice";
     public static final String HOLD_EXP_COURTESY_NOTICE = "Expired Hold  Notice";
-    public static final String OVERDUE_NOTICE = "Overdue Notice";
+    public static final String OVERDUE_NOTICE = "OverdueNotice";
     public static final String RETURN_MISSING_PIECE_NOTICE = "Return With Missing Piece Notice";
     public static final String LOST_NOTICE = "Lost Notice";
     public static final String NOTICE_HOLD_COURTESY = "HoldCourtesyNotice";
