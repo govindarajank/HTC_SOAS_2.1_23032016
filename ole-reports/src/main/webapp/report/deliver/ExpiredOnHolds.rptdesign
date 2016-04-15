@@ -102,9 +102,128 @@
                     <property name="dataType">string</property>
                 </structure>
             </list-property>
-            <list-property name="columnHints"/>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">HOLD_EXP_DATE</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Hold Shelf Expiration Date</text-property>
+                    <text-property name="heading">Hold Shelf Expiration Date</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">LAST_NM</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Patron Last Name</text-property>
+                    <text-property name="heading">Patron Last Name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">FIRST_NM</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Patron First Name</text-property>
+                    <text-property name="heading">Patron First Name</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">BARCODE</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Item Barcode</text-property>
+                    <text-property name="heading">Item Barcode</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">TITLE</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Title</text-property>
+                    <text-property name="heading">Title</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">PTRN_Q_POS</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">PTRN_Q_POS</text-property>
+                    <text-property name="heading">PTRN_Q_POS</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Call Number</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Call Number</text-property>
+                    <text-property name="heading">Call Number</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Location</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Location</text-property>
+                    <text-property name="heading">Location</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Location Level</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Location Level</text-property>
+                    <text-property name="heading">Location Level</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">Pickup Location</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">Pickup Location</text-property>
+                    <text-property name="heading">Pickup Location</text-property>
+                </structure>
+            </list-property>
             <list-property name="parameters"/>
-            <structure name="cachedMetaData"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">HOLD_EXP_DATE</property>
+                        <property name="dataType">date</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">LAST_NM</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">FIRST_NM</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">BARCODE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">TITLE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">PTRN_Q_POS</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">Call Number</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">Location</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">Location Level</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">Pickup Location</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">11</property>
+                        <property name="name">Shelving Location</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
             <method name="beforeOpen"><![CDATA[deliverReport = new Packages.org.kuali.ole.OLEDeliverReportHelper();
 if(params["Pickup Location"]!=null &amp;&amp; params["Pickup Location"]!=''){
 	this.queryText = this.queryText+" and ODR.PCKUP_LOC_ID = '"+params["Pickup Location"].value+"'"
@@ -119,14 +238,85 @@ if(dbVendor!=null){
 }]]></method>
             <method name="onFetch"><![CDATA[dataSetRow["Shelving Location"] = deliverReport.getShelvingLocation(dataSetRow["Location"],dataSetRow["Location Level"]);]]></method>
             <property name="dataSource">ExpiredOnHolds</property>
-            <list-property name="resultSet"/>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">HOLD_EXP_DATE</property>
+                    <property name="nativeName">HOLD_EXP_DATE</property>
+                    <property name="dataType">date</property>
+                    <property name="nativeDataType">91</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">LAST_NM</property>
+                    <property name="nativeName">LAST_NM</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">FIRST_NM</property>
+                    <property name="nativeName">FIRST_NM</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">BARCODE</property>
+                    <property name="nativeName">BARCODE</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">TITLE</property>
+                    <property name="nativeName">TITLE</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">PTRN_Q_POS</property>
+                    <property name="nativeName">PTRN_Q_POS</property>
+                    <property name="dataType">integer</property>
+                    <property name="nativeDataType">4</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">Call Number</property>
+                    <property name="nativeName">Call Number</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">Location</property>
+                    <property name="nativeName">Location</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">Location Level</property>
+                    <property name="nativeName">Location Level</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">Pickup Location</property>
+                    <property name="nativeName">Pickup Location</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+            </list-property>
             <xml-property name="queryText"><![CDATA[select 
 ODR.HOLD_EXP_DATE as "Hold Shelf Expiration Date",
 OPEV.LAST_NM as "Patron Last Name",
 OPEV.FIRST_NM as "Patron First Name",
 ODI.BARCODE as "Item Barcode",
 ODBI.TITLE as "Title",
-ODR.PTRN_Q_POS as "Parton Queue Postion",
+ODR.PTRN_Q_POS,
 CASE WHEN ODI.CALL_NUMBER IS NOT NULL AND ODI.CALL_NUMBER != ' ' THEN ODI.CALL_NUMBER
 	WHEN ODH.CALL_NUMBER IS NOT NULL AND ODH.CALL_NUMBER != ' ' THEN ODH.CALL_NUMBER
 	ELSE ' '
@@ -323,11 +513,11 @@ OLE_CRCL_DSK_T]]></xml-property>
                     <property name="dataType">string</property>
                 </structure>
                 <structure>
-                    <property name="name">Patron Queue Position</property>
-                    <text-property name="displayName">Patron Queue Postion</text-property>
+                    <property name="name">Que Pos</property>
+                    <text-property name="displayName">Que Pos</text-property>
                     <expression name="expression" type="javascript">dataSetRow["PTRN_Q_POS"]</expression>
-                    <property name="dataType">string</property>
-                    <property name="allowExport">false</property>
+                    <property name="dataType">integer</property>
+                    <property name="allowExport">true</property>
                 </structure>
             </list-property>
             <list-property name="sort">
@@ -410,7 +600,7 @@ OLE_CRCL_DSK_T]]></xml-property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
                         <label id="106">
-                            <text-property name="text">Patron Queue Postion</text-property>
+                            <text-property name="text">Que Pos</text-property>
                         </label>
                     </cell>
                     <cell id="19">
@@ -530,8 +720,8 @@ OLE_CRCL_DSK_T]]></xml-property>
                         <property name="borderRightWidth">thin</property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
-                        <data id="107">
-                            <property name="resultSetColumn">Patron Queue Position</property>
+                        <data id="108">
+                            <property name="resultSetColumn">Que Pos</property>
                         </data>
                     </cell>
                     <cell id="28">
