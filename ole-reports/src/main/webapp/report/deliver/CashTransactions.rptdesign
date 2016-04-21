@@ -97,46 +97,64 @@
             </list-property>
             <list-property name="columnHints">
                 <structure>
-                    <property name="columnName">Patron Name</property>
+                    <property name="columnName">CONCAT(OPEV.FIRST_NM,CONCAT(' ',OPEV.LAST_NM))</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Patron Name</text-property>
-                    <text-property name="heading">Patron Name</text-property>
+                    <text-property name="displayName">CONCAT(OPEV.FIRST_NM,CONCAT(' ',OPEV.LAST_NM))</text-property>
+                    <text-property name="heading">CONCAT(OPEV.FIRST_NM,CONCAT(' ',OPEV.LAST_NM))</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">Patron Id</property>
+                    <property name="columnName">OLE_PTRN_ID</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Patron Id</text-property>
-                    <text-property name="heading">Patron Id</text-property>
+                    <text-property name="displayName">OLE_PTRN_ID</text-property>
+                    <text-property name="heading">OLE_PTRN_ID</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">Patron Status</property>
+                    <property name="columnName">ACTV_IND</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Patron Status</text-property>
-                    <text-property name="heading">Patron Status</text-property>
+                    <text-property name="displayName">ACTV_IND</text-property>
+                    <text-property name="heading">ACTV_IND</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">Accrued Fine Date</property>
+                    <property name="columnName">CRTE_DT_TIME</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Accrued Fine Date</text-property>
-                    <text-property name="heading">Accrued Fine Date</text-property>
+                    <text-property name="displayName">CRTE_DT_TIME</text-property>
+                    <text-property name="heading">CRTE_DT_TIME</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">Description</property>
+                    <property name="columnName">PAY_GENERAL_NOTE</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Description</text-property>
-                    <text-property name="heading">Description</text-property>
+                    <text-property name="displayName">PAY_GENERAL_NOTE</text-property>
+                    <text-property name="heading">PAY_GENERAL_NOTE</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">Outstanding Amount</property>
+                    <property name="columnName">TOT_AMT_DUE</property>
                     <property name="analysis">measure</property>
-                    <text-property name="displayName">Outstanding Amount</text-property>
-                    <text-property name="heading">Outstanding Amount</text-property>
+                    <text-property name="displayName">TOT_AMT_DUE</text-property>
+                    <text-property name="heading">TOT_AMT_DUE</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">Item Barcode</property>
+                    <property name="columnName">BALANCE_AMT</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">BALANCE_AMT</text-property>
+                    <text-property name="heading">BALANCE_AMT</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">PAY_AMT</property>
+                    <property name="analysis">measure</property>
+                    <text-property name="displayName">PAY_AMT</text-property>
+                    <text-property name="heading">PAY_AMT</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">PAY_STA_NAME</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Item Barcode</text-property>
-                    <text-property name="heading">Item Barcode</text-property>
+                    <text-property name="displayName">PAY_STA_NAME</text-property>
+                    <text-property name="heading">PAY_STA_NAME</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ITM_BARCODE</property>
+                    <property name="analysis">dimension</property>
+                    <text-property name="displayName">ITM_BARCODE</text-property>
+                    <text-property name="heading">ITM_BARCODE</text-property>
                 </structure>
                 <structure>
                     <property name="columnName">Location</property>
@@ -151,10 +169,10 @@
                     <text-property name="heading">Location Level</text-property>
                 </structure>
                 <structure>
-                    <property name="columnName">Item Title</property>
+                    <property name="columnName">TITLE</property>
                     <property name="analysis">dimension</property>
-                    <text-property name="displayName">Item Title</text-property>
-                    <text-property name="heading">Item Title</text-property>
+                    <text-property name="displayName">TITLE</text-property>
+                    <text-property name="heading">TITLE</text-property>
                 </structure>
             </list-property>
             <list-property name="parameters"/>
@@ -162,56 +180,71 @@
                 <list-property name="resultSet">
                     <structure>
                         <property name="position">1</property>
-                        <property name="name">Patron Name</property>
+                        <property name="name">CONCAT(OPEV.FIRST_NM,CONCAT(' ',OPEV.LAST_NM))</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">2</property>
-                        <property name="name">Patron Id</property>
+                        <property name="name">OLE_PTRN_ID</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">3</property>
-                        <property name="name">Patron Status</property>
+                        <property name="name">ACTV_IND</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">4</property>
-                        <property name="name">Accrued Fine Date</property>
+                        <property name="name">CRTE_DT_TIME</property>
                         <property name="dataType">date-time</property>
                     </structure>
                     <structure>
                         <property name="position">5</property>
-                        <property name="name">Description</property>
+                        <property name="name">PAY_GENERAL_NOTE</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">6</property>
-                        <property name="name">Outstanding Amount</property>
-                        <property name="dataType">decimal</property>
+                        <property name="name">TOT_AMT_DUE</property>
+                        <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">7</property>
-                        <property name="name">Item Barcode</property>
-                        <property name="dataType">string</property>
+                        <property name="name">BALANCE_AMT</property>
+                        <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">8</property>
-                        <property name="name">Location</property>
-                        <property name="dataType">string</property>
+                        <property name="name">PAY_AMT</property>
+                        <property name="dataType">float</property>
                     </structure>
                     <structure>
                         <property name="position">9</property>
-                        <property name="name">Location Level</property>
+                        <property name="name">PAY_STA_NAME</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">10</property>
-                        <property name="name">Item Title</property>
+                        <property name="name">ITM_BARCODE</property>
                         <property name="dataType">string</property>
                     </structure>
                     <structure>
                         <property name="position">11</property>
+                        <property name="name">Location</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">12</property>
+                        <property name="name">Location Level</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">13</property>
+                        <property name="name">TITLE</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">14</property>
                         <property name="name">Library</property>
                         <property name="dataType">string</property>
                     </structure>
@@ -234,83 +267,108 @@ this.queryText = this.queryText+" and ODBT.DLVR_BORR_TYP_NM IN ('"+params["Patro
             <list-property name="resultSet">
                 <structure>
                     <property name="position">1</property>
-                    <property name="name">Patron Name</property>
-                    <property name="nativeName">Patron Name</property>
+                    <property name="name">CONCAT(OPEV.FIRST_NM,CONCAT(' ',OPEV.LAST_NM))</property>
+                    <property name="nativeName">CONCAT(OPEV.FIRST_NM,CONCAT(' ',OPEV.LAST_NM))</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">2</property>
-                    <property name="name">Patron Id</property>
-                    <property name="nativeName">Patron Id</property>
+                    <property name="name">OLE_PTRN_ID</property>
+                    <property name="nativeName">OLE_PTRN_ID</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">3</property>
-                    <property name="name">Patron Status</property>
-                    <property name="nativeName">Patron Status</property>
+                    <property name="name">ACTV_IND</property>
+                    <property name="nativeName">ACTV_IND</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">4</property>
-                    <property name="name">Accrued Fine Date</property>
-                    <property name="nativeName">Accrued Fine Date</property>
+                    <property name="name">CRTE_DT_TIME</property>
+                    <property name="nativeName">CRTE_DT_TIME</property>
                     <property name="dataType">date-time</property>
                     <property name="nativeDataType">93</property>
                 </structure>
                 <structure>
                     <property name="position">5</property>
-                    <property name="name">Description</property>
-                    <property name="nativeName">Description</property>
+                    <property name="name">PAY_GENERAL_NOTE</property>
+                    <property name="nativeName">PAY_GENERAL_NOTE</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
                     <property name="position">6</property>
-                    <property name="name">Outstanding Amount</property>
-                    <property name="nativeName">Outstanding Amount</property>
-                    <property name="dataType">decimal</property>
-                    <property name="nativeDataType">2</property>
+                    <property name="name">TOT_AMT_DUE</property>
+                    <property name="nativeName">TOT_AMT_DUE</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
                 </structure>
                 <structure>
                     <property name="position">7</property>
-                    <property name="name">Item Barcode</property>
-                    <property name="nativeName">Item Barcode</property>
+                    <property name="name">BALANCE_AMT</property>
+                    <property name="nativeName">BALANCE_AMT</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">PAY_AMT</property>
+                    <property name="nativeName">PAY_AMT</property>
+                    <property name="dataType">float</property>
+                    <property name="nativeDataType">8</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">PAY_STA_NAME</property>
+                    <property name="nativeName">PAY_STA_NAME</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">8</property>
+                    <property name="position">10</property>
+                    <property name="name">ITM_BARCODE</property>
+                    <property name="nativeName">ITM_BARCODE</property>
+                    <property name="dataType">string</property>
+                    <property name="nativeDataType">12</property>
+                </structure>
+                <structure>
+                    <property name="position">11</property>
                     <property name="name">Location</property>
                     <property name="nativeName">Location</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">9</property>
+                    <property name="position">12</property>
                     <property name="name">Location Level</property>
                     <property name="nativeName">Location Level</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
                 <structure>
-                    <property name="position">10</property>
-                    <property name="name">Item Title</property>
-                    <property name="nativeName">Item Title</property>
+                    <property name="position">13</property>
+                    <property name="name">TITLE</property>
+                    <property name="nativeName">TITLE</property>
                     <property name="dataType">string</property>
                     <property name="nativeDataType">12</property>
                 </structure>
             </list-property>
             <xml-property name="queryText"><![CDATA[select
-CONCAT(OPEV.FIRST_NM,CONCAT(' ',OPEV.LAST_NM)) as "Patron Name",
-ODPB.OLE_PTRN_ID as "Patron Id",
-OPEV.ACTV_IND as "Patron Status",
-ODPB.CRTE_DT_TIME as "Accrued Fine Date",
-ODPBFT.PAY_GENERAL_NOTE as "Description",
-ODPBFT.BALANCE_AMT as "Outstanding Amount",
-ODPBFT.ITM_BARCODE as "Item Barcode",
+CONCAT(OPEV.FIRST_NM,CONCAT(' ',OPEV.LAST_NM)),
+ODPB.OLE_PTRN_ID,
+OPEV.ACTV_IND,
+ODPB.CRTE_DT_TIME,
+ODPBFT.PAY_GENERAL_NOTE,
+ODPB.TOT_AMT_DUE,
+ODPBFT.BALANCE_AMT,
+ODPB.PAY_AMT,
+OPPST.PAY_STA_NAME,
+ODPBFT.ITM_BARCODE,
+
 CASE WHEN ODI.LOCATION IS NOT NULL AND ODI.LOCATION != ' ' THEN ODI.LOCATION
 	WHEN ODH.LOCATION IS NOT NULL AND ODH.LOCATION != ' ' THEN ODH.LOCATION
 	ELSE ' ' 
@@ -319,7 +377,7 @@ CASE WHEN ODI.LOCATION_LEVEL IS NOT NULL AND ODI.LOCATION_LEVEL != ' ' THEN ODI.
 	WHEN ODH.LOCATION_LEVEL IS NOT NULL AND ODH.LOCATION_LEVEL != ' ' THEN ODH.LOCATION_LEVEL
 	ELSE ' '
 END as "Location Level",
-ODBI.TITLE as "Item Title"
+ODBI.TITLE
 from
 OLE_DLVR_PTRN_BILL_FEE_TYP_T ODPBFT,
 OLE_DLVR_PTRN_BILL_T ODPB,
@@ -327,9 +385,10 @@ OLE_PTRN_ENTITY_V OPEV,
 OLE_DS_ITEM_T ODI,
 OLE_DS_HOLDINGS_T ODH,
 OLE_DS_BIB_INFO_T ODBI,
+OLE_PTRN_PAY_STA_T OPPST,
 OLE_DLVR_BORR_TYP_T ODBT
 where
-ODPBFT.BALANCE_AMT > 0
+OPPST.PAY_STA_ID = ODPBFT.PAY_STATUS_ID
 and
 ODPBFT.PTRN_BILL_ID = ODPB.PTRN_BILL_ID
 and
@@ -341,7 +400,8 @@ ODI.HOLDINGS_ID =  ODH.HOLDINGS_ID
 and
 ODBI.BIB_ID = ODH.BIB_ID
 and
-OPEV.PTRN_TYP_ID = ODBT.DLVR_BORR_TYP_ID]]></xml-property>
+OPEV.PTRN_TYP_ID = ODBT.DLVR_BORR_TYP_ID
+]]></xml-property>
         </oda-data-set>
         <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="Library" id="72">
             <list-property name="columnHints">
@@ -474,38 +534,44 @@ OLE_DLVR_BORR_TYP_T ODBT]]></xml-property>
                 <structure>
                     <property name="name">Patron Name</property>
                     <text-property name="displayName">Patron Name</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["Patron Name"]</expression>
+                    <expression name="expression" type="javascript">dataSetRow["CONCAT(OPEV.FIRST_NM,CONCAT(' ',OPEV.LAST_NM))"]</expression>
                     <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">Patron Id</property>
                     <text-property name="displayName">Patron Id</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["Patron Id"]</expression>
+                    <expression name="expression" type="javascript">dataSetRow["OLE_PTRN_ID"]</expression>
                     <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">Patron Status</property>
                     <text-property name="displayName">Patron Status</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["Patron Status"]</expression>
+                    <expression name="expression" type="javascript">dataSetRow["ACTV_IND"]</expression>
                     <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">Description</property>
                     <text-property name="displayName">Description</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["Description"]</expression>
+                    <expression name="expression" type="javascript">dataSetRow["PAY_GENERAL_NOTE"]</expression>
                     <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">Outstanding Amount</property>
                     <text-property name="displayName">Outstanding Amount</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["Outstanding Amount"]</expression>
+                    <expression name="expression" type="javascript">dataSetRow["TOT_AMT_DUE"]</expression>
                     <property name="dataType">decimal</property>
+                    <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">Item Barcode</property>
                     <text-property name="displayName">Item Barcode</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["Item Barcode"]</expression>
+                    <expression name="expression" type="javascript">dataSetRow["ITM_BARCODE"]</expression>
                     <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">Library</property>
@@ -516,14 +582,44 @@ OLE_DLVR_BORR_TYP_T ODBT]]></xml-property>
                 <structure>
                     <property name="name">Item Title</property>
                     <text-property name="displayName">Item Title</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["Item Title"]</expression>
+                    <expression name="expression" type="javascript">dataSetRow["TITLE"]</expression>
                     <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
                 </structure>
                 <structure>
                     <property name="name">Accrued Fine Date</property>
                     <text-property name="displayName">Accrued Fine Date</text-property>
-                    <expression name="expression" type="javascript">dataSetRow["Accrued Fine Date"]</expression>
+                    <expression name="expression" type="javascript">dataSetRow["CRTE_DT_TIME"]</expression>
                     <property name="dataType">date-time</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Unpaid Amount</property>
+                    <text-property name="displayName">Unpaid Amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["BALANCE_AMT"]</expression>
+                    <property name="dataType">decimal</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Paid Amount</property>
+                    <text-property name="displayName">Paid Amount</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["PAY_AMT"]</expression>
+                    <property name="dataType">decimal</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Payment Status</property>
+                    <text-property name="displayName">Payment Status</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["PAY_STA_NAME"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">Payment Status Details</property>
+                    <text-property name="displayName">Payment Status Details</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["PAY_STA_NAME"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
                 </structure>
             </list-property>
             <column id="42"/>
@@ -532,8 +628,11 @@ OLE_DLVR_BORR_TYP_T ODBT]]></xml-property>
             <column id="45"/>
             <column id="46"/>
             <column id="47"/>
+            <column id="83"/>
+            <column id="80"/>
             <column id="48"/>
             <column id="49"/>
+            <column id="94"/>
             <column id="50"/>
             <header>
                 <row id="12">
@@ -612,7 +711,33 @@ OLE_DLVR_BORR_TYP_T ODBT]]></xml-property>
                         <property name="borderTopStyle">solid</property>
                         <property name="borderTopWidth">thin</property>
                         <label id="62">
+                            <text-property name="text">Fee Amount</text-property>
+                        </label>
+                    </cell>
+                    <cell id="81">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="87">
                             <text-property name="text">Outstanding Amount</text-property>
+                        </label>
+                    </cell>
+                    <cell id="78">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="90">
+                            <text-property name="text">Paid Amount</text-property>
                         </label>
                     </cell>
                     <cell id="19">
@@ -639,6 +764,19 @@ OLE_DLVR_BORR_TYP_T ODBT]]></xml-property>
                         <property name="borderTopWidth">thin</property>
                         <label id="66">
                             <text-property name="text">Library</text-property>
+                        </label>
+                    </cell>
+                    <cell id="92">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <label id="95">
+                            <text-property name="text">Payment status</text-property>
                         </label>
                     </cell>
                     <cell id="21">
@@ -736,6 +874,32 @@ OLE_DLVR_BORR_TYP_T ODBT]]></xml-property>
                             <property name="resultSetColumn">Outstanding Amount</property>
                         </data>
                     </cell>
+                    <cell id="82">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="89">
+                            <property name="resultSetColumn">Unpaid Amount</property>
+                        </data>
+                    </cell>
+                    <cell id="79">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="91">
+                            <property name="resultSetColumn">Paid Amount</property>
+                        </data>
+                    </cell>
                     <cell id="29">
                         <property name="borderBottomStyle">solid</property>
                         <property name="borderBottomWidth">thin</property>
@@ -760,6 +924,19 @@ OLE_DLVR_BORR_TYP_T ODBT]]></xml-property>
                         <property name="borderTopWidth">thin</property>
                         <data id="67">
                             <property name="resultSetColumn">Library</property>
+                        </data>
+                    </cell>
+                    <cell id="93">
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">thin</property>
+                        <property name="borderLeftStyle">solid</property>
+                        <property name="borderLeftWidth">thin</property>
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">thin</property>
+                        <data id="96">
+                            <property name="resultSetColumn">Payment Status Details</property>
                         </data>
                     </cell>
                     <cell id="31">
