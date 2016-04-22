@@ -41,6 +41,7 @@ public class OLEParameterConstants {
     public static final String DEFAULT_CIRCULATION_DESK = "DEFAULT_CIRCULATION_DESK";
     public static final String LOAN_WHILE_FASTADD = "LOAN_WHILE_FASTADD";
     public static final String DELIVER_NOTICE_CANCEL_TO_ADDRESS ="DELIVER_NOTICE_CANCEL_TO_ADDRESS";
+    public static final String ADMIN_SER_FEE ="ADMIN_SER_FEE";
 
 
 
