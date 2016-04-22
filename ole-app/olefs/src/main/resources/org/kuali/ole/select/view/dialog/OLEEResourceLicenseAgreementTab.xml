@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:p="http://www.springframework.org/schema/p"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.springframework.org/schema/beans         http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+    <bean id="OLEEResourceRecordView-E-ResourceLicenseAgreementTab" parent="E-Res-Uif-DocumentPage">
+        <property name="items">
+            <list merge="true">
+                <ref bean="OLEEResourceRecordView-AgreementLink"/>
+                <bean parent="OLEEResourceRecordView-Overview"/>
+                <ref bean="OLEEResourceRecordView-E-ResourceLicenseAgreementTab-GeneralSection"/>
+                <ref bean="OLEEResourceRecordView-E-ResourceLicenseAgreementTab-BusinessSection"/>
+                <ref bean="OLEEResourceRecordView-E-ResourceLicenseAgreementTab-ContinuingAccessSection"/>
+                <ref bean="OLEEResourceRecordView-E-ResourceLicenseAgreementTab-UseSection"/>
+                <!--<ref bean ="hdn_accessStatus"/>-->
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="OLEEResourceRecordView-AgreementLink" parent="Uif-Disclosure-HorizontalBoxSection">
+        <property name="items">
+            <list>
+                <bean parent="Uif-HorizontalBoxSection" p:style="float:left;margin-left:10em">
+                    <property name="items">
+                        <list>
+                            <bean id="CreateAgreement-button" parent="Uif-PrimaryActionButton" p:ajaxSubmit="true" p:methodToCall=""
+                                  p:actionLabel="Create New Agreement" p:performClientSideValidation="true" p:successCallback="displayLink(true);"
+                                  p:render="@{!(document.documentHeader.workflowDocument.initiated or document.documentHeader.workflowDocument.final)}"/>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="OLEEResourceRecordView-E-ResourceLicenseAgreementTab-GeneralSection" parent="Uif-Disclosure-VerticalBoxSection">
+        <property name="headerText" value="General"/>
+        <property name="items">
+            <list>
+                <bean parent="Uif-GridGroup" p:layoutManager.numberOfColumns="2"  p:render="@{!(document.documentHeader.workflowDocument.initiated or document.documentHeader.workflowDocument.final)}">
+                    <property name="items">
+
+                        <list>
+                            <bean id="LicenseTitle" parent="Uif-InputField" p:propertyName="agreementRecord.licenseTitle" p:label="License Title" p:required="true">
+                                <property name="control">
+                                    <bean parent="Uif-TextControl" p:size="38" p:maxLength="200" p:textExpand="true"/>
+                                </property>
+                            </bean>
+
+                            <bean id="ContractNumber" parent="Uif-InputField" p:propertyName="agreementRecord.contractNumber" p:label="Contract Number" p:required="true">
+                                <property name="control">
+                                    <bean parent="Uif-TextControl" p:size="20" p:maxLength="100" p:textExpand="true"/>
+                                </property>
+                            </bean>
+
+                            <bean id="AgreementStatusCode" parent="Uif-InputField" p:propertyName="agreementRecord.agreementStatusCode" p:label="Agreement Status" p:required="true" p:enableAutoQuickfinder="false">
+                                <property name="optionsFinder">
+                                    <bean class="org.kuali.ole.select.keyvalue.OleAgreementStatusKeyValues" />
+                                </property>
+                                <property name="control">
+                                    <bean parent="Uif-DropdownControl" p:cssClasses="fixed-size-100-select"/>
+                                </property>
+                            </bean>
+
+                            <bean id="CodingStatus" parent="Uif-InputField" p:propertyName="agreementRecord.codingStatus" p:label="Coding Status" p:required="true" p:enableAutoQuickfinder="false">
+                                <property name="control">
+                                    <bean parent="Uif-TextControl" p:size="20" p:maxLength="100" p:textExpand="true"/>
+                                </property>
+                            </bean>
+
+                            <bean id="AgreementMethodId" parent="Uif-InputField" p:propertyName="agreementRecord.agreementMethodId" p:label="Agreement Method" p:required="true" p:enableAutoQuickfinder="false">
+                                <property name="optionsFinder">
+                                    <bean class="org.kuali.ole.select.keyvalue.OleAgreementMethodKeyValues" />
+                                </property>
+                                <property name="control">
+                                    <bean parent="Uif-DropdownControl" p:cssClasses="fixed-size-100-select"/>
+                                </property>
+                            </bean>
+
+                            <bean id="AgreementLicensor" parent="Uif-InputField" p:propertyName="agreementRecord.licensor" p:label="Licensor" p:required="true">
+                                <property name="control">
+                                    <bean parent="Uif-TextControl" p:size="20"/>
+                                </property>
+                                <property name="quickfinder">
+                                    <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
+                                          p:fieldConversions="principalName:agreementRecord.licensor"/>
+                                </property>
+                            </bean>
+
+                            <bean id="AgreementLicensee" parent="Uif-InputField" p:propertyName="agreementRecord.licensee" p:label="Licensee" p:required="true">
+                                <property name="control">
+                                    <bean parent="Uif-TextControl" p:size="20"/>
+                                </property>
+                                <property name="quickfinder">
+                                    <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
+                                          p:fieldConversions="principalName:agreementRecord.Licensee"/>
+                                </property>
+                            </bean>
+
+                            <bean id="AgreementStartDate" parent="Uif-InputField" p:propertyName="agreementRecord.startDate" p:required="true"  p:label="Start Date" p:enableAutoQuickfinder="false">
+                                <property name="control">
+                                    <bean parent="Uif-DateControl" p:size="20" />
+                                </property>
+                                <property name="validCharactersConstraint">
+                                    <bean parent="BasicDatePatternConstraint"/>
+                                </property>
+                            </bean>
+
+                            <bean id="AgreementEndDate" parent="Uif-InputField" p:propertyName="agreementRecord.endDate" p:required="true"  p:label="End Date" p:enableAutoQuickfinder="false" >
+                                <property name="control">
+                                    <bean parent="Uif-DateControl" p:size="20" />
+                                </property>
+                                <property name="validCharactersConstraint">
+                                    <bean parent="BasicDatePatternConstraint"/>
+                                </property>
+                            </bean>
+                        </list>
+                    </property>
+                </bean>
+
+            </list>
+        </property>
+    </bean>
+
+
+    <bean id="OLEEResourceRecordView-E-ResourceLicenseAgreementTab-BusinessSection" parent="Uif-Disclosure-VerticalBoxSection">
+        <property name="headerText" value="Business"/>
+        <property name="items">
+            <list>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="OLEEResourceRecordView-E-ResourceLicenseAgreementTab-ContinuingAccessSection" parent="Uif-Disclosure-VerticalBoxSection">
+        <property name="headerText" value="Continuing Access"/>
+        <property name="items">
+            <list>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="OLEEResourceRecordView-E-ResourceLicenseAgreementTab-UseSection" parent="Uif-Disclosure-VerticalBoxSection">
+        <property name="headerText" value="Use"/>
+        <property name="items">
+            <list>
+            </list>
+        </property>
+    </bean>
+    <!--<bean id="hdn_accessStatus" parent="Uif-InputField" p:propertyName="accessStatus">
+        <property name="hidden" value="true"/>
+    </bean>-->
+</beans>

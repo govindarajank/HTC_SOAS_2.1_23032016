@@ -324,10 +324,10 @@
                       p:label="License Request Type"/>
             </list>
         </property>
-        <property name="resultsGroup">
+       <property name="resultsGroup">
             <bean parent="OleLicenseRequest-LookupView-ResultActions"/>
         </property>
-        <property name="page">
+       <property name="page">
             <bean parent="OleLicenseRequestBo-LookupPage"/>
         </property>
     </bean>

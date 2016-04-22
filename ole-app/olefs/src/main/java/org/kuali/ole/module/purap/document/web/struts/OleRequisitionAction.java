@@ -484,6 +484,8 @@ public class OleRequisitionAction extends RequisitionAction {
                     item.setCopyList(copyList);
                 }
             }
+            //System.out.println("*****************RequestAction*******////////////////////*******"+item.getCopyList().size()+"*************************////////////////////////////////////////////////////////");
+            LOG.error("*****************RequestAction - route*******////////////////////*******" + item.getCopyList().size() + "********************"+item.getItemTitleId()+"*****////////////////////////////////////////////////////////");
         }
         if (sufficientFundChecklag) {
             return super.route(mapping, form, request, response);
@@ -780,6 +782,8 @@ public class OleRequisitionAction extends RequisitionAction {
                 item.getItemCopies(), item.getLocationCopies(), itemCount, item.getItemQuantity(), item.getItemNoOfParts(), item.getCopies(), item.getVolumeNumber(), false);
         if (isValid) {
             itemCopy.setItemCopies(item.getItemCopies());
+            LOG.error("************************addCopy******" + itemCopy.getItemCopies() + "*************************////////////////////////////////////////////////////////");
+            //LOG.info("************************////////////////////*******" + itemCopy.getItemCopies() + "*************************////////////////////////////////////////////////////////");
             itemCopy.setLocationCopies(item.getLocationCopies());
             itemCopy.setParts(item.getItemNoOfParts());
             itemCopy.setStartingCopyNumber(item.getStartingCopyNumber());
@@ -795,6 +799,7 @@ public class OleRequisitionAction extends RequisitionAction {
             item.setLocationCopies(null);
             item.setCaption(null);
             item.setVolumeNumber(null);
+            LOG.error("************************addCopy --- copy List******" + item.getCopyList().size() + "*************************////////////////////////////////////////////////////////");
         }
         return mapping.findForward(OLEConstants.MAPPING_BASIC);
     }
