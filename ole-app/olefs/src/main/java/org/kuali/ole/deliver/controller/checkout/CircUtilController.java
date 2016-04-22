@@ -4,12 +4,14 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.kuali.ole.OLEConstants;
+import org.kuali.ole.OLEParameterConstants;
 import org.kuali.ole.deliver.OleLoanDocumentsFromSolrBuilder;
 import org.kuali.ole.deliver.PatronBillGenerator;
 import org.kuali.ole.deliver.bo.*;
 import org.kuali.ole.deliver.controller.drools.RuleExecutor;
 import org.kuali.ole.deliver.controller.notices.*;
 import org.kuali.ole.deliver.service.CircDeskLocationResolver;
+import org.kuali.ole.deliver.service.ParameterValueResolver;
 import org.kuali.ole.deliver.util.*;
 import org.kuali.ole.docstore.common.client.DocstoreClientLocator;
 import org.kuali.ole.docstore.common.document.Item;
@@ -21,6 +23,7 @@ import org.kuali.ole.docstore.engine.service.storage.rdbms.pojo.ItemRecord;
 import org.kuali.ole.docstore.engine.service.storage.rdbms.pojo.LocationsCheckinCountRecord;
 import org.kuali.ole.sys.context.SpringContext;
 import org.kuali.ole.util.DocstoreUtil;
+import org.kuali.rice.core.api.util.type.KualiDecimal;
 import org.kuali.rice.krad.service.BusinessObjectService;
 import org.kuali.rice.krad.service.KRADServiceLocator;
 import org.kuali.rice.krad.util.GlobalVariables;
@@ -43,6 +46,8 @@ public class CircUtilController extends RuleExecutor {
     private DocstoreClientLocator docstoreClientLocator;
     private SimpleDateFormat dateFormatForDocstoreDueDate;
     private OleLoanDocumentsFromSolrBuilder oleLoanDocumentsFromSolrBuilder;
+    private ParameterValueResolver parameterResolverInstance;
+
 
     public List<OLEDeliverNotice> processNotices(OleLoanDocument currentLoanDocument, ItemRecord itemRecord) {
         List<OLEDeliverNotice> deliverNotices = new ArrayList<>();
@@ -496,10 +501,45 @@ public class CircUtilController extends RuleExecutor {
         noticeProcessors.add(new RecallCourtseyNoticeDueDateProcessor());
         return noticeProcessors;
     }
-
+    private OlePaymentStatus getPaymentStatus(String paymentStatus) {
+        LOG.debug("Inside the getPaymentStatus method");
+        Map statusMap = new HashMap();
+        statusMap.put("paymentStatusCode", paymentStatus);
+        List<OlePaymentStatus> olePaymentStatusList = (List<OlePaymentStatus>) getBusinessObjectService().findMatching(OlePaymentStatus.class, statusMap);
+        return olePaymentStatusList != null && olePaymentStatusList.size() > 0 ? olePaymentStatusList.get(0) : null;
+    }
+    public ParameterValueResolver getParameterResolverInstance() {
+        if (null == parameterResolverInstance) {
+            parameterResolverInstance = ParameterValueResolver.getInstance();
+        }
+        return parameterResolverInstance;
+    }
     public String generateBillPayment(String selectedCirculationDesk, OleLoanDocument loanDocument, Timestamp customDueDateMap, Timestamp dueDate) {
         String billPayment = null;
+        OlePaymentStatus forgivePaymentStatus = getPaymentStatus(OLEConstants.FORGIVEN);
         ItemFineRate itemFineRate = loanDocument.getItemFineRate();
+        List<FeeType> olePatronFeeTypes=loanDocument.getOlePatron().getPatronFeeTypes();
+        for(FeeType olePatronfeeType : olePatronFeeTypes){
+            if(olePatronfeeType.getFeeType().equals("2") && loanDocument.getItemId().equals(olePatronfeeType.getItemBarcode())) {
+                OleItemLevelBillPayment oleItemLevelBillPayment = new OleItemLevelBillPayment();
+                oleItemLevelBillPayment.setPaymentDate(new Timestamp(System.currentTimeMillis()));
+                oleItemLevelBillPayment.setAmount(olePatronfeeType.getBalFeeAmount());
+                oleItemLevelBillPayment.setCreatedUser(loanDocument.getLoanOperatorId());
+                oleItemLevelBillPayment.setPaymentMode(OLEConstants.FORGIVE);
+                oleItemLevelBillPayment.setNote("Note" + loanDocument.getCheckInDate());
+                List<OleItemLevelBillPayment> oleItemLevelBillPayments = CollectionUtils.isNotEmpty(olePatronfeeType.getItemLevelBillPaymentList()) ? olePatronfeeType.getItemLevelBillPaymentList() : new ArrayList<OleItemLevelBillPayment>();
+                oleItemLevelBillPayments.add(oleItemLevelBillPayment);
+                olePatronfeeType.setItemLevelBillPaymentList(oleItemLevelBillPayments);
+                olePatronfeeType.setPaymentStatus(forgivePaymentStatus.getPaymentStatusId());
+                olePatronfeeType.setBalFeeAmount(new KualiDecimal(0));
+                getBusinessObjectService().save(olePatronfeeType);
+                String adminServiceFeeParameter = getParameterResolverInstance().getParameter(OLEConstants.APPL_ID_OLE, OLEConstants.DLVR_NMSPC, OLEConstants.DLVR_CMPNT, OLEParameterConstants.ADMIN_SER_FEE);
+                if(StringUtils.isNotBlank(adminServiceFeeParameter)) {
+                    Double adminSerFee = Double.valueOf(adminServiceFeeParameter);
+                    generateServiceBill(loanDocument, adminSerFee, dueDate);
+                }
+            }
+        }
         if (null == itemFineRate.getFineRate() || null == itemFineRate.getMaxFine() || null == itemFineRate.getInterval()) {
             LOG.error("No fine rule found");
         } else {
@@ -520,6 +560,16 @@ public class CircUtilController extends RuleExecutor {
         String billPayment = null;
         try {
             billPayment = getPatronBillGenerator().generatePatronBillPayment(loanDocument, OLEConstants.OVERDUE_FINE, overdueFine, dueDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return billPayment;
+    }
+
+    private String generateServiceBill(OleLoanDocument loanDocument, Double serviceFine, Timestamp dueDate) {
+        String billPayment = null;
+        try {
+            billPayment = getPatronBillGenerator().generatePatronBillPayment(loanDocument, OLEConstants.SERVICE_FEE, serviceFine, dueDate);
         } catch (Exception e) {
             e.printStackTrace();
         }
