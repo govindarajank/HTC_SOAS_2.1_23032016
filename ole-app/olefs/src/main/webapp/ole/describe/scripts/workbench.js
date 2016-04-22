@@ -157,7 +157,9 @@ jq(document).ready(function () {
         if(keycode == '13' && type == "search"){
             submitForm('search', null, null, null, null);
         }else if(keycode == '13'&& type == "browse") {
-            submitForm('browse', null, null, null, null);
+            submitForm('browse', null, null, true, function(){
+                browse()
+            });
         }
     });
 
