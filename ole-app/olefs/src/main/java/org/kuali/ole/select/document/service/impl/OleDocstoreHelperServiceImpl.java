@@ -150,6 +150,8 @@ public class OleDocstoreHelperServiceImpl extends BusinessObjectServiceHelperUti
     public void performDocstoreUpdateForRequisitionAndPOItem(PurchaseOrderDocument purchaseOrderDocument, OlePurchaseOrderItem singleItem, BibTree bibTree, String documentTypeName, String note) throws Exception {
         List<OleCopies> copies = singleItem.getCopies();
         List<OleCopy> copyList = singleItem.getCopyList();
+        //System.out.println("*****************PurchaseOrder*******////////////////////*******"+copyList.size()+"*************************////////////////////////////////////////////////////////");
+        LOG.error("*****************PurchaseOrder*******////////////////////*******"+copyList.size()+"*************************////////////////////////////////////////////////////////");
         List<OLELinkPurapDonor> oleDonors = singleItem.getOleDonors();
         String itemTypeDescription = singleItem.getItemTypeDescription();
         String itemTitleId = singleItem.getItemTitleId();

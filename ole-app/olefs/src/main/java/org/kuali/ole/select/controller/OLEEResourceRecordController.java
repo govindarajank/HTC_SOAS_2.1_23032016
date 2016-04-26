@@ -3221,6 +3221,16 @@ public class OLEEResourceRecordController extends OleTransactionalDocumentContro
         return getUIFModelAndView(form);
     }
 
+    @RequestMapping(params = "methodToCall=showAgreement")
+    public ModelAndView showAgreement(@ModelAttribute("KualiForm") UifFormBase form, BindingResult result,
+                                        HttpServletRequest request, HttpServletResponse response) {
+        OLEEResourceRecordForm oleeResourceRecordForm = (OLEEResourceRecordForm) form;
+        oleeResourceRecordForm.setPageSize("10");
+        OLEEResourceRecordDocument oleeResourceRecordDocument=(OLEEResourceRecordDocument)oleeResourceRecordForm.getDocument();
+
+        return super.navigate(form, result, request, response);
+    }
+
 }
 
 

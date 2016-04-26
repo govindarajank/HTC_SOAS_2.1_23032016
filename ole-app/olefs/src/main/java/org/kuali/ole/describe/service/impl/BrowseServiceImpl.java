@@ -528,11 +528,11 @@ public class BrowseServiceImpl implements BrowseService {
                 LOG.info("Total Call Number count:" + totalCount);
 
                 if (StringUtils.isNotEmpty(callNumberBrowseText)) {
-                    CallNumber callNumber = CallNumberFactory.getInstance().getCallNumber(classificationScheme);
+                    /*CallNumber callNumber = CallNumberFactory.getInstance().getCallNumber(classificationScheme);
                     callNumber.parse(callNumberBrowseText);
                     String normalizedCallNumberBrowseText = callNumber.getShelfKey();
-                    normalizedCallNumberBrowseText = normalizedCallNumberBrowseText.replaceAll(" ", "-");
-                    callNumberBrowseParams.setCallNumberBrowseText(normalizedCallNumberBrowseText);
+                    normalizedCallNumberBrowseText = normalizedCallNumberBrowseText.replaceAll(" ", "-");*/
+                    callNumberBrowseParams.setCallNumberBrowseText(callNumberBrowseText);
                     BrowseParams browseParamsForwardCallNumberCount = buildBrowseParams(callNumberBrowseParams);
                     if (callNumberBrowseParams.getDocTye().equalsIgnoreCase(DocType.ITEM.getCode())) {
                         searchResponse = getDocstoreClient().browseItems(browseParamsForwardCallNumberCount);

@@ -35,6 +35,7 @@
                 <ref bean="OLEEResourceRecordView-E-ResourceReviewDashBoardTab"/>
                 <ref bean="OLEEResourceRecordView-E-ResourceRelatedTab"/>
                 <ref bean="OLEEResourceRecordView-E-ResourceAdminDataTab"/>
+                <ref bean="OLEEResourceRecordView-E-ResourceLicenseAgreementTab"/>
                 <ref bean="Uif-DocumentAdHocRecipientsSection"/>
                 <ref bean="Uif-DocumentRouteLogSection"/>
             </list>
@@ -82,8 +83,7 @@
                 <bean parent="Uif-NavigationActionLink" id="E-Resource-ImportFromGOKB-Navigation" p:navigateToPageId="OLEEResourceRecordView-E-ResourceImportFromGOKBTab" p:actionLabel="Import From GOKb" p:methodToCall="setDefaults"/>
                 <bean parent="Uif-NavigationActionLink" id="E-Resource-Dashboard-Navigation" p:navigateToPageId="OLEEResourceRecordView-E-ResourceReviewDashBoardTab" p:actionLabel="Review DashBoard" p:ajaxSubmit="true" p:successCallback="setSpaceField()"/>
                 <bean parent="Uif-NavigationActionLink" id="E-Resource-AdminData-Navigation" p:navigateToPageId="OLEEResourceRecordView-E-ResourceAdminDataTab" p:actionLabel="Admin Data"  p:methodToCall="getPlatformForEResource" p:ajaxSubmit="true" p:successCallback="setSpaceField()"/>
-                <!--<bean parent="Uif-NavigationActionLink" id="E-Resource-PO-Navigation" p:navigateToPageId="OLEEResourceRecordView-E-ResourcePOPage"/>-->
-            </list>
+                <bean parent="Uif-NavigationActionLink" id="E-Resource-LicenseAgreement" p:navigateToPageId="OLEEResourceRecordView-E-ResourceLicenseAgreementTab" p:actionLabel="Agreement" p:methodToCall="showAgreement" p:ajaxSubmit="true" p:successCallback="setSpaceField()"/></list>
         </property>
     </bean>
 

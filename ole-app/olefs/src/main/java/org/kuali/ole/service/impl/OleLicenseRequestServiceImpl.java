@@ -603,8 +603,12 @@ public class OleLicenseRequestServiceImpl implements OleLicenseRequestService {
                     OLEConstants.OleLicenseRequest.END_TAG);
             Object businessObject =null;
             if(maintXml!=null){
-                maintXml = maintXml.substring(2,maintXml.length());
-                businessObject = KRADServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
+                maintXml = maintXml.substring(2, maintXml.length());
+                if(maintXml.contains("isperpectualAccess")){
+
+                }else {
+                    businessObject = KRADServiceLocator.getXmlObjectSerializerService().fromXml(maintXml);
+                }
             }
             return businessObject;                                                                            }
         else{

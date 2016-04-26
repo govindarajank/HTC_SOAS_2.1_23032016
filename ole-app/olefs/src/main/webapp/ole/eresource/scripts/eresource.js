@@ -505,6 +505,8 @@ function setSpaceField() {
     jq('#eResReviewDashSpaceField').height(navigationBarHeight);
     jq('#eResAdminDataSpaceField').height(navigationBarHeight);
     jq('#eResAccessSpaceField').height(navigationBarHeight);
+    jq('#eResAgreementSpaceField').height(navigationBarHeight);
+
 }
 
 function enableOrDisableDateResolved(){

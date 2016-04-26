@@ -63,6 +63,8 @@
                       p:label="License Start Date"/>
                 <bean id="licenseEndDate" parent="Uif-DataField" p:propertyName="documentRouteHeaderValue.finalizedDate"
                       p:label="License End Date"/>
+                <bean id="LicAgreementId" parent="Uif-DataField" p:propertyName="oleLicenseRequestBo.agreementId"
+                      p:label="License Agreement Id" />
             </list>
         </property>
         <property name="addLineActions">
