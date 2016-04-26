@@ -2041,8 +2041,7 @@ public class OlePatronDocument extends PersistableBusinessObjectBase implements 
         int overdueCount = 0;
         for(OleLoanDocument oleLoanDocument : oleLoanDocuments){
             //checking overdue
-            Integer numberOfOverdueNoticesSent = new Integer(oleLoanDocument.getNumberOfOverdueNoticesSent()!=null?oleLoanDocument.getNumberOfOverdueNoticesSent():"0");
-            if(numberOfOverdueNoticesSent>0){
+            if(oleLoanDocument.getLoanDueDate().before(new Date())){
                 overdueCount++;
             }
         }
