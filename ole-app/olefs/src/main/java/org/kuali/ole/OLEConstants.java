@@ -3860,4 +3860,5 @@ public class OLEConstants {
     public static final String RECALL_HOLD_REQUEST="Recall/Hold Request";
 
     public static final String DATE_FORMAT_FOR_TIME_SEC=" HH:mm:ss";
+    public static final String AGREEMENT_AUTH_USERS="AGREEMENT_AUTH_USERS";
 }

@@ -107,7 +107,7 @@
                                     <bean parent="Uif-DropdownControl">
                                         <property name="options">
                                             <list>
-                                                <bean parent="Uif-KeyLabelPair" p:key="Active" p:value="Acticve"/>
+                                                <bean parent="Uif-KeyLabelPair" p:key="Active" p:value="Active"/>
                                                 <bean parent="Uif-KeyLabelPair" p:key="InActive" p:value="InActive"/>
                                             </list>
                                         </property>
@@ -270,6 +270,14 @@
                 <bean id="agreement_use_section" parent="Uif-GridGroup" p:layoutManager.numberOfColumns="6">
                     <property name="items">
                         <list>
+                            <bean parent="Uif-InputField" p:propertyName="authorizedUsers" p:label="Authorized Users">
+                                <property name="control">
+                                    <bean parent="Uif-VerticalCheckboxesControl"/>
+                                </property>
+                                <property name="optionsFinder">
+                                    <bean class="org.kuali.ole.select.keyvalue.OleAgreementAuthUserKeyValues" />
+                                </property>
+                            </bean>
                             <bean id="Agreement-AuthorizedUsersGeneralNotes" parent="Uif-InputField" p:propertyName="authorizedUsersGenNotes" p:label="Authorized Users General Notes" p:required="false">
                                 <property name="control">
                                     <bean parent="Uif-TextControl" p:size="40" p:maxLength="250"/>

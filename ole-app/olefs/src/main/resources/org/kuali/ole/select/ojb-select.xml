@@ -6627,6 +6627,7 @@
         <field-descriptor name="noticePeriodTermination" column="AGR_NTC_PER_FOR_TERMN" jdbc-type="VARCHAR"/>
         <field-descriptor name="perpectualAccess" column="AGR_PERP_ACCESS" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
         <field-descriptor name="perpectualAccessNotes" column="AGR_PERP_ACC_NTE" jdbc-type="VARCHAR"/>
+        <field-descriptor name="authUsers" column="AGR_AUTH_USRS" jdbc-type="VARCHAR"/>
         <field-descriptor name="authorizedUsersGenNotes" column="AGR_AUTH_USRS_GEN_NTE" jdbc-type="VARCHAR"/>
         <field-descriptor name="depositInIR" column="AGR_DEP_IN_JR" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>
         <field-descriptor name="fairUse" column="AGR_FAIR_USE" jdbc-type="VARCHAR" conversion="org.kuali.rice.core.framework.persistence.ojb.conversion.OjbCharBooleanConversion"/>

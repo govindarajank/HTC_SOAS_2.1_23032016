@@ -3,9 +3,13 @@ package org.kuali.ole.select.bo;
 
 import org.kuali.rice.core.api.util.RiceConstants;
 import org.kuali.rice.krad.bo.PersistableBusinessObjectBase;
+
+import java.lang.reflect.Array;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -55,7 +59,7 @@ public class OleAgreementRecord extends PersistableBusinessObjectBase{
 
     private String perpectualAccessNotes;
 
-    private String authorizedUsers;
+    private List<String> authorizedUsers;
 
     private String governingLaw;
 
@@ -102,6 +106,8 @@ public class OleAgreementRecord extends PersistableBusinessObjectBase{
     private String startDateStr;
 
     private String endDateStr;
+
+    private String authUsers;
 
     private OleAgreementStatus oleAgreementStatus;
 
@@ -170,6 +176,15 @@ public class OleAgreementRecord extends PersistableBusinessObjectBase{
         }
         return startDate;
     }
+
+    public void setAuthUsers(String authUsers){
+      this.authUsers=authUsers;
+    }
+
+    public String getAuthUsers(){
+        return authUsers;
+    }
+
 
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
@@ -279,12 +294,18 @@ public class OleAgreementRecord extends PersistableBusinessObjectBase{
         this.perpectualAccessNotes = perpectualAccessNotes;
     }
 
-    public String getAuthorizedUsers() {
+    public List<String> getAuthorizedUsers() {
+        authorizedUsers = Arrays.asList(authUsers.split(","));
         return authorizedUsers;
     }
 
-    public void setAuthorizedUsers(String authorizedUsers) {
-        this.authorizedUsers = authorizedUsers;
+    public void setAuthorizedUsers(List<String> authorizedUsers) {
+        this.authUsers="";
+        for(String users:authorizedUsers){
+
+            setAuthUsers(this.authUsers += users+",");
+        }
+        this.authorizedUsers=authorizedUsers;
     }
 
     public String getGoverningLaw() {
