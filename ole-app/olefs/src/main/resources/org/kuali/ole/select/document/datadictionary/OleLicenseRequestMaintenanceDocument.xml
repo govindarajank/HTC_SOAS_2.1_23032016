@@ -139,15 +139,15 @@
     <bean id="Uif-LicenseDocumentPageFooter" parent="Uif-FooterBase">
         <property name="items">
             <list>
-                <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="performRouteReport" p:actionLabel="route report"
+                <!--<bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="performRouteReport" p:actionLabel="route report"
                       p:render="@{#actionFlags[#Constants.KUALI_ACTION_PERFORM_ROUTE_REPORT]}"/>
                 <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="sendAdHocRequests" p:actionLabel="send adhoc"
                       p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SEND_ADHOC_REQUESTS]}"/>
-                <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="route" p:actionLabel="submit" p:performClientSideValidation="true"
-                      p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}"/>
+                <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="blanketApprove" p:actionLabel="submit" p:performClientSideValidation="true"
+                      p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}"/>-->
                 <bean parent="Uif-SaveAction" p:ajaxSubmit="false" p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_SAVE]}"/>
-                <bean parent="Uif-PrimaryActionButton" p:methodToCall="reload" p:actionLabel="reload"
-                      p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_RELOAD]}"/>
+                <!-- <bean parent="Uif-PrimaryActionButton" p:methodToCall="reload" p:actionLabel="reload"
+                     p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_RELOAD]}"/>
                 <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="blanketApprove" p:actionLabel="blanket approve" p:performClientSideValidation="true"
                       p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_BLANKET_APPROVE]}"/>
                 <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="approve" p:actionLabel="approve"  p:performClientSideValidation="true"
@@ -158,10 +158,10 @@
                       p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_FYI]}"/>
                 <bean parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="acknowledge" p:actionLabel="acknowledge"
                       p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ACKNOWLEDGE]}"/>
-                <bean parent="Uif-BackAction" p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CLOSE]}"/>
+                <bean parent="Uif-BackAction" p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CLOSE]}"/>-->
                 <bean parent="Uif-CancelAction" p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_CANCEL]}"/>
-                <bean parent="Uif-ActionLink" p:ajaxSubmit="false" p:methodToCall="copy" p:actionLabel="copy"
-                      p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]}"/>
+                <!--<bean parent="Uif-ActionLink" p:ajaxSubmit="false" p:methodToCall="copy" p:actionLabel="copy"
+                      p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_COPY]}"/>-->
             </list>
         </property>
     </bean>
@@ -217,7 +217,7 @@
                                     <bean parent="Uif-DropdownControl" p:cssClasses="fixed-size-200-select"/>
                                 </property>
                             </bean>
-                            <bean id="assignee" parent="Uif-InputField" p:propertyName="assignee" p:label="Owner/Assignee">
+                            <bean id="assignee" parent="Uif-InputField" p:propertyName="assignee" p:required="true" p:label="Owner/Assignee">
                                 <property name="optionsFinder">
                                     <bean class="org.kuali.ole.select.keyvalue.OleAssigneeKeyValues" />
                                 </property>
@@ -242,7 +242,7 @@
                                     <null></null>
                                 </property>-->
                             </bean>
-                            <bean id="licenseRequestTypeId" parent="Uif-InputField" p:propertyName="licenseRequestTypeId" p:label="License Request Type" p:enableAutoQuickfinder="false">
+                            <bean id="licenseRequestTypeId" parent="Uif-InputField" p:propertyName="licenseRequestTypeId" p:required="true" p:label="License Request Type" p:enableAutoQuickfinder="false">
                                 <property name="optionsFinder">
                                     <bean class="org.kuali.ole.select.keyvalue.OleLicenseRequestTypeKeyValues" />
                                 </property>
@@ -253,7 +253,7 @@
                                    <null></null>
                                </property>-->
                             </bean>
-                            <bean id="agreementMethodId" parent="Uif-InputField" p:propertyName="agreementMethodId" p:label="Agreement Method" p:enableAutoQuickfinder="false">
+                            <bean id="agreementMethodId" parent="Uif-InputField" p:propertyName="agreementMethodId" p:required="true" p:label="Agreement Method" p:enableAutoQuickfinder="false">
                                 <property name="optionsFinder">
                                     <bean class="org.kuali.ole.select.keyvalue.OleAgreementMethodKeyValues" />
                                 </property>
@@ -428,7 +428,7 @@
                 <bean id="agreementId" parent="Uif-InputField" p:propertyName="agreementId">
                     <property name="quickfinder">
                         <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.ole.select.bo.OleAgreementRecord"
-                              p:fieldConversions="agreementId:agreementId,oleAgreementStatus.agreementStatusName:agreementStatus,contractNumber:agreementContractNumber,licenseTitle:agreementLicenseTitle,codingStatus:agreementCodingStatus,licensor:agreementLicensor,licensee:agreementLicensee,licenseeSite:agreementLicenseeSite,generalNotes:agreementGeneralNotes,startDateStr:agreementStartDate,endDateStr:agreementEndDate,purchaseOrderId:agreementPurchaseOrderId,feeSchedule:agreementFeeSchedule,inflationCap:agreementInflationCap,paymentTerms:agreementPaymentTerms,newTitleAccess:agreementNewTitleAccess,cancellationRights:agreementCancellationRights,:additionalTerms:agreementAdditionalTerms,noticePeriodTermination:agreementNoticePeriodTermination,perpectualAccess:agreementPerpectualAccess,perpectualAccessNotes:agreementPerpectualAccessNotes,governingLaw:agreementGoverningLaw,authorizedUsersGenNotes:agreementAuthorizedUsersGenNotes,depositInIR:agreementDepositInIR,fairUse:agreementFairUse,rightsGranted:agreementRightsGranted,illPrint:agreementIllPrint,illElectronic:agreementIllElectronic,illLoansame:agreementIllLoansame,illNonProfit:agreementIllNonProfit,illSameCuntRest:agreementIllSameCuntRest,illNotes:agreementIllNotes,libResCMSys:agreementLibResCMSys,libRes:agreementLibRes,cmNotes:agreementCmNotes,scholShar:agreementScholShar,textMining:agreementTextMining,perfomanceRights:agreementPerfomanceRights,streamingRights:agreementStreamingRights,multimediaRightsNote:agreementMultimediaRightsNote,notesOnAPCAgreement:agreementNotesOnAPCAgreement,apcOffsetAgreement:agreementApcOffsetAgreement"/>
+                              p:fieldConversions="agreementId:agreementId,oleAgreementStatus.agreementStatusName:agreementStatus,contractNumber:agreementContractNumber,licenseTitle:agreementLicenseTitle,codingStatus:agreementCodingStatus,licensor:agreementLicensor,licensee:agreementLicensee,licenseeSite:agreementLicenseeSite,generalNotes:agreementGeneralNotes,startDateStr:agreementStartDate,endDateStr:agreementEndDate,purchaseOrderId:agreementPurchaseOrderId,feeSchedule:agreementFeeSchedule,inflationCap:agreementInflationCap,paymentTerms:agreementPaymentTerms,newTitleAccess:agreementNewTitleAccess,cancellationRights:agreementCancellationRights,:additionalTerms:agreementAdditionalTerms,noticePeriodTermination:agreementNoticePeriodTermination,perpectualAccess:agreementPerpectualAccess,perpectualAccessNotes:agreementPerpectualAccessNotes,governingLaw:agreementGoverningLaw,authorizedUsers:agreementAuthorizedUsers,authorizedUsersGenNotes:agreementAuthorizedUsersGenNotes,depositInIR:agreementDepositInIR,fairUse:agreementFairUse,rightsGranted:agreementRightsGranted,illPrint:agreementIllPrint,illElectronic:agreementIllElectronic,illLoansame:agreementIllLoansame,illNonProfit:agreementIllNonProfit,illSameCuntRest:agreementIllSameCuntRest,illNotes:agreementIllNotes,libResCMSys:agreementLibResCMSys,libRes:agreementLibRes,cmNotes:agreementCmNotes,scholShar:agreementScholShar,textMining:agreementTextMining,perfomanceRights:agreementPerfomanceRights,streamingRights:agreementStreamingRights,multimediaRightsNote:agreementMultimediaRightsNote,notesOnAPCAgreement:agreementNotesOnAPCAgreement,apcOffsetAgreement:agreementApcOffsetAgreement"/>
                     </property>
                 </bean>
                 <bean id="agreementCreateNew"  parent="Uif-LinkField" p:label="" p:linkText="create new" p:href="@{#ConfigProperties['ole.license.url']}" p:target="_blank" p:render="@{!(document.documentHeader.workflowDocument.initiated or document.documentHeader.workflowDocument.final)}"/>
@@ -525,6 +525,7 @@
                     <property name="items">
                         <list>
                             <bean id="agreementGoverningLaw" parent="Uif-DataField" p:propertyName="agreementGoverningLaw" p:label="Governing Law" p:labelPlacement="TOP" p:fieldLabel.renderColon="false"/>
+                            <bean id="agreementAuthorizedUsers" parent="Uif-DataField" p:propertyName="agreementAuthorizedUsers" p:label="Authorized Users" p:labelPlacement="TOP" p:fieldLabel.renderColon="false"/>
                             <bean id="agreementAuthorizedUsersGenNotes" parent="Uif-DataField" p:propertyName="agreementAuthorizedUsersGenNotes" p:label="Authorized Users General Notes" p:labelPlacement="TOP" p:fieldLabel.renderColon="false"/>
                             <bean id="agreementDepositInIR" parent="Uif-DataField" p:propertyName="agreementDepositInIR" p:label="Deposit In IR" p:labelPlacement="TOP" p:fieldLabel.renderColon="false"/>
                             <bean id="agreementFairUse" parent="Uif-DataField" p:propertyName="agreementFairUse" p:label="Fair Use" p:labelPlacement="TOP" p:fieldLabel.renderColon="false"/>

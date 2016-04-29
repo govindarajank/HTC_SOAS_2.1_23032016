@@ -42,17 +42,17 @@
                                   p:methodToCall="getManageGOKbDataOnERes" p:ajaxSubmit="true"
                                   p:successCallback="manageGokbPopup()"
                                   p:render="@{!(document.documentHeader.workflowDocument.initiated or document.documentHeader.workflowDocument.final) and document.gokbIdentifier ne null}"/>
-                            <bean id="renewORcancel" parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="renewOrCancelEresourceDocument" p:actionLabel="Start Renew/Cancel Process" p:performClientSideValidation="true"
+                           <!-- <bean id="renewORcancel" parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="renewOrCancelEresourceDocument" p:actionLabel="Start Renew/Cancel Process" p:performClientSideValidation="true"
                                   p:render="@{document.documentHeader.workflowDocument.saved}" p:focusOnIdAfterSubmit="TOP" p:jumpToIdAfterSubmit="TOP" />
                             <bean id="approveRenewOrCancel" parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="approveRenewOrCancelEresource" p:actionLabel="Approve for Renew/Cancel Process" p:performClientSideValidation="true"
-                                  p:render="@{document.documentHeader.workflowDocument.enroute and canApprove}" p:focusOnIdAfterSubmit="TOP" p:jumpToIdAfterSubmit="TOP" />
+                                  p:render="@{document.documentHeader.workflowDocument.enroute and canApprove}" p:focusOnIdAfterSubmit="TOP" p:jumpToIdAfterSubmit="TOP" />-->
 
-                            <bean id="ermSubmit" parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="route" p:actionLabel="Submit" p:performClientSideValidation="true"
+                           <!-- <bean id="ermSubmit" parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="route" p:actionLabel="Submit" p:performClientSideValidation="true"
                                   p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_ROUTE]}" p:focusOnIdAfterSubmit="TOP" p:jumpToIdAfterSubmit="TOP" />
                             <bean id="ermApprove" parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="approve" p:actionLabel="Approve for Next Owner"  p:performClientSideValidation="true"
                                   p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_APPROVE]}" p:focusOnIdAfterSubmit="TOP" p:jumpToIdAfterSubmit="TOP" />
                             <bean id="ermDisapprove" parent="Uif-PrimaryActionButton" p:ajaxSubmit="false" p:methodToCall="disapprove" p:actionLabel="Disapprove"
-                                  p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_DISAPPROVE]}"/>
+                                  p:render="@{#actionFlags[#Constants.KUALI_ACTION_CAN_DISAPPROVE]}"/>-->
                         </list>
                     </property>
                 </bean>
