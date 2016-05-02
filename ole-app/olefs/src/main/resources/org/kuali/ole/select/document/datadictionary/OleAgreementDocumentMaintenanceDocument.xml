@@ -87,13 +87,13 @@
                                     </property>
                             </bean>
 
-                            <bean id="Agreement-ContractNumber" parent="Uif-InputField" p:propertyName="contractNumber" p:label="Contract Number" p:required="true">
+                            <bean id="Agreement-ContractNumber" parent="Uif-InputField" p:propertyName="contractNumber" p:label="Contract Number">
                                 <property name="control">
                                     <bean parent="Uif-TextControl" p:size="20" p:maxLength="20"/>
                                 </property>
                             </bean>
 
-                            <bean id="Agreement-AgreementStatus" parent="Uif-InputField" p:propertyName="agreementStatusId" p:label="Agreement Status" p:required="true">
+                            <bean id="Agreement-AgreementStatus" parent="Uif-InputField" p:propertyName="agreementStatusId" p:label="Agreement Status">
                                 <property name="optionsFinder">
                                     <bean class="org.kuali.ole.select.keyvalue.OleAgreementStatusKeyValues" />
                                 </property>
@@ -115,7 +115,7 @@
                                 </property>
                             </bean>
 
-                            <bean id="Agreement-PONumber" parent="Uif-InputField" p:propertyName="purchaseOrderId" p:label="PO Number" p:required="false">
+                            <bean id="Agreement-PONumber" parent="Uif-InputField" p:propertyName="purchaseOrderId" p:label="PO Number">
                                 <property name="quickfinder">
                                     <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.ole.select.document.OLEInvoicePurchaseOrderSearch"
                                           p:fieldConversions="purapDocumentIdentifier:purchaseOrderId"/>
@@ -125,7 +125,7 @@
                                 </property>
                             </bean>
 
-                            <bean id="Agreement-Licensor" parent="Uif-InputField" p:propertyName="licensor" p:label="Licensor" p:required="false">
+                            <bean id="Agreement-Licensor" parent="Uif-InputField" p:propertyName="licensor" p:label="Licensor" p:required="true">
                                 <property name="control">
                                     <bean parent="Uif-TextControl" p:size="20"/>
                                 </property>
@@ -146,7 +146,7 @@
                             </bean>
 
 
-                            <bean id="AgreementStartDate" parent="Uif-InputField" p:propertyName="startDate" p:required="true"  p:label="Start Date" p:enableAutoQuickfinder="false">
+                            <bean id="AgreementStartDate" parent="Uif-InputField" p:propertyName="startDate" p:label="Start Date" p:enableAutoQuickfinder="false">
                                 <property name="control">
                                     <bean parent="Uif-DateControl" p:size="20" />
                                 </property>
@@ -155,7 +155,7 @@
                                 </property>
                             </bean>
 
-                            <bean id="AgreementEndDate" parent="Uif-InputField" p:propertyName="endDate" p:required="true"  p:label="End Date" p:enableAutoQuickfinder="false" >
+                            <bean id="AgreementEndDate" parent="Uif-InputField" p:propertyName="endDate" p:label="End Date" p:enableAutoQuickfinder="false" >
                                 <property name="control">
                                     <bean parent="Uif-DateControl" p:size="20" />
                                 </property>
@@ -270,7 +270,7 @@
                 <bean id="agreement_use_section" parent="Uif-GridGroup" p:layoutManager.numberOfColumns="6">
                     <property name="items">
                         <list>
-                            <bean parent="Uif-InputField" p:propertyName="authorizedUsers" p:label="Authorized Users">
+                            <bean id="Agreement-AuthorizedUsers" parent="Uif-InputField" p:propertyName="authorizedUsers" p:label="Authorized Users" p:required="true">
                                 <property name="control">
                                     <bean parent="Uif-VerticalCheckboxesControl"/>
                                 </property>
@@ -278,7 +278,7 @@
                                     <bean class="org.kuali.ole.select.keyvalue.OleAgreementAuthUserKeyValues" />
                                 </property>
                             </bean>
-                            <bean id="Agreement-AuthorizedUsersGeneralNotes" parent="Uif-InputField" p:propertyName="authorizedUsersGenNotes" p:label="Authorized Users General Notes" p:required="false">
+                            <bean id="Agreement-AuthorizedUsersGeneralNotes" parent="Uif-InputField" p:propertyName="authorizedUsersGenNotes" p:label="Authorized Users General Notes">
                                 <property name="control">
                                     <bean parent="Uif-TextControl" p:size="40" p:maxLength="250"/>
                                 </property>
@@ -325,7 +325,7 @@
                                     <bean parent="Uif-CheckboxControl"/>
                                 </property>
                             </bean>
-                            <bean id="Agreement-ILLNotes" parent="Uif-InputField" p:propertyName="illNotes" p:label="ILL Notes" p:required="false">
+                            <bean id="Agreement-ILLNotes" parent="Uif-InputField" p:propertyName="illNotes" p:label="ILL Notes">
                                 <property name="control">
                                     <bean parent="Uif-TextControl" p:size="40" p:maxLength="250"/>
                                 </property>
@@ -340,7 +340,7 @@
                                     <bean parent="Uif-CheckboxControl"/>
                                 </property>
                             </bean>
-                            <bean id="Agreement-LibraryReservesCMSNote" parent="Uif-InputField" p:propertyName="cmNotes" p:label="library Reserves/CMS Note" p:required="false">
+                            <bean id="Agreement-LibraryReservesCMSNote" parent="Uif-InputField" p:propertyName="cmNotes" p:label="library Reserves/CMS Note">
                                 <property name="control">
                                     <bean parent="Uif-TextControl" p:size="40" p:maxLength="250"/>
                                 </property>
@@ -365,7 +365,7 @@
                                     <bean parent="Uif-CheckboxControl"/>
                                 </property>
                             </bean>
-                            <bean id="Agreement-MultimediaRightsNote" parent="Uif-InputField" p:propertyName="multimediaRightsNote" p:label="Multimedia Rights Note" p:required="false">
+                            <bean id="Agreement-MultimediaRightsNote" parent="Uif-InputField" p:propertyName="multimediaRightsNote" p:label="Multimedia Rights Note">
                                 <property name="control">
                                     <bean parent="Uif-TextControl" p:size="40" p:maxLength="250"/>
                                 </property>
