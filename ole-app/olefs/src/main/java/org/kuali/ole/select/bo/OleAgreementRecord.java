@@ -295,15 +295,17 @@ public class OleAgreementRecord extends PersistableBusinessObjectBase{
     }
 
     public List<String> getAuthorizedUsers() {
-        authorizedUsers = Arrays.asList(authUsers.split(","));
+        if(authUsers!=null)
+            authorizedUsers = Arrays.asList(authUsers.split(","));
         return authorizedUsers;
     }
 
     public void setAuthorizedUsers(List<String> authorizedUsers) {
         this.authUsers="";
-        for(String users:authorizedUsers){
-
-            setAuthUsers(this.authUsers += users+",");
+        if(authorizedUsers.size()>0){
+            for(String users:authorizedUsers){
+                setAuthUsers(this.authUsers += users+",");
+            }
         }
         this.authorizedUsers=authorizedUsers;
     }
