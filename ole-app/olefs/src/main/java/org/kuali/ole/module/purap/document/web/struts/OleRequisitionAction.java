@@ -1095,7 +1095,7 @@ public class OleRequisitionAction extends RequisitionAction {
         if (sufficientFundChecklag) {
             super.blanketApprove(mapping, form, request, response);
         }
-        return mapping.findForward(OLEConstants.MAPPING_BASIC);
+        return mapping.findForward(OLEConstants.MAPPING_CLOSE);
     }
 
     public ActionForward selectVendor(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response) throws Exception {
