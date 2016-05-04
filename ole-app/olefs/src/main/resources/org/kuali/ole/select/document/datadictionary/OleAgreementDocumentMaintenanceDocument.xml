@@ -39,6 +39,7 @@
         <property name="maintainableClass" value="org.kuali.rice.kns.maintenance.KualiMaintainableImpl"/>
         <property name="documentTypeName" value="OLE_AGR_REC"/>
         <property name="documentAuthorizerClass" value="org.kuali.rice.kns.document.authorization.MaintenanceDocumentAuthorizerBase"/>
+        <property name="businessRulesClass" value="org.kuali.ole.select.rule.OleAgreementRecordRule"/>
         <property name="lockingKeys">
             <list>
                 <value>agreementId</value>
@@ -125,20 +126,15 @@
                                 </property>
                             </bean>
 
-                            <bean id="Agreement-Licensor" parent="Uif-InputField" p:propertyName="licensor" p:label="Licensor" p:required="true">
-                                <property name="control">
-                                    <bean parent="Uif-TextControl" p:size="20"/>
-                                </property>
+
+                            <bean id="Agreement-Licensor" parent="Uif-InputField" p:propertyName="licensor"  p:required="true">
                                 <property name="quickfinder">
                                     <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
                                           p:fieldConversions="principalName:licensor"/>
                                 </property>
                             </bean>
 
-                            <bean id="Agreement-Licensee" parent="Uif-InputField" p:propertyName="licensee" p:label="Licensee" p:required="false">
-                                <property name="control">
-                                    <bean parent="Uif-TextControl" p:size="20"/>
-                                </property>
+                            <bean id="Agreement-Licensee" parent="Uif-InputField" p:propertyName="licensee">
                                 <property name="quickfinder">
                                     <bean parent="Uif-QuickFinder" p:dataObjectClassName="org.kuali.rice.kim.impl.identity.PersonImpl"
                                           p:fieldConversions="principalName:Licensee"/>
