@@ -2379,6 +2379,18 @@ public class OleDeliverRequestDocumentHelperServiceImpl {
             List<OlePatronDocument> olePatronDocumentList = (List<OlePatronDocument>) getBusinessObjectService().findMatching(OlePatronDocument.class, patronMap);
             if (olePatronDocumentList.size() > 0) {
                 olePatronDocument = olePatronDocumentList.get(0);
+                if (StringUtils.isNotBlank(operatorId) && operatorId.equalsIgnoreCase(OLEConstants.VUFIND)){
+                    List<Object> facts=new ArrayList<>();
+                    DroolsResponse droolsResponse=new DroolsResponse();
+                    facts.add(olePatronDocument);
+                    facts.add(droolsResponse);
+                    new CircUtilController().fireRules(facts, null, "general-checks");
+                    if(StringUtils.isNotBlank(droolsResponse.getErrorMessage().getErrorMessage())){
+                        olePlaceRequest.setCode("002");
+                        olePlaceRequest.setMessage(droolsResponse.getErrorMessage().getErrorMessage());
+                        return olePlaceRequestConverter.generatePlaceRequestXml(olePlaceRequest);
+                    }
+                }
                 oleDeliverRequestBo.setBorrowerId(olePatronDocument.getOlePatronId());
                 oleDeliverRequestBo.setBorrowerBarcode(olePatronDocument.getBarcode());
                 oleDeliverRequestBo.setOlePatron(olePatronDocument);
